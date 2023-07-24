@@ -1,4 +1,4 @@
-## PJT2 GitLab입니다
+## PJT2 GitLab입니다(23.07.25수정)
 <br>
 <br>
 
