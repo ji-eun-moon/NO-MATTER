@@ -1,16 +1,16 @@
 ## PJT2 GitLab입니다
-
-
-
-
+<br>
+<br>
 ## 시스템 아키텍처 
-[시스템 아키텍처](./img/시스템%20아키텍처_v1.0.png)
+<img src="./img/시스템%20아키텍처_v1.0.png">
+
+<img src="./img/ERD_v1.0.png">
 
 ## 유스케이스(Use Case) 
-[유스케이스](./img/사용자%20유즈케이스_v1.0.png)
+<img src="./img/사용자%20유즈케이스_v1.0.png">
 
 ## ERD 
-[ERD](./img/ERD_v1.0.png)
+<img src="./img/ERD_v1.0.png">
 
 ## [목업](https://www.figma.com/file/kheMn15vgYqqGkE4IsnnPY/No-matter-app?type=design&node-id=0%3A1&mode=design&t=6iltjRIOLBGQ5qFb-1)
 
