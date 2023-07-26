@@ -1,7 +1,7 @@
 package com.example.nomatter.controller;
 
-import com.example.nomatter.domain.userdto.UserJoinRequest;
-import com.example.nomatter.domain.userdto.UserLoginRequest;
+import com.example.nomatter.domain.dto.UserJoinRequest;
+import com.example.nomatter.domain.dto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.service.UserService;
 import lombok.RequiredArgsConstructor;
