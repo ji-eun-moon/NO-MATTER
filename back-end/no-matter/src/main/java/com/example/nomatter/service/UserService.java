@@ -1,0 +1,90 @@
+package com.example.nomatter.service;
+
+import com.example.nomatter.domain.User;
+import com.example.nomatter.domain.userdto.UserJoinRequest;
+import com.example.nomatter.domain.userdto.UserLoginRequest;
+import com.example.nomatter.domain.userdto.UserModifyRequest;
+import com.example.nomatter.exception.AppException;
+import com.example.nomatter.exception.Errorcode;
+import com.example.nomatter.repository.UserRepository;
+import com.example.nomatter.utils.JwtTokenUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
+    @Value("${jwt.token.secret}")
+    private String secretKey;
+
+    // 만료 시간 => 1초 * 60 * 60 => 1분 설정
+    private Long expireTime = 1000 * 60 * 60L;
+
+    public String join(UserJoinRequest dto){
+
+        // 중복체크
+        userRepository.findByUserId(dto.getUserId())
+                .ifPresent(user -> {
+                    throw new AppException(Errorcode.USERID_DUPLICATED, dto.getUserId() + "는 이미 존재하는 아이디입니다.");
+                });
+
+        User user = User.builder()
+                .userId(dto.getUserId())
+                .userPassword(encoder.encode(dto.getUserPassword()))
+                .userName(dto.getUserName())
+                .userEmail(dto.getUserEmail())
+                .userNumber(dto.getUserNumber())
+                .socialType(dto.getSocialType())
+                .createdat(LocalDateTime.now())
+                .build();
+
+        //저장
+        userRepository.save(user);
+
+        return "success";
+    }
+
+    public String login(UserLoginRequest dto){
+
+        // 아이디가 존재하지 않는 경우
+        User selectedUser = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, dto.getUserId() + "는 존재하지 않는 아이디입니다. "));
+
+        // 비밀번호 틀린 경우
+        if(!encoder.matches(dto.getUserPassword(), selectedUser.getUserPassword())){
+            throw new AppException(Errorcode.INVALID_ID_PASSWORD, "옳지 않은 비밀번호입니다.");
+        }
+
+        // Exception 안나면 token 발행
+        String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
+
+        return token;
+    }
+
+    public void modify(UserModifyRequest userModifyRequest){
+
+        userModifyRequest.setUserPassword(encoder.encode(userModifyRequest.getUserPassword()));
+
+        userRepository.updateUserByUserId(userModifyRequest.getUserId(), userModifyRequest.getUserPassword());
+
+    }
+
+    public void delete(String userId){
+
+        System.out.println("유저 아이디 = "  + userId);
+
+        User selectedUser = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userId + "는 존재하지 않는 아이디입니다."));
+
+        userRepository.deleteByUserId(userId);
+
+    }
+
+}
