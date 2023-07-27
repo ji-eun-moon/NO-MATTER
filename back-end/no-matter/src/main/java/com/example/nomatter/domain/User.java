@@ -1,9 +1,6 @@
 package com.example.nomatter.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Getter
 @Table(name = "member")
 public class User {
@@ -31,19 +29,4 @@ public class User {
     private LocalDateTime createdat;
     private LocalDateTime modifydat;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "memberId=" + memberId +
-                ", userId='" + userId + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userImg='" + userImg + '\'' +
-                ", userNumber='" + userNumber + '\'' +
-                ", socialType='" + socialType + '\'' +
-                ", createdat=" + createdat +
-                ", modifydat=" + modifydat +
-                '}';
-    }
 }

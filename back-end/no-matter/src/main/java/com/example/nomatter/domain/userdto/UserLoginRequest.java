@@ -1,4 +1,4 @@
-package com.example.nomatter.domain.dto;
+package com.example.nomatter.domain.userdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
