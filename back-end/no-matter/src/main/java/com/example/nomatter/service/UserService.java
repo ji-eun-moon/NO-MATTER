@@ -84,10 +84,9 @@ public class UserService {
     public void delete(String userId){
 
         User selectedUser = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userId + "는 존재하지 않는 아이디입니다."));
+                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, " Invalid Id"));
 
-        userRepository.deleteByUserId(userId);
-
+        userRepository.delete(selectedUser);
     }
 
 }

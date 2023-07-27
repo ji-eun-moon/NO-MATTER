@@ -18,6 +18,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User m SET m.userPassword = :userPassword, m.modifydat = now() WHERE m.userId = :userId")
     void updateUserByUserId(@Param("userId") String userId,@Param("userPassword") String userPassword);
 
-    void deleteByUserId(String userId);
-
 }
