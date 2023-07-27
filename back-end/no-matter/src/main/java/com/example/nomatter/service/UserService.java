@@ -36,13 +36,14 @@ public class UserService {
                     throw new AppException(Errorcode.USERID_DUPLICATED, dto.getUserId() + "는 이미 존재하는 아이디입니다.");
                 });
 
+
         User user = User.builder()
                 .userId(dto.getUserId())
                 .userPassword(encoder.encode(dto.getUserPassword()))
                 .userName(dto.getUserName())
                 .userEmail(dto.getUserEmail())
                 .userNumber(dto.getUserNumber())
-                .socialType(dto.getSocialType())
+                .socialType(dto.getSocialType() == null ? "nomatter" : dto.getSocialType())
                 .createdat(LocalDateTime.now())
                 .build();
 
