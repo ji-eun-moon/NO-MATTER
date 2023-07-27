@@ -1,15 +1,19 @@
 package com.example.nomatter.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UserJoinRequest {
 
@@ -23,16 +27,11 @@ public class UserJoinRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdat;
 
-    @Override
-    public String toString() {
-        return "UserJoinRequest{" +
-                "userId='" + userId + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userNumber='" + userNumber + '\'' +
-                ", socialType='" + socialType + '\'' +
-                ", createdat=" + createdat +
-                '}';
+
+    @JsonCreator
+    public UserJoinRequest(@JsonProperty("username") String username, @JsonProperty("password") String password) {
+        this.userName = username;
+        this.userPassword = password;
     }
+
 }

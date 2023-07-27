@@ -1,12 +1,11 @@
-package com.example.nomatter.domain.userdto;
+package com.example.nomatter.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 public class UserModifyRequest {
 
     private String userId;

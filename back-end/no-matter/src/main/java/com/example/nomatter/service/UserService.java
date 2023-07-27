@@ -3,7 +3,7 @@ package com.example.nomatter.service;
 import com.example.nomatter.domain.User;
 import com.example.nomatter.domain.dto.UserJoinRequest;
 import com.example.nomatter.domain.dto.UserLoginRequest;
-import com.example.nomatter.domain.userdto.UserModifyRequest;
+import com.example.nomatter.domain.dto.UserModifyRequest;
 import com.example.nomatter.exception.AppException;
 import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.UserRepository;
@@ -32,6 +32,7 @@ public class UserService {
         // 중복체크
         userRepository.findByUserId(dto.getUserId())
                 .ifPresent(user -> {
+                    System.out.println(user.toString());
                     throw new AppException(Errorcode.USERID_DUPLICATED, dto.getUserId() + "는 이미 존재하는 아이디입니다.");
                 });
 
@@ -70,15 +71,17 @@ public class UserService {
 
     public void modify(UserModifyRequest userModifyRequest){
 
-        userModifyRequest.setUserPassword(encoder.encode(userModifyRequest.getUserPassword()));
+        User selectUser = userRepository.findByUserId(userModifyRequest.getUserId())
+                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userModifyRequest.getUserId() + " is not found"));
 
-        userRepository.updateUserByUserId(userModifyRequest.getUserId(), userModifyRequest.getUserPassword());
+        String userId = userModifyRequest.getUserId();
+        String userPassword = userModifyRequest.getUserPassword();
+
+        userRepository.updateUserByUserId(userId, userPassword);
 
     }
 
     public void delete(String userId){
-
-        System.out.println("유저 아이디 = "  + userId);
 
         User selectedUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userId + "는 존재하지 않는 아이디입니다."));
