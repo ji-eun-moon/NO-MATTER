@@ -3,7 +3,7 @@ import './App.css';
 import { isMobile } from 'react-device-detect';
 
 // routes
-import routes from './routes';
+import routes from './data/routes';
 import {
   BrowserRouter,
   Routes,

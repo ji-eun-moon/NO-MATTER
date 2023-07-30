@@ -1,8 +1,8 @@
-import MainPage from './pages/MainPage';
-import HubPage from './pages/HubPage';
-import RoutinePage from './pages/RoutinePage';
-import SettingPage from './pages/SettingPage';
-import LandingPage from './landings/LandingPage';
+import MainPage from '../pages/MainPage';
+import HubPage from '../pages/HubPage';
+import RoutinePage from '../pages/RoutinePage';
+import SettingPage from '../pages/SettingPage';
+import LandingPage from '../landings/LandingPage';
 
 const routes = [
   {

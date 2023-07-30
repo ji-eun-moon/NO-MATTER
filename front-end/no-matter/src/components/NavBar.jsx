@@ -1,44 +1,40 @@
 import React from 'react'
-import { isMobile } from 'react-device-detect';
-
-import {Link, NavLink} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
+import NavData from '../data/NavData';
 
 function NavBar() {
+
+  const navBarStyle = {
+    backgroundColor: '#FCFCFC',
+    justifyContent: 'space-around',
+  }
+
+  const activeLink = "main-color font-700"
+
+  const normalLink = "text-body-tertiary font-700"
+
+  const titleStyle = {
+    textDecoration: 'none',
+  };
+
   return (
-    <nav className="navbar navbar-dark bg-dark">
-        <div className="container">
-            <ul className="navbar-nav d-flex justify-content-around" style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}
-                  aria-current="page"
-                  to="/main">
-                  Main</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}
-                  aria-current="page"
-                  to="/hub">
-                  Hub</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}
-                  aria-current="page"
-                  to="/routine">
-                  Routine</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}
-                  aria-current="page"
-                  to="/setting">
-                  Setting</NavLink>
-              </li>
-            </ul>
-        </div>
-      </nav>
+    <div className='d-flex' style={navBarStyle}>
+
+      {
+        NavData.map((item, index) => {
+          return(
+            <div key={index}>
+              <NavLink to={item.path}
+              style={titleStyle}
+                className={({ isActive }) => isActive ? activeLink : normalLink}>
+                <span className='centered fs-2'>{item.icon}</span>
+                <span>{item.title}</span>
+              </NavLink>
+            </div>
+          )
+        })
+      }
+    </div>
   )
 }
 
