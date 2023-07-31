@@ -15,7 +15,7 @@ import {
 import NavBar from './components/NavBar';
 import PCLanding from './landings/PCLanding'
 import LoginPage from './pages/auth/LoginPage.jsx'
-import Signup from './pages/auth/Signup'
+import Signup from './pages/Signup'
 import MainPage from './pages/MainPage'
 
 function App() {
