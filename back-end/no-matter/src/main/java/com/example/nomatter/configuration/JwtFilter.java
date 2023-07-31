@@ -3,6 +3,7 @@ package com.example.nomatter.configuration;
 import com.example.nomatter.service.UserService;
 import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,20 +19,22 @@ import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
     private final String secretKey;
 
     @Override
+
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        logger.info("authorization : " + authorization);
+        log.info("authorization : " + authorization);
 
         if(authorization == null || !authorization.startsWith("Bearer ")){
 
-            logger.info("authentication 만료");
+            log.error("Token이 없거나 잘못되었습니다.");
             filterChain.doFilter(request, response);
 
             return ;
@@ -39,16 +42,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // token에서 username 꺼내기
         String Token = authorization.split(" ")[1];
+        log.info("Token : " + Token);
 
         // Token Expired 여부
         if(JwtTokenUtil.isExpired(Token, secretKey)){
-            logger.info("Token 만료");
+            log.info("Token이 만료되었습니다.");
             filterChain.doFilter(request, response);
             return ;
         }
 
         // userName 꺼내기
-        String userName = "";
+        String userName = JwtTokenUtil.getUserName(Token, secretKey);
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken =
