@@ -18,7 +18,7 @@ public class HubService {
 
         hubRepository.findByHubUuid(hub.getHubUuid())
                         .ifPresent(Hub -> {
-                            throw new AppException(Errorcode.UUID_DUPLICATED, hub.getHubUuid() + " is duplicated");
+                            throw new AppException(Errorcode.UUID_DUPLICATED, hub.getHubUuid() + " 이미 등록된 허브입니다.");
                         });
 
         System.out.println(hub.toString());
