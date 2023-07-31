@@ -1,0 +1,6 @@
+.LoginPage .form-control {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3)
+}
+.LoginPage .form-control::placeholder {
+    color: rgb(177, 177, 177);
+}
