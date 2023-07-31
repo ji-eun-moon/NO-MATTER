@@ -1,6 +1,5 @@
 package com.example.nomatter.controller;
 
-import com.example.nomatter.domain.User;
 import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
@@ -55,11 +54,9 @@ public class UserController {
     @PostMapping("/idCheck")
     public ResponseEntity<?> idCheck(@RequestBody Map<String, String> map){
 
-        System.out.println(" 아이디 중복 체크 = " + map.get("userId"));
-
         userService.idCheck(map.get("userId"));
 
-        return ResponseEntity.ok().body(" 사용 가능한 아이디입니다.");
+        return ResponseEntity.ok().body("사용 가능한 아이디입니다.");
     }
 
 }
