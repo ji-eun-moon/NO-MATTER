@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Link, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import axios from 'axios'
-import { signup } from '../slice/userSlice'
+import { signup } from '../../slice/userSlice'
 
 function Signup() {    
 
@@ -21,14 +21,14 @@ function Signup() {
         setFormData(event.currentTarget.value)
     }
 
-    const idCheckHandler = (event) => {
-        event.preventDefault()
-        console.log('id', formData.userId)
-        axios({
-            method : 'Get',
-            // url : `http://localhost:8080/api/v1/user/idCheck/${}`
-        })
-    }
+    // const idCheckHandler = (event) => {
+    //     event.preventDefault()
+    //     console.log('id', formData.userId)
+    //     axios({
+    //         method : 'Get',
+    //         // url : `http://localhost:8080/api/v1/user/idCheck/${}`
+    //     })
+    // }
       
     //찬석
     const submitHandler = async(e) => {
@@ -75,14 +75,14 @@ function Signup() {
                         label="아이디"
                         autoFocus
                     />
-                    <Button                    
+                    {/* <Button                    
                     type="submit"
                     variant="contained"
                     onClick={idCheckHandler}
                     color="primary"
                     className="button">
                         아이디 중복 확인
-                    </Button>
+                    </Button> */}
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -128,7 +128,6 @@ function Signup() {
                         fullWidth
                         id="userName"
                         label="이름"
-                        autoFocus
                     />
                 </Grid>
                 <Grid item xs={12}>
