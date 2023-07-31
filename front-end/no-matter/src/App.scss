@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-color {
+  color: #0097B2;
+}
+
+.font-700 {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+}
