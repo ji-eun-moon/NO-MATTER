@@ -1,6 +1,7 @@
 package com.example.nomatter.configuration;
 
 import com.example.nomatter.service.UserService;
+import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.info("authorization : " + authorization);
 
-        if(authorization == null || authorization.startsWith("Bearer ")){
+        if(authorization == null || !authorization.startsWith("Bearer ")){
 
             logger.info("authentication 만료");
             filterChain.doFilter(request, response);
@@ -37,6 +38,16 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // token에서 username 꺼내기
+        String Token = authorization.split(" ")[1];
+
+        // Token Expired 여부
+        if(JwtTokenUtil.isExpired(Token, secretKey)){
+            logger.info("Token 만료");
+            filterChain.doFilter(request, response);
+            return ;
+        }
+
+        // userName 꺼내기
         String userName = "";
 
         // 권한 부여

@@ -51,10 +51,12 @@ public class UserController {
 
     }
 
-    @PostMapping("/idCheck")
-    public ResponseEntity<?> idCheck(@RequestBody Map<String, String> map){
+    @GetMapping("/idCheck/{userId}")
+    public ResponseEntity<?> idCheck(@PathVariable("userId") String userId){
 
-        userService.idCheck(map.get("userId"));
+        System.out.println(userId);
+
+        userService.idCheck(userId);
 
         return ResponseEntity.ok().body("사용 가능한 아이디입니다.");
     }
