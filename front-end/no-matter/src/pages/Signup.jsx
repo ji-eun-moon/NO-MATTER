@@ -9,6 +9,7 @@ function Signup() {
 
     const dispatch = useDispatch();
 
+
     const [formData, setFormData] = useState({
         userId : "",
         userPassword : "",
@@ -17,23 +18,37 @@ function Signup() {
         userEmail : "",
         userNumber : "",
     })
+
+
     const onFormHandler = (event) => {
+        const name = event.currentTarget.name
         setFormData(event.currentTarget.value)
     }
 
     const idCheckHandler = (event) => {
-        event.preventDefault()
-        console.log('id', formData.userId)
+        // event.preventDefault()
+        console.log('id', userId.value)
         axios({
             method : 'Get',
-            // url : `http://localhost:8080/api/v1/user/idCheck/${}`
+            url : `http://localhost:8080/api/v1/user/idCheck/${userId.value}`
         })
-    }
+        .then((response) => {
+            console.log(response)
+            const user = response.data
+            alert('이미 사용중인 아이디입니다')
+          })
+          .catch((err) => {
+            console.log(userId, userPassword, userName, userEmail, userNumber)
+            console.log(err)
+            alert('사용 가능한 아이디입니다')
+          })
+        }
       
     //찬석
     const submitHandler = async(e) => {
         e.preventDefault()
         console.log('event',e)
+
         if(e.target[1].value !== e.target[2].value){
             alert("비밀번호를 다시 확인해주세요")
         }
@@ -63,26 +78,30 @@ function Signup() {
             </Typography>
             <form className="form" noValidate onSubmit={submitHandler}>
                 <Grid item xs={12}>
-                    <TextField
-                        autoComplete="id"
-                        name="id"
-                        variant="filled"
-                        value={formData.userId}
-                        onChange={onFormHandler}
-                        required
+                    <div className='d-flex'>
+                        <TextField
+                            autoComplete="id"
+                            name="id"
+                            variant="filled"
+                            value={formData.userId}
+                            onChange={onFormHandler}
+                            required
+                            fullWidth
+                            id="userId"
+                            label="아이디"
+                            autoFocus
+                        />
+                        <Button                    
+                        type="submit"
+                        variant="contained"
+                        onClick={idCheckHandler}
+                        color="primary"
                         fullWidth
-                        id="userId"
-                        label="아이디"
-                        autoFocus
-                    />
-                    <Button                    
-                    type="submit"
-                    variant="contained"
-                    onClick={idCheckHandler}
-                    color="primary"
-                    className="button">
-                        아이디 중복 확인
-                    </Button>
+                        className="button">
+                            아이디 중복 확인
+                        </Button>
+
+                    </div>
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
