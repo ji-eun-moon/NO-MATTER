@@ -92,6 +92,8 @@ public class UserService {
 
     public String idCheck(String userId){
 
+        System.out.println("userId = " + userId);
+
         userRepository.findByUserId(userId)
                 .ifPresent(user -> {
                     throw new AppException(Errorcode.USERID_DUPLICATED, " 이미 가입된 아이디입니다.");
