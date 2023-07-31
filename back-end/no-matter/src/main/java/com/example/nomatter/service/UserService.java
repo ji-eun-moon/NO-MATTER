@@ -67,7 +67,7 @@ public class UserService {
         // Exception 안나면 token 발행
         String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
 
-        return token;
+        return "Bearer " + token;
     }
 
     public void modify(UserModifyRequest userModifyRequest){
@@ -94,7 +94,7 @@ public class UserService {
 
         userRepository.findByUserId(userId)
                 .ifPresent(user -> {
-                    throw new AppException(Errorcode.USERID_NOT_FOUND, " 아이디 중복 체크 실패");
+                    throw new AppException(Errorcode.USERID_DUPLICATED, " 이미 가입된 아이디입니다.");
                 });
 
         return "사용 가능한 아이디입니다.";

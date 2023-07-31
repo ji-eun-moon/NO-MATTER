@@ -2,6 +2,7 @@ package com.example.nomatter.configuration;
 
 import com.example.nomatter.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.info("authorization : " + authorization);
+
+        if(authorization == null || authorization.startsWith("Bearer ")){
+
+            logger.info("authentication 만료");
+            filterChain.doFilter(request, response);
+
+            return ;
+        }
 
         // token에서 username 꺼내기
         String userName = "";
