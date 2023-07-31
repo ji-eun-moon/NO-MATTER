@@ -90,4 +90,14 @@ public class UserService {
         userRepository.delete(selectedUser);
     }
 
+    public String idCheck(String userId){
+
+        userRepository.findByUserId(userId)
+                .ifPresent(user -> {
+                    throw new AppException(Errorcode.USERID_NOT_FOUND, " 아이디 중복 체크 실패");
+                });
+
+        return "사용 가능한 아이디입니다.";
+    }
+
 }

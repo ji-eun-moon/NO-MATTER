@@ -16,7 +16,6 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
-                .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/v1/user/join", "/api/v1/user/login").permitAll()
                 .and()
                 .sessionManagement()

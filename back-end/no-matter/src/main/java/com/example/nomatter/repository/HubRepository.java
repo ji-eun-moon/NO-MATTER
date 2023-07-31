@@ -1,14 +1,14 @@
 package com.example.nomatter.repository;
 
-import com.example.nomatter.domain.User;
+import com.example.nomatter.domain.Hub;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface HubRepository extends JpaRepository<Hub, Long> {
 
-    Optional<User> findByUserId(String userId);
+    Optional<Hub> findByHubUuid(String hubUuid);
 
 }
