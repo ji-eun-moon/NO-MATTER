@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "member")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -24,9 +24,9 @@ public class User {
     private String userName;
     private String userEmail;
     private String userImg;
-    private String userNumber;
+    private String userPhone;
     private String socialType;
-    private LocalDateTime createdat;
-    private LocalDateTime modifydat;
+    private LocalDateTime createDate;
+//    private LocalDateTime modifydat;
 
 }

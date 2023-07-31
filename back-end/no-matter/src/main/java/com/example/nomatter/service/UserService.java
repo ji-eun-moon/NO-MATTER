@@ -42,9 +42,9 @@ public class UserService {
                 .userPassword(encoder.encode(dto.getUserPassword()))
                 .userName(dto.getUserName())
                 .userEmail(dto.getUserEmail())
-                .userNumber(dto.getUserNumber())
+                .userPhone(dto.getUserNumber())
                 .socialType(dto.getSocialType() == null ? "nomatter" : dto.getSocialType())
-                .createdat(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
 
         //저장

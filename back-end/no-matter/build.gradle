@@ -30,7 +30,6 @@ dependencies {
 	testImplementation 'junit:junit:4.13.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
