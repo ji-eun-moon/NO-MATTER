@@ -5,7 +5,9 @@ import com.example.nomatter.domain.userdto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/user")
 @RestController
 @Transactional
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -54,11 +57,18 @@ public class UserController {
     @GetMapping("/idCheck/{userId}")
     public ResponseEntity<?> idCheck(@PathVariable("userId") String userId){
 
-        System.out.println(userId);
-
         userService.idCheck(userId);
 
         return ResponseEntity.ok().body("사용 가능한 아이디입니다.");
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(Authentication authentication){
+
+        log.info("로그아웃 GET");
+
+        return ResponseEntity.ok().body("로그아웃 완료");
+
     }
 
 }
