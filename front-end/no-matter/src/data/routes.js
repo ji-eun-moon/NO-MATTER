@@ -3,6 +3,7 @@ import HubPage from '../pages/HubPage';
 import RoutinePage from '../pages/RoutinePage';
 import SettingPage from '../pages/SettingPage';
 import LandingPage from '../landings/LandingPage';
+import Signup from '../pages/Signup'
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
     path:'/setting',
     element: <SettingPage />
   },
+  {
+    path: '/signup',
+    element: <Signup />
+  }
 ]
 
 export default routes;

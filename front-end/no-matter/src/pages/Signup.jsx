@@ -25,29 +25,46 @@ function Signup() {
         setFormData(event.currentTarget.value)
     }
 
-    const idCheckHandler = (event) => {
-        // event.preventDefault()
-        console.log('id', userId.value)
-        axios({
-            method : 'Get',
-            url : `http://localhost:8080/api/v1/user/idCheck/${userId.value}`
-        })
-        .then((response) => {
-            console.log(response)
-            const user = response.data
-            alert('이미 사용중인 아이디입니다')
-          })
-          .catch((err) => {
-            console.log(userId, userPassword, userName, userEmail, userNumber)
-            console.log(err)
-            alert('사용 가능한 아이디입니다')
-          })
-        }
+    // const idCheckHandler = (event) => {
+    //     event.preventDefault()
+    //     console.log('check', userId)
+    //     // console.log('id', userId.value)
+    //     axios({
+    //         method : 'Get',
+    //         url : `http://localhost:8080/api/v1/user/idCheck`,
+    //         // data : userId.value
+    //     })
+    //     .then((response) => {
+    //         console.log(response)
+    //         // const user = response.data
+    //         alert('이미 사용중인 아이디입니다')
+    //       })
+    //       .catch((err) => {
+    //         // console.log(userId, userPassword, userName, userEmail, userNumber)
+    //         console.log(err)
+    //         alert('사용 가능한 아이디입니다')
+    //       })
+    //     }
       
     //찬석
     const submitHandler = async(e) => {
         e.preventDefault()
         console.log('event',e)
+        axios({
+            method : 'Get',
+            url : `http://localhost:8080/api/v1/user/idCheck/${e.target[0].value}`,
+            // data : e.target[0].value
+        })
+        .then((response) => {
+            console.log(response)
+            // const user = response.data
+            alert('이미 사용중인 아이디입니다')
+          })
+          .catch((err) => {
+            // console.log(userId, userPassword, userName, userEmail, userNumber)
+            console.log(err)
+            alert('사용 가능한 아이디입니다')
+          })
 
         if(e.target[1].value !== e.target[2].value){
             alert("비밀번호를 다시 확인해주세요")
@@ -91,7 +108,7 @@ function Signup() {
                             label="아이디"
                             autoFocus
                         />
-                        <Button                    
+                        {/* <Button                    
                         type="submit"
                         variant="contained"
                         onClick={idCheckHandler}
@@ -99,7 +116,7 @@ function Signup() {
                         fullWidth
                         className="button">
                             아이디 중복 확인
-                        </Button>
+                        </Button> */}
 
                     </div>
                 </Grid>
