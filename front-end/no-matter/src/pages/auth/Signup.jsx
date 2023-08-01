@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Link, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import axios from 'axios'
-import { signup } from '../slice/userSlice'
+import { signup } from '../../slice/userSlice'
 
 function Signup() {    
 

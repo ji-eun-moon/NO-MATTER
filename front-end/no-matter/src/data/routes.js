@@ -3,7 +3,7 @@ import HubPage from '../pages/hub/HubPage';
 import RoutinePage from '../pages/routine/RoutinePage';
 import SettingPage from '../pages/setting/SettingPage';
 import LandingPage from '../landings/LandingPage';
-import Signup from '../pages/Signup'
+import Signup from '../pages/auth/Signup'
 import RemotePage from '../pages/hub/RemotePage';
 
 const routes = [
