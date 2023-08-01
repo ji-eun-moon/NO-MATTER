@@ -4,6 +4,7 @@ import RoutinePage from '../pages/routine/RoutinePage';
 import SettingPage from '../pages/setting/SettingPage';
 import LandingPage from '../landings/LandingPage';
 import Signup from '../pages/auth/Signup'
+import LoginPage from '../pages/auth/LoginPage.jsx'
 import RemotePage from '../pages/hub/RemotePage';
 
 const routes = [
@@ -34,6 +35,10 @@ const routes = [
   {
     path: '/signup',
     element: <Signup />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
   }
 ]
 
