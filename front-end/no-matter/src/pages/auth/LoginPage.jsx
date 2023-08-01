@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import './LoginPage.css';
-// import { Container, Form, Button } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS import
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Link, Box } from '@material-ui/core'
+import { Container, CssBaseline, Typography, Grid, TextField, Button, Link } from '@material-ui/core'
 
 
 function LoginPage() {
@@ -33,43 +31,20 @@ function LoginPage() {
       url: URL,
       data: {userId:userID, userPassword:userPassword}
     })
-    .then((response) => {
-      console.log(response)
+    .then(() => {
       navigate('/main')
     })
     .catch((err) => {
-      console.log(err)
+      if (err.response.status === 401) {
+        alert("비밀번호를 다시 입력해 주세요.")
+      } else if (err.response.status === 404) {
+        alert("가입되지 않은 아이디 입니다.")
+      }
     })
   };
 
   return (
     <div className="LoginPage">
-      {/* <Container className="d-flex align-items-center justify-content-center min-vh-100">
-        <div className="w-100 mx-3" style={{ maxWidth: '400px'}}>
-          <Form onSubmit={handleLogin}>
-            <Form.Group controlId="userID">
-              <Form.Control className="rounded-3"
-                type="text"
-                placeholder="아이디"
-                value={userID}
-                onChange={(e)=>setUserID(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="userPassword">
-              <Form.Control className="rounded-3"
-                type="password"
-                placeholder="비밀번호"
-                value={userPassword}
-                onChange={(e)=>setUserPassword(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="dark" type="submit" className="w-100 rounded-3">
-              로그인
-            </Button>
-          </Form>
-        </div>
-
-      </Container> */}
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
           <div className="paper">
@@ -100,6 +75,7 @@ function LoginPage() {
                   onChange={controllPw}
                   required
                   fullWidth
+                  type='password'
                   id="userPassword"
                   label="비밀번호"
                 />
