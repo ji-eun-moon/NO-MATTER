@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { useDispatch } from 'react-redux'
 import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Link, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -9,15 +9,15 @@ function Signup() {
 
     const dispatch = useDispatch();
 
-
+    const [userId, setUserId] = useState("")
     const [formData, setFormData] = useState({
-        userId : "",
+        // userId : "",
         userPassword : "",
         confirmPassword : "",
         userName : "",
         userEmail : "",
         userNumber : "",
-    })
+    }) 
 
 
     const onFormHandler = (event) => {
@@ -25,62 +25,48 @@ function Signup() {
         setFormData(event.currentTarget.value)
     }
 
-    // const idCheckHandler = (event) => {
-    //     event.preventDefault()
-    //     console.log('check', userId)
-    //     // console.log('id', userId.value)
-    //     axios({
-    //         method : 'Get',
-    //         url : `http://localhost:8080/api/v1/user/idCheck`,
-    //         // data : userId.value
-    //     })
-    //     .then((response) => {
-    //         console.log(response)
-    //         // const user = response.data
-    //         alert('이미 사용중인 아이디입니다')
-    //       })
-    //       .catch((err) => {
-    //         // console.log(userId, userPassword, userName, userEmail, userNumber)
-    //         console.log(err)
-    //         alert('사용 가능한 아이디입니다')
-    //       })
-    //     }
+    const onIdHandler = (event) => {
+        setUserId(event.currentTarget.value)
+    }
+    const idCheckHandler = (event) => {
+        event.preventDefault()
+        console.log('check', userId)
+        axios({
+            method : 'Get',
+            url : `http://localhost:8080/api/v1/user/idCheck/${userId}`,
+        })
+        .then((response) => {
+            console.log('response',response)
+            alert('사용 가능한 아이디입니다')
+            // const user = response.data
+        })
+        .catch((err) => {
+            // console.log(userId, userPassword, userName, userEmail, userNumber)
+            console.log('err',err)
+            alert('이미 사용중인 아이디입니다')
+          })
+        }
       
     //찬석
     const submitHandler = async(e) => {
         e.preventDefault()
         console.log('event',e)
-        axios({
-            method : 'Get',
-            url : `http://localhost:8080/api/v1/user/idCheck/${e.target[0].value}`,
-            // data : e.target[0].value
-        })
-        .then((response) => {
-            console.log(response)
-            // const user = response.data
-            alert('이미 사용중인 아이디입니다')
-          })
-          .catch((err) => {
-            // console.log(userId, userPassword, userName, userEmail, userNumber)
-            console.log(err)
-            alert('사용 가능한 아이디입니다')
-          })
-
-        if(e.target[1].value !== e.target[2].value){
+        // const focusRef = useRef()
+        if(e.target[2].value !== e.target[3].value){
             alert("비밀번호를 다시 확인해주세요")
+            return
         }
-        dispatch(signup(e.target[0].value, e.target[1].value, e.target[3].value, e.target[4].value, e.target[5].value))    
+        dispatch(signup(userId, e.target[2].value, e.target[3].value, e.target[4].value, e.target[5].value, e.target[6].value))    
     }
 
     useEffect(() => {
-        setFormData({...formData, userId : formData.userId,
-                                  userPassword : formData.userPassword,
+        setFormData({...formData, userPassword : formData.userPassword,
                                   confirmPassword : formData.confirmPassword,
                                   userName : formData.userName,
                                   userEmail : formData.userEmail,
                                   userNumber : formData.userNumber,
                     })
-    }, [formData.userId, formData.userPassword, formData.confirmPassword, formData.userName, formData.userEmail, formData.userNumber, ])
+    }, [formData.userPassword, formData.confirmPassword, formData.userName, formData.userEmail, formData.userNumber, ])
 
     return (
         <Container component="main" maxWidth="xs">
@@ -100,27 +86,28 @@ function Signup() {
                             autoComplete="id"
                             name="id"
                             variant="filled"
-                            value={formData.userId}
-                            onChange={onFormHandler}
+                            value={userId}
+                            onChange={onIdHandler}
                             required
                             fullWidth
                             id="userId"
-                            label="아이디"
+                            label="아이디" 
                             autoFocus
                         />
-                        {/* <Button                    
+                        <Button                    
                         type="submit"
-                        variant="contained"
+                        // variant="contained"
                         onClick={idCheckHandler}
-                        color="primary"
+                        // color="primary"
                         fullWidth
-                        className="button">
+                        className="button"
+                        style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                             아이디 중복 확인
-                        </Button> */}
+                        </Button>
 
                     </div>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                     <TextField
                         variant="filled"
                         required
@@ -133,6 +120,7 @@ function Signup() {
                         type="password"
                         id="userPassword"
                         autoComplete="current-password"
+                        // ref={focusRef}
                     />
                 </Grid>
                 <Grid item xs={12}>
