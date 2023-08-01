@@ -24,7 +24,7 @@ public class UserHubService {
 
     public List<UserHub> findAllByUserId(Long Id){
 
-        return userHubRepository.findAllByUsersHubsId(Id);
+        return userHubRepository.findAllByUserId(Id);
 
     }
 

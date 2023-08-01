@@ -59,6 +59,8 @@ public class UserHubController {
 
         List<UserHub> list =  userHubService.findAllByUserId(userRepository.findByUserId(authentication.getName()).get().getMemberId());
 
+        log.info(list.toString());
+
         return ResponseEntity.ok().body(list);
     }
 

@@ -10,6 +10,7 @@ import com.example.nomatter.repository.UserRepository;
 import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +88,7 @@ public class UserService {
         User selectedUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, " Invalid Id"));
 
+        SecurityContextHolder.clearContext();
         userRepository.delete(selectedUser);
     }
 
