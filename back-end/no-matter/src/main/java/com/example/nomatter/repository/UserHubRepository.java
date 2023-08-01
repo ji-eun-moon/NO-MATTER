@@ -12,4 +12,6 @@ public interface UserHubRepository extends JpaRepository<UserHub, Long> {
 
     List<UserHub> findAllByUserId(Long userId);
 
+    Optional<UserHub> findByUsersHubsId(Long UsersHubsId);
+
 }

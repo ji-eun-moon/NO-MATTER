@@ -3,6 +3,7 @@ package com.example.nomatter.controller;
 import com.example.nomatter.domain.Hub;
 import com.example.nomatter.domain.UserHub;
 import com.example.nomatter.domain.hubdto.HubRegisterDto;
+import com.example.nomatter.domain.userhubdto.UserHubModifyDto;
 import com.example.nomatter.repository.HubRepository;
 import com.example.nomatter.repository.UserRepository;
 import com.example.nomatter.service.HubService;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,6 +63,17 @@ public class UserHubController {
         log.info(list.toString());
 
         return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping("/modify")
+    public ResponseEntity<?> modify(@RequestBody UserHubModifyDto userHubModifyDto,@RequestBody Long userHubId, Authentication authentication){
+
+        userHubService.findByUsersHubsId(userHubId)
+                .ifPresent(userHub -> {
+                    userHub.setUserHubName(userHubModifyDto.getUserHubName());
+                });
+
+        return ResponseEntity.ok().body("허브 이름 수정 완료");
     }
 
 }
