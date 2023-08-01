@@ -91,16 +91,17 @@ function Signup() {
                             required
                             fullWidth
                             id="userId"
-                            label="아이디"
+                            label="아이디" 
                             autoFocus
                         />
                         <Button                    
                         type="submit"
-                        variant="contained"
+                        // variant="contained"
                         onClick={idCheckHandler}
-                        color="primary"
+                        // color="primary"
                         fullWidth
-                        className="button">
+                        className="button"
+                        style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                             아이디 중복 확인
                         </Button>
 
