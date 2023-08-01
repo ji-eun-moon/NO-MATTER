@@ -4,11 +4,6 @@ import NavData from '../data/NavData';
 
 function NavBar() {
 
-  const navBarStyle = {
-    backgroundColor: '#FCFCFC',
-    justifyContent: 'space-around',
-  }
-
   const activeLink = "main-color font-700"
 
   const normalLink = "text-body-tertiary font-700"
@@ -18,7 +13,7 @@ function NavBar() {
   };
 
   return (
-    <div className='d-flex' style={navBarStyle}>
+    <div className='tab-menu'>
 
       {
         NavData.map((item, index) => {
