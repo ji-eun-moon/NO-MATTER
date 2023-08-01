@@ -8,6 +8,11 @@ import java.util.Date;
 
 public class JwtTokenUtil {
 
+    public static boolean isExpired(String token, String secretKey){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().getExpiration().before(new Date());
+    }
+
     public static String createToken(String userName, String key, long expireTime){
 
         // 일종의 맵
@@ -20,6 +25,12 @@ public class JwtTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
+    }
+
+    public static String getUserName(String Token, String secretKey){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(Token)
+                .getBody()
+                .get("userName", String.class);
     }
 
 }
