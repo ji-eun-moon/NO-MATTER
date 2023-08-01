@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -100,6 +101,12 @@ public class UserService {
                 });
 
         return "사용 가능한 아이디입니다.";
+    }
+
+    public Optional<User> findByUserId(String userId){
+
+        return userRepository.findByUserId(userId);
+
     }
 
 }

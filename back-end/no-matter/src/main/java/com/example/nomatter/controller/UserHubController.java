@@ -24,9 +24,8 @@ import java.util.List;
 public class UserHubController {
 
     private final UserHubService userHubService;
-    private final UserRepository userRepository;
     private final HubService hubService;
-    private final HubRepository hubRepository;
+    private final UserService userService;
 
 
     @PostMapping("/register")
@@ -41,8 +40,8 @@ public class UserHubController {
         hubService.register(hub);
 
         UserHub userHub = UserHub.builder()
-                .hubId(hubRepository.findByHubUuid(hubRegisterDto.getHubUuid()).get().getHubId())
-                .userId(userRepository.findByUserId(authentication.getName()).get().getMemberId())
+                .hubId(hubService.findByHubUuid(hubRegisterDto.getHubUuid()).get().getHubId())
+                .userId(userService.findByUserId(authentication.getName()).get().getMemberId())
                 .userHubAuth(hubRegisterDto.getUserHubAuth())
                 .userHubName(hubRegisterDto.getUserHubName())
                 .build();
@@ -57,7 +56,7 @@ public class UserHubController {
     @GetMapping("/list")
     public ResponseEntity<?> findAllByUserId(Authentication authentication){
 
-        List<UserHub> list =  userHubService.findAllByUserId(userRepository.findByUserId(authentication.getName()).get().getMemberId());
+        List<UserHub> list =  userHubService.findAllByUserId(userService.findByUserId(authentication.getName()).get().getMemberId());
 
         log.info(list.toString());
 
