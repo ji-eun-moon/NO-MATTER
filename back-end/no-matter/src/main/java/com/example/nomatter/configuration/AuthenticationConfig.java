@@ -28,13 +28,19 @@ public class AuthenticationConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/user/join").permitAll()
-//                .antMatchers(HttpMethod.POST,"/api/v1/hub/register").authenticated()
+                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/api/v1/user/logout")
+                .logoutSuccessUrl("/api/v1/user/login")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .and()
                 .build();
     }
 

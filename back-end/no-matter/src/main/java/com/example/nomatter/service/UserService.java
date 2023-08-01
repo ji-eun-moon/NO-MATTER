@@ -67,7 +67,7 @@ public class UserService {
         // Exception 안나면 token 발행
         String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
 
-        return "Bearer " + token;
+        return token;
     }
 
     public void modify(UserModifyRequest userModifyRequest){
