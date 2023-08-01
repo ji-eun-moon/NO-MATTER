@@ -1,9 +1,10 @@
-import MainPage from '../pages/MainPage';
-import HubPage from '../pages/HubPage';
-import RoutinePage from '../pages/RoutinePage';
-import SettingPage from '../pages/SettingPage';
+import MainPage from '../pages/main/MainPage';
+import HubPage from '../pages/hub/HubPage';
+import RoutinePage from '../pages/routine/RoutinePage';
+import SettingPage from '../pages/setting/SettingPage';
 import LandingPage from '../landings/LandingPage';
 import Signup from '../pages/Signup'
+import RemotePage from '../pages/hub/RemotePage';
 
 const routes = [
   {
@@ -15,8 +16,12 @@ const routes = [
     element: <MainPage />
   },
   {
-    path:'/hub',
+    path:'/hubs',
     element: <HubPage />
+  },
+  {
+    path:'/hubs/:id',
+    element: <RemotePage />
   },
   {
     path:'/routine',

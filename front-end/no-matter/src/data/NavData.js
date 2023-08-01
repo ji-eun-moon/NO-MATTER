@@ -6,7 +6,7 @@ const NavData = [
     },
     {
         title: "HUB",
-        path: "/hub",
+        path: "/hubs",
         icon: <i className="bi bi-disc-fill"></i>
     },
     {
