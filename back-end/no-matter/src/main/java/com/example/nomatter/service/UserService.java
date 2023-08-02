@@ -10,6 +10,7 @@ import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.UserRepository;
 import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -33,6 +35,8 @@ public class UserService {
 
     @Transactional
     public String join(UserJoinRequest dto){
+
+        log.info("dto = " + dto.toString());
 
         // 중복체크
         userRepository.findByUserId(dto.getUserId())

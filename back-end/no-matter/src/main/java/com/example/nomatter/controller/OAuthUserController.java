@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("/api/v1/oauth")
 @Transactional
 @Slf4j
 public class OAuthUserController {

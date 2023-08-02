@@ -1,9 +1,11 @@
 package com.example.nomatter.controller;
 
+import com.example.nomatter.domain.User;
 import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
@@ -24,6 +27,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserJoinRequest dto){
+        log.error("dto = " + dto.toString());
         userService.join(dto);
         return ResponseEntity.ok().body("회원가입 성공");
     }
@@ -67,6 +71,16 @@ public class UserController {
 
         return ResponseEntity.ok().body("로그아웃 완료");
 
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity<?> view(Authentication authentication){
+
+        Optional<User> user = userService.findByUserId(authentication.getName());
+
+        log.info(user.toString());
+
+        return ResponseEntity.ok().body(user.toString());
     }
 
 }
