@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface UserHubRepository extends JpaRepository<UserHub, Long> {
 
-    List<UserHub> findAllByUsersHubsId(Long userHubId);
+    List<UserHub> findAllByUserId(Long userId);
+
+    Optional<UserHub> findByUsersHubsId(Long UsersHubsId);
 
 }

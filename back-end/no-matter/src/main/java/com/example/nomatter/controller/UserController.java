@@ -44,11 +44,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody Map<String, String> requestBody){
+    public ResponseEntity<?> delete(Authentication authentication){
 
-        System.out.println("삭제");
-
-        userService.delete(requestBody.get("userId"));
+        userService.delete(authentication.getName());
 
         return ResponseEntity.ok().body("회원 탈퇴 성공");
 
