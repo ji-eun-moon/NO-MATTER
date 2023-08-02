@@ -9,6 +9,7 @@ import Bluetooth from './AddHub-Bluetooth'
 import Wifi from './AddHub-Wifi'
 import Complete from './AddHub-Complete'
 
+
 const steps = [
   {
     label: 'Bluetooth 연결',
@@ -105,18 +106,17 @@ export default function HorizontalNonLinearStepper() {
               <p style={{fontSize:"20px", fontStyle:"bold"}}>
                 Step {activeStep + 1}
               </p>
-
-              <Stepper nonLinear activeStep={activeStep}>
+              <br />
+              {/* <Stepper nonLinear activeStep={activeStep}> */}
                 {steps.map((step, index) => (
                   <Step key={step.label} completed={completed[index]}>
                     {activeStep === index && step.component}
                   </Step>
                 ))}
-              </Stepper>
-
+              {/* </Stepper> */}
             </Typography>
 
-            <Box className='d-flex justify-content-around mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2 }} style={{width:"100%",position:"fixed", bottom:"90px"}}>
+            <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
               <Button
                 color="inherit"
                 disabled={activeStep === 0}
@@ -131,7 +131,7 @@ export default function HorizontalNonLinearStepper() {
               {activeStep !== steps.length &&
                 (completed[activeStep] ? (
                   <Button onClick={handleComplete}>
-                    <Typography variant="caption" sx={{ display: 'inline-block' }} style={{color:"gray"}}>
+                    <Typography variant="caption" style={{color:"gray"}}>
                       Step {activeStep + 1} already completed
                     </Typography>
                   </Button>
