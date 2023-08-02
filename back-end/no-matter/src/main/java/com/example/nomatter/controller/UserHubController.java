@@ -60,8 +60,6 @@ public class UserHubController {
 
         List<UserHub> list =  userHubService.findAllByUserId(userService.findByUserId(authentication.getName()).get().getMemberId());
 
-        log.info(list.toString());
-
         return ResponseEntity.ok().body(list);
     }
 
@@ -74,6 +72,14 @@ public class UserHubController {
                 });
 
         return ResponseEntity.ok().body("허브 이름 수정 완료");
+    }
+
+    @PostMapping("/modifygrade")
+    public ResponseEntity<?> modifyGrade(@RequestBody Long userHubId, @RequestBody Long changeUserHubId, @RequestBody String grade){
+
+        userHubService.modifyGrade(userHubId, changeUserHubId, grade);
+
+        return ResponseEntity.ok().body(" 권한 변경 완료");
     }
 
 }

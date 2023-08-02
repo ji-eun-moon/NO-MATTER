@@ -10,7 +10,9 @@ public enum Errorcode {
     USERID_DUPLICATED(HttpStatus.CONFLICT, ""),
     USERID_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
     INVALID_ID_PASSWORD(HttpStatus.UNAUTHORIZED, ""),
-    UUID_DUPLICATED(HttpStatus.CONFLICT, "");
+    UUID_DUPLICATED(HttpStatus.CONFLICT, ""),
+    USER_HUB_NOW_FOUND(HttpStatus.NOT_FOUND, ""),
+    USER_NOT_GRADE(HttpStatus.UNAUTHORIZED, "")
     ;
 
     private HttpStatus httpStatus;

@@ -1,6 +1,7 @@
 package com.example.nomatter.service;
 
 import com.example.nomatter.domain.User;
+import com.example.nomatter.domain.UserHub;
 import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -29,6 +31,7 @@ public class UserService {
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
     private Long expireTime = 1000 * 60 * 60L;
 
+    @Transactional
     public String join(UserJoinRequest dto){
 
         // 중복체크
@@ -55,6 +58,7 @@ public class UserService {
         return "success";
     }
 
+    @Transactional
     public String login(UserLoginRequest dto){
 
         // 아이디가 존재하지 않는 경우
@@ -72,6 +76,7 @@ public class UserService {
         return token;
     }
 
+    @Transactional
     public void modify(UserModifyRequest userModifyRequest){
 
         User selectUser = userRepository.findByUserId(userModifyRequest.getUserId())
@@ -84,6 +89,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public void delete(String userId){
 
         User selectedUser = userRepository.findByUserId(userId)
@@ -93,6 +99,7 @@ public class UserService {
         userRepository.delete(selectedUser);
     }
 
+    @Transactional
     public String idCheck(String userId){
 
         userRepository.findByUserId(userId)
@@ -103,11 +110,11 @@ public class UserService {
         return "사용 가능한 아이디입니다.";
     }
 
+    @Transactional
     public Optional<User> findByUserId(String userId){
 
         return userRepository.findByUserId(userId);
 
     }
-
 
 }
