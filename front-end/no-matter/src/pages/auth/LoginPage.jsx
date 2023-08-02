@@ -97,17 +97,19 @@ function LoginPage() {
                     </Grid>
                 </Grid>
             </form>
+              <Link to="/oauth2/authorization/google">
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 onClick = {() => {
-                  window.location.href = "https://localhost:8080/oauth2/authorization/google";
+                  window.location.href = "http://localhost:8080/oauth2/authorization/google";
                 }}
                 color="primary"
                 className="button">
                 Google
               </Button>
+              </Link>
           </div>
       </Container>
     </div>
