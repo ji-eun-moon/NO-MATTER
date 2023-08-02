@@ -20,7 +20,7 @@ function HubPage() {
   }, [])
 
   return (
-    <div className="container">
+    <div className="page-container container">
       <div className='d-flex justify-content-between mt-5'>
         <h1 className="font-700">My Hub</h1>
         <div className="main-backgroud-color px-2 rounded">
@@ -31,19 +31,24 @@ function HubPage() {
       {hubs.map(hub => {
         return (
           <Card key={hub.id}>
-            <div className='d-flex justify-content-between'>
-              <div>{hub.title}</div>
-              <div onClick={() => navigate(`/hubs/${hub.id}`)}>
-                <i className="bi bi-chevron-right"></i>
+              <div className='d-flex align-items-center justify-content-between' 
+                    onClick={() => navigate(`/hubs/${hub.id}`)}
+                    style={{width:"100%"}}>
+                <div className='card-text'>
+                  {hub.title} 
+                </div>
+                <div>
+                  <i className="bi bi-chevron-right"></i>
+                </div>
               </div>
-            </div>
           </Card>
         )
       })}
       <Card>
-        <div className="centered">
+        <div className="centered" style={{width:"100%"}}
+            onClick={() => navigate('/addhub')}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
-          <div className="text-secondary">허브 추가하기</div>
+          <div className="text-secondary" >허브 추가하기</div>
         </div>
       </Card>
     </div>

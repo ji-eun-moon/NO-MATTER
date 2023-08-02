@@ -11,8 +11,49 @@
                 {
                     "title": "TV",
                     "id": 2
+                },
+                {
+                    "title": "TV",
+                    "id": 2
+                },
+                {
+                    "title": "TV",
+                    "id": 2
+                },
+                {
+                    "title": "TV",
+                    "id": 2
+                },
+                {
+                    "title": "TV",
+                    "id": 2
                 }
             ]
+        },
+        {
+            "title": "안방",
+            "id": 2,
+            "remotes": []
+        },
+        {
+            "title": "안방",
+            "id": 2,
+            "remotes": []
+        },
+        {
+            "title": "안방",
+            "id": 2,
+            "remotes": []
+        },
+        {
+            "title": "안방",
+            "id": 2,
+            "remotes": []
+        },
+        {
+            "title": "안방",
+            "id": 2,
+            "remotes": []
         },
         {
             "title": "안방",
