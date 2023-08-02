@@ -1,11 +1,24 @@
-import MainPage from '../pages/main/MainPage';
-import HubPage from '../pages/hub/HubPage';
-import RoutinePage from '../pages/routine/RoutinePage';
-import SettingPage from '../pages/setting/SettingPage';
+//landings
 import LandingPage from '../landings/LandingPage';
-import Signup from '../pages/auth/Signup'
+
+//pages/auth
 import LoginPage from '../pages/auth/LoginPage.jsx'
+import Signup from '../pages/auth/Signup'
+
+//pages/hub
+import HubPage from '../pages/hub/HubPage';
 import RemotePage from '../pages/hub/RemotePage';
+import AddHubPage from '../pages/hub/AddHubPage';
+
+//pages/main
+import MainPage from '../pages/main/MainPage';
+
+//pages/routine
+import RoutinePage from '../pages/routine/RoutinePage';
+
+//pages/setting
+import SettingPage from '../pages/setting/SettingPage';
+
 
 const routes = [
   {
@@ -13,8 +26,12 @@ const routes = [
     element: <LandingPage />
   },
   {
-    path:'/main',
-    element: <MainPage />
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/signup',
+    element: <Signup />
   },
   {
     path:'/hubs',
@@ -25,6 +42,14 @@ const routes = [
     element: <RemotePage />
   },
   {
+    path:'/addhub',
+    element: <AddHubPage /> 
+  },
+  {
+    path:'/main',
+    element: <MainPage />
+  },
+  {
     path:'/routine',
     element: <RoutinePage />
   },
@@ -32,14 +57,6 @@ const routes = [
     path:'/setting',
     element: <SettingPage />
   },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path: '/login',
-    element: <LoginPage />
-  }
 ]
 
 export default routes;

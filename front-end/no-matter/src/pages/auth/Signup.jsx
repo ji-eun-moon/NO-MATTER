@@ -4,10 +4,12 @@ import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Li
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import axios from 'axios'
 import { signup } from '../../slice/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {    
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [userId, setUserId] = useState("")
     const [formData, setFormData] = useState({
@@ -56,7 +58,8 @@ function Signup() {
             alert("비밀번호를 다시 확인해주세요")
             return
         }
-        dispatch(signup(userId, e.target[2].value, e.target[4].value, e.target[5].value, e.target[6].value))    
+        dispatch(signup(userId, e.target[2].value, e.target[4].value, e.target[5].value, e.target[6].value))
+        navigate('/login');    
     }
 
     useEffect(() => {
