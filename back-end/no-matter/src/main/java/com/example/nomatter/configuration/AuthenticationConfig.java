@@ -28,7 +28,7 @@ public class AuthenticationConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
+                .antMatchers("/api/v1/user/login", "/api/v1/oauth2/login/**" , "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -36,11 +36,14 @@ public class AuthenticationConfig {
                 .and()
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .logout()
-                .logoutUrl("/api/v1/user/logout")
+//                .logoutUrl("/api/v1/user/logout")
                 .logoutSuccessUrl("/api/v1/user/login")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID")
+//                .invalidateHttpSession(true)
                 .and()
+//                .oauth2Login()
+//                .userInfoEndpoint()
+//                .userService()
                 .build();
     }
 

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class HubService {
@@ -26,6 +28,12 @@ public class HubService {
         hubRepository.save(hub);
 
         return "success";
+    }
+
+    public Optional<Hub> findByHubUuid(String hubUuid){
+
+        return hubRepository.findByHubUuid(hubUuid);
+
     }
 
 }
