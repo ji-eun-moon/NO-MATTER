@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,10 +24,12 @@ public class AuthenticationConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws  Exception{
         return httpSecurity
                 .httpBasic().disable()
-                .csrf().disable()
                 .cors().and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/oauth2/login/**" , "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
+                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**", "/api/v1/oauth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -36,14 +37,11 @@ public class AuthenticationConfig {
                 .and()
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .logout()
-//                .logoutUrl("/api/v1/user/logout")
-                .logoutSuccessUrl("/api/v1/user/login")
+                .logoutUrl("/api/v1/user/logout")
+                .logoutSuccessUrl("/api/v1/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .and()
-//                .oauth2Login()
-//                .userInfoEndpoint()
-//                .userService()
                 .build();
     }
 
