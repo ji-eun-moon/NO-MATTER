@@ -101,9 +101,10 @@ export default function HorizontalNonLinearStepper() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-              Step {activeStep + 1}
-              
+            <Typography sx={{ mt: 2, mb: 1, py: 1 }} >
+              <p style={{fontSize:"20px", fontStyle:"bold"}}>
+                Step {activeStep + 1}
+              </p>
 
               <Stepper nonLinear activeStep={activeStep}>
                 {steps.map((step, index) => (
