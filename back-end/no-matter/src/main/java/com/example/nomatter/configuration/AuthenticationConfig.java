@@ -36,11 +36,14 @@ public class AuthenticationConfig {
                 .and()
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .logout()
-                .logoutUrl("/api/v1/user/logout")
+//                .logoutUrl("/api/v1/user/logout")
                 .logoutSuccessUrl("/api/v1/user/login")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID")
+//                .invalidateHttpSession(true)
                 .and()
+//                .oauth2Login()
+//                .userInfoEndpoint()
+//                .userService()
                 .build();
     }
 
