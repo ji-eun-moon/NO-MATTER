@@ -11,8 +11,8 @@ function AddHub_Bluetooth() {
       <div className='d-flex justify-content-center align-content-center' style={{marginTop:"30px", marginLeft:"20px"}}>
         <p style={{margin:"15px"}}><i className="bi bi-disc-fill" style={{fontSize:'80px'}}></i></p>
 
-        <p style={{margin:"15px"}}><img src="images/bluetooth.png" alt="bluetooth" style={{width:'20px', height:'20px', marginLeft:"30px"}}/></p>
-        <p ><img src="images/connect.gif" alt="connect gif" style={{width:"70px", marginTop:"40px"}} ></img></p>
+        <p style={{margin:"18px"}}><img src="images/bluetooth.png" alt="bluetooth" style={{width:'30px', height:'30px', marginLeft:"20px"}}/>
+        <img src="images/connect.gif" alt="connect gif" style={{width:"70px"}} ></img></p>
 
         <p style={{margin:"15px"}}><i class="bi bi-phone" style={{fontSize:'80px'}}></i></p>
       </div>
