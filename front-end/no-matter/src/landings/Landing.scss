@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hahmlet&display=swap');
 
+$main-color: #0097B2;
+
 .wrapper {
     width: 100%;
     overflow: hidden;
@@ -89,4 +91,17 @@
         width: 300px;
         margin-bottom: 30px;
     }
+}
+
+// mobile landing
+.logo-mobile {
+  width: 300px;
+}
+
+.auth-button {
+  .btn {
+    margin-right: 10px;
+    background-color: $main-color;
+    color: #FCFCFC;
+  }
 }
