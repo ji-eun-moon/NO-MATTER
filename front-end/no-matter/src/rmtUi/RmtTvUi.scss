@@ -1,0 +1,81 @@
+.RmtTvUi {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 300px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  .ten-key-button {
+    font-size: 24px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+  }
+
+  .func-button {
+    font-size: 24px;
+    padding: 15px;
+    border: 0px solid #ccc;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .button-box {
+    font-size: 24px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+
+  }
+  .button-box-center {
+    font-size: 24px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .ten-key-button:active {
+    background-color: #ddd;
+  }
+
+  .func-button:active {
+    background-color: #ddd;
+  }
+  
+  @media (max-width: 600px) {
+    /* 화면 너비가 600px 이하일 때 */
+    .ten-key-button {
+      font-size: 20px;
+      padding: 12px;
+    }
+    .func-button {
+      font-size: 20px;
+      padding: 12px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    /* 화면 너비가 400px 이하일 때 */
+    .ten-key-button {
+      font-size: 16px;
+      padding: 10px;
+    }
+    .func-button {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
