@@ -30,7 +30,7 @@ public class AuthenticationConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**", "/api/v1/oauth2/**").permitAll()
-                .antMatchers("/api/v1/oauth2/**").permitAll()
+                .antMatchers("/api/v1/oauth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -40,6 +40,10 @@ public class AuthenticationConfig {
                 .logout()
                 .logoutUrl("/api/v1/user/logout")
                 .logoutSuccessUrl("/").permitAll()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .and()
                 .and()
                 .build();
     }
