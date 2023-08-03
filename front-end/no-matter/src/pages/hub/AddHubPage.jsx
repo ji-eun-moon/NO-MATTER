@@ -8,6 +8,9 @@ import Typography from '@mui/material/Typography';
 import Bluetooth from './AddHub-Bluetooth'
 import Wifi from './AddHub-Wifi'
 import Complete from './AddHub-Complete'
+import axios from 'axios';
+import Loading from '../../components/LoadingSpinner'
+import { useNavigate } from 'react-router-dom';
 
 const steps = [
   {
@@ -24,9 +27,31 @@ const steps = [
   },
 ];
 
+  const AddHub = () => {
+    const navigate = useNavigate();
+    axios({
+      method:'Post',
+      url: 'http://localhost:8080/api/v1/userhub/register'
+    })
+    .then((response) => {
+      console.log(response)
+      navigate('/hubs');    
+    })
+    .catch((error) => {
+      console.log(error)
+    })  
+  return(
+    <div>
+      <Loading/>
+      <p style={{marginTop:"15px"}}>연결중</p>      
+    </div>
+  )}
+
+
 export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
+  // const [allCompleted, setAllCompleted] = React.useState(false);
 
   const totalSteps = () => {
     return steps.length;
@@ -41,6 +66,7 @@ export default function HorizontalNonLinearStepper() {
   };
 
   const allStepsCompleted = () => {
+    // setAllCompleted(true)
     return completedSteps() === totalSteps();
   };
 
@@ -82,7 +108,7 @@ export default function HorizontalNonLinearStepper() {
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((step, index) => (
           <Step key={step.label} completed={completed[index]}>
-            <StepButton color="inherit" onClick={handleStep(index)}>
+            <StepButton color="inherit" onClick={handleStep(index)} style={{position:"relative"}}>
               {step.label}
             </StepButton>
           </Step>
@@ -90,33 +116,36 @@ export default function HorizontalNonLinearStepper() {
       </Stepper>
       <div>
         {allStepsCompleted() ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </React.Fragment>
+          // <React.Fragment>
+          //   <Typography sx={{ mt: 2, mb: 1 }}>
+          //     All steps completed - you&apos;re finished
+          //   </Typography>
+          //   <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          //     <Box sx={{ flex: '1 1 auto' }} />
+          //     <Button onClick={handleReset}>Reset</Button>
+          //   </Box>
+          // </React.Fragment>
+          <div style={{position:"absolute", top:"300px", left:"45%"}}>
+            <AddHub />
+          </div>
+
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }} >
               <p style={{fontSize:"20px", fontStyle:"bold"}}>
                 Step {activeStep + 1}
               </p>
-
-              <Stepper nonLinear activeStep={activeStep}>
+              <br />
+              {/* <Stepper nonLinear activeStep={activeStep}> */}
                 {steps.map((step, index) => (
                   <Step key={step.label} completed={completed[index]}>
                     {activeStep === index && step.component}
                   </Step>
                 ))}
-              </Stepper>
-
+              {/* </Stepper> */}
             </Typography>
 
-            <Box className='d-flex justify-content-around mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2 }} style={{width:"100%",position:"fixed", bottom:"90px"}}>
+            <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
               <Button
                 color="inherit"
                 disabled={activeStep === 0}
@@ -131,7 +160,7 @@ export default function HorizontalNonLinearStepper() {
               {activeStep !== steps.length &&
                 (completed[activeStep] ? (
                   <Button onClick={handleComplete}>
-                    <Typography variant="caption" sx={{ display: 'inline-block' }} style={{color:"gray"}}>
+                    <Typography variant="caption" style={{color:"gray"}}>
                       Step {activeStep + 1} already completed
                     </Typography>
                   </Button>
