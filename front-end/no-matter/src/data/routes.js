@@ -18,6 +18,7 @@ import RoutinePage from '../pages/routine/RoutinePage';
 
 //pages/setting
 import SettingPage from '../pages/setting/SettingPage';
+import UserEditPage from '../pages/setting/UserEditPage';
 
 
 const routes = [
@@ -56,6 +57,10 @@ const routes = [
   {
     path:'/setting',
     element: <SettingPage />
+  },
+  {
+    path:'/setting/useredit',
+    element: <UserEditPage />
   },
 ]
 
