@@ -3,96 +3,46 @@
 
 $main-color: #0097B2;
 
-.wrapper {
-    width: 100%;
-    overflow: hidden;
-    min-height: 4000px;
-    div, p {
-      position: relative;
-      z-index: 2;
+.main-image {
+  position: relative;
+  .main-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1 {
+      font-size: 70px;
+      font-weight: 700;
     }
   }
-  
-.item {
-  position: absolute;
-  top: 1600px;
-  right: 0;
-  opacity: 0.5;
-  z-index: 1;
 }
-  
-.item_snow {
-  left: 100px;
-  right: auto;
-  width: 200px;
-  opacity: 1;
-}
-  
-.bg {
-  width: 1000px;
-  margin: 0 auto;
-  display: flex;
-  height: 400px;
-  justify-content: center;
-  align-items: center;
-  div {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.5);
-    text-align: center;
-    padding: 40px 120px;
-    font-size: 50px;
-  }
-}
-  
-  
-.bg1 {
-  background: url(./images/smarthome.webp) no-repeat;
-}
-
-.bg2 {
-  margin-top: 50px;
-  background: url(./images/smarthome.webp) no-repeat;
-}
-  
-.desc {
-  font-weight: bold;
-  font-size: 80px;
-  color: tomato;
-  left: 50%;
-}
-  
-.desc2 {
-  font-weight: bold;
-  font-size: 60px;
-  color: rgb(70, 70, 223);
-  right: 50%;
-}
-  
-.desc3 {
-  font-weight: bold;
-  text-align: center;
-  font-size: 60px;
-  color: #666;
-  opacity: 1;
-}
-
 
 .header{
-    padding-top: 50px;
-    padding-bottom: 30px;
-    margin-bottom: 50px;
-    background-color: #C4D5D6;
-    p {
-      font-family: 'Black Han Sans', sans-serif;
-      font-weight: 400;
-      font-size: 40px;
-    }
-    .logo {
-        width: 300px;
-        margin-bottom: 30px;
-    }
+  padding-top: 50px;
+  padding-bottom: 30px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .logo {
+      margin-left: 50px;
+      width: 200px;
+  }
+  &-text {
+    font-size: large;
+    font-weight: 500px;
+    margin: 0px 50px 0px 0px;
+  }
 }
 
+.intro-1 {
+  background-color: $main-color;
+  padding: 50px;
+}
 // mobile landing
 .logo-mobile {
   width: 300px;

@@ -14,7 +14,7 @@ export default function BasicAccordion() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography><h5>앱 설치 방법 확인하기</h5></Typography>
+          <Typography><h5>모바일 앱 설치 방법 확인하기</h5></Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
