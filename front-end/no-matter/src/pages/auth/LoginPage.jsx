@@ -45,23 +45,11 @@ function LoginPage() {
 
   const goGoogle = (e) => {
 
-    const ID = "385042863793-qlrrdmlcs44js199mq6eivmtd01i24kg.apps.googleusercontent.com";
-    const URL="http://localhost:8080/api/v1/oauth/google";
-
-
-    const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
-    ID +
-    '&redirect_uri=' +
-    URL +
-    '&response_type=code' +
-    '&scope=email profile';
+    const url = "http://localhost:8080/oauth2/authorization/google"
 
     console.log(url);
 
     window.location.href=url;
-
-
-    
 
   }
 
