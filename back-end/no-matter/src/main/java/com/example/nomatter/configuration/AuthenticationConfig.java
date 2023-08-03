@@ -21,7 +21,7 @@ public class AuthenticationConfig {
     private String secretKey;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws  Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws  Exception {
         return httpSecurity
                 .httpBasic().disable()
                 .cors().and()
@@ -30,6 +30,7 @@ public class AuthenticationConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**", "/api/v1/oauth2/**").permitAll()
+                .antMatchers("/api/v1/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -40,12 +41,7 @@ public class AuthenticationConfig {
                 .logoutUrl("/api/v1/user/logout")
                 .logoutSuccessUrl("/").permitAll()
                 .and()
-                .oauth2Login()
-                .loginPage("/login")
-                .userInfoEndpoint()
-                .and()
-                .and()
                 .build();
     }
-
 }
+
