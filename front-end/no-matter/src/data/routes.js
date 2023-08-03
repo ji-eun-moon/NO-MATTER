@@ -9,6 +9,10 @@ import Signup from '../pages/auth/Signup'
 import HubPage from '../pages/hub/HubPage';
 import RemotePage from '../pages/hub/RemotePage';
 import AddHubPage from '../pages/hub/AddHubPage';
+import AddRemote from '../pages/hub/AddRemote';
+
+import RmtTvUi from '../rmtUi/RmtTvUi';
+import RmtCustom from '../rmtUi/RmtCustom';
 
 //pages/main
 import MainPage from '../pages/main/MainPage';
@@ -45,6 +49,26 @@ const routes = [
   {
     path:'/addhub',
     element: <AddHubPage /> 
+  },
+  {
+    path:'/hubs/addrmt',
+    element: <AddRemote />
+  },
+  {
+    path:'/hubs/rmttv/1',
+    element: <RmtTvUi />
+  },
+  {
+    path:'/hubs/rmttv/0',
+    element: <RmtTvUi />
+  },
+  {
+    path:'/hubs/rmtcustom/1',
+    element: <RmtCustom />
+  },
+  {
+    path:'/hubs/rmtcustom/0',
+    element: <RmtCustom />
   },
   {
     path:'/main',
