@@ -349,7 +349,7 @@ function Signup() {
             setConfirmPwdMsg('비밀번호가 일치하지 않습니다')
             setConfirmPwdCheck(false)
         }        
-    },[])
+    },[userPassword])
 
 
 
@@ -358,9 +358,11 @@ function Signup() {
         setUserName(event.currentTarget.value)
 
         if(event.currentTarget.value.length < 0){
+            setNameMsg('이름을 입력해주세요')
             setNameCheck(false)
         }
         else{
+            setNameMsg('이름이 확인되었습니다')
             setNameCheck(true)
         }        
     },[])
@@ -421,11 +423,8 @@ function Signup() {
             <CssBaseline />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
             <div className="paper">        
             
-            <Avatar className="avatar">
-                <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-                Sign Up
+            <Typography component="h1" variant="h5" style={{padding:"30px 10px"}}>
+                <b>Sign Up</b>
             </Typography>
             <form className="form" noValidate onSubmit={onSubmitHandler}>                     
                 <Grid item xs={12}>
@@ -469,7 +468,7 @@ function Signup() {
                         onChange={onPasswordHandler}
                         name="userPassword"
                         // error={hasError('password')} // 해당 텍스트필드에 error 핸들러 추가
-                        label="Password(5글자 이상 필수)"
+                        label="비밀번호"
                         type="password"
                         id="userPassword"
                         autoComplete="current-password"
@@ -489,7 +488,7 @@ function Signup() {
                         // helperText={
                         //     hasNotSameError('confirmPassword') ? "입력한 비밀번호와 일치하지 않습니다." : null
                         // } // 에러일 경우에만 안내 문구 표시
-                        label="Confirm Password"
+                        label="비밀번호 확인"
                         type="password"
                         id="userConfirmPassword"
                         autoComplete="current-password"
@@ -510,6 +509,7 @@ function Signup() {
                         label="이름"
                         error={!nameCheck}
                     />
+                    {userName.length > 0 && <span className={`message ${nameCheck ? 'success' : 'error'}`}>{nameMsg}</span>}              
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -519,7 +519,7 @@ function Signup() {
                         value={userEmail}
                         onChange={onEmailHandler}
                         id="userEmail"
-                        label="Email Address"
+                        label="이메일"
                         name="email"
                         autoComplete="email"
                         error={!emailCheck}
@@ -534,7 +534,7 @@ function Signup() {
                         value={userNumber}
                         onChange={onNumberHandler}
                         id="userNumber"
-                        label="phone"
+                        label="전화번호"
                         name="phone"
                         autoComplete="phone"
                         error={!numberCheck}
@@ -554,11 +554,11 @@ function Signup() {
                 회원가입
                 </Button>
                 <Grid container justify="flex-end">
-                <Grid item>
-                    <Link href="/login" variant="body2">
-                    이미 가입하셨다면, 로그인해 주세요!
-                    </Link>
-                </Grid>
+                    <Grid item style={{margin:"10px 0px"}}>
+                        <Link href="/login" variant="body2" >
+                            이미 가입하셨다면, <b style={{fontWeight:"1000"}}>로그인</b>해 주세요!
+                        </Link>
+                    </Grid>
                 </Grid>
             </form>
             </div>
