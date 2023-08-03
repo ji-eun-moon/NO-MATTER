@@ -43,6 +43,28 @@ function LoginPage() {
     })
   };
 
+  const goGoogle = (e) => {
+
+    const ID = "385042863793-qlrrdmlcs44js199mq6eivmtd01i24kg.apps.googleusercontent.com";
+    const URL="http://localhost:8080/api/v1/oauth/google";
+
+
+    const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
+    ID +
+    '&redirect_uri=' +
+    URL +
+    '&response_type=code' +
+    '&scope=email profile';
+
+    console.log(url);
+
+    window.location.href=url;
+
+
+    
+
+  }
+
   return (
     <div className="LoginPage">
       <Container component="main" maxWidth="xs">
@@ -97,19 +119,34 @@ function LoginPage() {
                     </Grid>
                 </Grid>
             </form>
-              <Link to="/oauth2/authorization/google">
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                onClick = {() => {
-                  window.location.href = "http://localhost:8080/oauth2/authorization/google";
-                }}
+                onClick = { goGoogle }
                 color="primary"
                 className="button">
                 Google
               </Button>
-              </Link>
+              <a href="naver-login">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className="button">
+                Naver
+              </Button>
+              </a>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick = { goGoogle }
+                color="primary"
+                className="button">
+                Kakao
+              </Button>
           </div>
       </Container>
     </div>
