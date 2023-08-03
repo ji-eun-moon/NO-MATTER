@@ -7,12 +7,23 @@ import { useNavigate } from 'react-router-dom'
 function HubPage() {
   const navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
+  // const token = sessionStorage.getItem('authToken')
 
   const getHubs = () => {
-    axios.get('http://localhost:3001/hubs')
+
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+    axios.get('http://localhost:3001/hubs/')
     .then((response) => {
+      // console.log(response.data)
       setHubs(response.data)
     })
+
+    // axios.get('http://localhost:8080/api/v1/userhub/list')
+    // .then((response) => {  
+    //   console.log(response.data)
+    //   setHubs(response.data)
+    // })
   }
 
   useEffect(() => {
@@ -30,12 +41,14 @@ function HubPage() {
       <hr />
       {hubs.map(hub => {
         return (
+          // <Card key={hub.hubId}>
           <Card key={hub.id}>
               <div className='d-flex align-items-center justify-content-between' 
                     onClick={() => navigate(`/hubs/${hub.id}`)}
                     style={{width:"100%"}}>
                 <div className='card-text'>
-                  {hub.title} 
+                  {hub.title}
+                  {/* {hub.userHubName}  */}
                 </div>
                 <div>
                   <i className="bi bi-chevron-right"></i>

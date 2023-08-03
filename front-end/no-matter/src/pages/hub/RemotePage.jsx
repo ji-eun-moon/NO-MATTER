@@ -53,7 +53,10 @@ function RemotePage() {
           <div className="text-secondary">리모컨 추가하기</div>
         </div>
       </Card>
-      <div className='centered' style={{color:"crimson", textDecoration:"underline"}}>허브 나가기</div>
+
+      <div className='centered' style={{color:"crimson", textDecoration:"underline"}}>
+        허브 나가기
+      </div>
     </div> 
   )
 }
