@@ -7,20 +7,24 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function BasicAccordion() {
   return (
-    <div className='mt-3'>
+    <div className='mt-3 mb-5'>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography><h5>모바일 앱 설치 방법 확인하기</h5></Typography>
+          <Typography variant="h6" sx={{fontWeight: 'bold'}}>모바일 앱 설치 방법 확인하기</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            <p>1. Android 기기에서 Chrome <img src="/images/chrome.png" alt="chrome" style={{width: "20px"}}/> 으로 접속합니다.</p>
-            <p>2. <b>설치</b>를 탭합니다.</p>
-            <p>3. 화면에 표시된 안내를 따릅니다.</p>
+          <Typography sx={{ lineHeight: 3 }}>
+            1. Android 기기에서 Chrome <img src="/images/chrome.png" alt="chrome" style={{width: "20px"}}/> 으로 접속합니다.
+          </Typography>
+          <Typography sx={{ lineHeight: 3 }}>
+            2. <b>설치</b>를 탭합니다.
+          </Typography>
+          <Typography sx={{ lineHeight: 3 }}>
+            3. 화면에 표시된 안내를 따릅니다.
           </Typography>
         </AccordionDetails>
       </Accordion>
