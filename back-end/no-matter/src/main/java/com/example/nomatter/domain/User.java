@@ -28,6 +28,7 @@ public class User {
     private String userPhone;
     private String socialType;
     private LocalDateTime createDate;
-//    private LocalDateTime modifydat;
+    private boolean isPushAlertOn;
+    private boolean isDarkAlertOn;
 
 }
