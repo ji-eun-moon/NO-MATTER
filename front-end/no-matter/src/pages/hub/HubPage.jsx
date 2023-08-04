@@ -59,7 +59,7 @@ function HubPage() {
       })}
       <Card>
         <div className="centered" style={{width:"100%"}}
-            onClick={() => navigate('/addhub')}>
+            onClick={() => navigate('/hubs/addhub')}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
           <div className="text-secondary" >허브 추가하기</div>
         </div>
