@@ -7,6 +7,7 @@ import AddRemote from '../pages/hub/AddRemote';
 import RmtTvUi from '../rmtUi/RmtTvUi';
 import RmtFanUi from '../rmtUi/RmtFanUi';
 import RmtCustom from '../rmtUi/RmtCustom';
+import RmtAc from '../rmtUi/RmtAc';
 
 //pages/main
 import MainPage from '../pages/main/MainPage';
@@ -60,6 +61,10 @@ const routes = [
   {
     path:'/hubs/rmtcustom/0',
     element: <RmtCustom />
+  },
+  {
+    path:'/hubs/rmtac/',
+    element: <RmtAc />
   },
   {
     path:'/main',
