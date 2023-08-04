@@ -23,15 +23,14 @@ function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('UserID:', userID);
-    console.log('UserPW:', userPassword);
-
     axios({
       method: 'POST',
       url: URL,
       data: {userId:userID, userPassword:userPassword}
     })
-    .then(() => {
+    .then((res) => {
+      console.log(res)
+      sessionStorage.setItem('authToken', res.data)
       navigate('/main')
     })
     .catch((err) => {
