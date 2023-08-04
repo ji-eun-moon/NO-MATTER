@@ -4,11 +4,24 @@ import { isMobile } from 'react-device-detect';
 
 // routes
 import routes from './data/routes';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation
+} from 'react-router-dom';
 
 // components
 import NavBar from './components/NavBar';
 import PCLanding from './landings/PCLanding';
+
+//landings
+import LandingPage from './landings/LandingPage';
+
+//pages/auth
+import LoginPage from './pages/auth/LoginPage.jsx'
+import Signup from './pages/auth/Signup'
 
 function App() {
   return (
@@ -24,14 +37,24 @@ function MainApp() {
 
   const isNavBarVisible = isMobile && currentPath !== '/' && currentPath !== '/login' && currentPath !== '/signup';
 
+  const isSessionValid = () => {
+    return !!sessionStorage.getItem('authToken')
+  };
+
   return (
     <div>
       {isMobile ? (
         <>
           <div className='container'>
             <Routes>
+              <Route path='/' element={<LandingPage/>}/>
+              <Route path='/login' element={<LoginPage/>}/>
+              <Route path='/signup' element={<Signup/>}/>
               {routes.map((route) => {
-                return <Route key={route.path} path={route.path} element={route.element} />;
+                return (
+                  <Route key={route.path} path={route.path} element={isSessionValid() ? 
+                    (route.element) : (<Navigate to='/login' />)} />
+                )
               })}
             </Routes>
           </div>

@@ -1,10 +1,3 @@
-//landings
-import LandingPage from '../landings/LandingPage';
-
-//pages/auth
-import LoginPage from '../pages/auth/LoginPage.jsx'
-import Signup from '../pages/auth/Signup'
-
 //pages/hub
 import HubPage from '../pages/hub/HubPage';
 import RemotePage from '../pages/hub/RemotePage';
@@ -12,6 +5,7 @@ import AddHubPage from '../pages/hub/AddHubPage';
 import AddRemote from '../pages/hub/AddRemote';
 
 import RmtTvUi from '../rmtUi/RmtTvUi';
+import RmtFanUi from '../rmtUi/RmtFanUi';
 import RmtCustom from '../rmtUi/RmtCustom';
 
 //pages/main
@@ -27,18 +21,6 @@ import UserEditPage from '../pages/setting/UserEditPage';
 
 
 const routes = [
-  {
-    path:'/',
-    element: <LandingPage />
-  },
-  {
-    path: '/login',
-    element: <LoginPage />
-  },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
   {
     path:'/hubs',
     element: <HubPage />
@@ -62,6 +44,14 @@ const routes = [
   {
     path:'/hubs/rmttv/0',
     element: <RmtTvUi />
+  },
+  {
+    path:'/hubs/rmtfan/1',
+    element: <RmtFanUi />
+  },
+  {
+    path:'/hubs/rmtfan/0',
+    element: <RmtFanUi />
   },
   {
     path:'/hubs/rmtcustom/1',
