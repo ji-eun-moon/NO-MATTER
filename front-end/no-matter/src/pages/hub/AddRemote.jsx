@@ -19,6 +19,11 @@ function AddRemote() {
         </div>
       </Card>
       <Card>
+        <div className="centered" onClick={() => {navigate('/hubs/rmtfan/1')}}>
+          <div className="text-secondary">선풍기</div>
+        </div>
+      </Card>
+      <Card>
         <div className="centered">
           <div className="text-secondary" onClick={() => {navigate('/hubs/rmtcustom/1')}}>커스텀 리모컨</div>
         </div>
