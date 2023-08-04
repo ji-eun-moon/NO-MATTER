@@ -42,6 +42,16 @@ function LoginPage() {
     })
   };
 
+  const goGoogle = (e) => {
+
+    const url = "http://localhost:8080/oauth2/authorization/google"
+
+    console.log(url);
+
+    window.location.href=url;
+
+  }
+
   return (
     <div className="LoginPage">
       <Container component="main" maxWidth="xs">
@@ -96,6 +106,34 @@ function LoginPage() {
                     </Grid>
                 </Grid>
             </form>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick = { goGoogle }
+                color="primary"
+                className="button">
+                Google
+              </Button>
+              <a href="naver-login">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className="button">
+                Naver
+              </Button>
+              </a>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick = { goGoogle }
+                color="primary"
+                className="button">
+                Kakao
+              </Button>
           </div>
       </Container>
     </div>
