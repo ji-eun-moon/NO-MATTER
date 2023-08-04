@@ -34,7 +34,7 @@ function Bluetooth() {
         setCharacteristic(characteristic);
         console.log('Chr: ', characteristic) 
         alert('연결 성공')
-        return characteristic.readValue();
+        // return characteristic.readValue();
       })
       .then((value) => {
         setCharacteristicValue(new TextDecoder().decode(value));
