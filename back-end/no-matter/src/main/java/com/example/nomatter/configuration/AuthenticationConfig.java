@@ -24,13 +24,6 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     @Value("${jwt.token.secret}")
     private String secretKey;
-    private final OAuthService oAuthService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // NoOpPasswordEncoder는 보안상 취약하므로 사용하지 말고 실제로는 BCryptPasswordEncoder 등을 사용해야 합니다.
-        return NoOpPasswordEncoder.getInstance();
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,18 +34,14 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**", "/api/v1/oauth2/**").permitAll()
-                .antMatchers("/login/oauth2/code/*").permitAll()
+                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/api/v1/user/logout")
-                .logoutSuccessUrl("/").permitAll()
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(oAuthService);
+                .logoutSuccessUrl("/").permitAll();
     }
+
 }
 
