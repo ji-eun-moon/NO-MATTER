@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Wifi } from '@mui/icons-material';
 import axios from 'axios';
+import Bluetooth from './Bluetooth';
 
 const style = {
   position: 'absolute',
@@ -20,6 +21,29 @@ const style = {
   pb: 3,
 };
 
+const {name, setName} = useState("")
+const {password, setPassword} = useState("")
+
+  const handleWriteValue = (value) => {
+    if (characteristic) {
+      const data = new TextEncoder().encode(value);
+      characteristic.writeValue(data)
+        .then(() => {
+          console.log('Data written successfully:', value);
+          setCharacteristicValue(value);
+        })
+        .catch((error) => {
+          console.error('Error writing data:', error);
+        });
+    }
+  };
+
+  const handleSend = () => {
+    // 두 입력값을 합쳐서 하나의 값으로 보내는 경우
+    const combinedValue = name + '/' + password;
+    handleWriteValue(combinedValue);
+  };
+
 function BasicTextFields() {
   return (
     <Box
@@ -30,18 +54,18 @@ function BasicTextFields() {
       noValidate
       autoComplete="off"
     >
-      <TextField id="filled-basic" label="Wifi 이름" variant="filled" sx={{
-    '& .MuiFilledInput-input': {
-      backgroundColor: 'white'
-    },
-    '& .MuiFilledInput-root:hover .MuiFilledInput-input': {
-      backgroundColor: 'white'
-    },
-    '& .MuiFilledInput-root.Mui-focused .MuiFilledInput-input': {
-      backgroundColor: 'white'
-    }
-  }}/>
-      <TextField id="filled-basic" label="Wifi 비밀번호" variant="filled" />
+      <TextField value={name} onChange={(e) => setName(e.target.value)} id="filled-basic" label="Wifi 이름" variant="filled" sx={{
+        '& .MuiFilledInput-input': {
+          backgroundColor: 'white'
+        },
+        '& .MuiFilledInput-root:hover .MuiFilledInput-input': {
+          backgroundColor: 'white'
+        },
+        '& .MuiFilledInput-root.Mui-focused .MuiFilledInput-input': {
+          backgroundColor: 'white'
+        }
+      }}/>
+      <TextField value={password} onChange={(e) => setPassword(e.target.value)} id="filled-basic" label="Wifi 비밀번호" variant="filled" />
     </Box>
   );
 }
@@ -59,7 +83,7 @@ function Send(){
     })
   }
   return(
-    <Button onClick={WifiSubmit}>Send</Button>
+    <Button onClick={handleSend}>Send</Button>
   )
 }
 
