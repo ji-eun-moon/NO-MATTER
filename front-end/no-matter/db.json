@@ -11,6 +11,10 @@
                 {
                     "title": "TV",
                     "id": 2
+                },
+                {
+                    "title": "공기청정기",
+                    "id": 3
                 }
             ]
         },
@@ -18,6 +22,34 @@
             "title": "안방",
             "id": 2,
             "remotes": []
+        },
+        {
+            "title": "작은방",
+            "id": 3,
+            "remotes": []
         }
+    ],
+
+    "routines": [
+        {
+            "kind": "schedule",
+            "condition": "13:00",
+            "result" : "거실 에어컨 ON"
+        },
+        {
+            "kind": "schedule",
+            "condition": "23:00",
+            "result": "거실 에어컨 OFF"
+        },
+        {
+            "kind": "weather",
+            "condition": "28도 이상",
+            "result": "거실 에어컨 ON"
+        },
+        {
+            "kind": "voice",
+            "result": "거실 TV 꺼줘"
+        }
+        
     ]
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { isMobile } from 'react-device-detect';
 
@@ -14,7 +14,7 @@ import {
 
 // components
 import NavBar from './components/NavBar';
-import PCLanding from './landings/PCLanding'
+import PCLanding from './landings/PCLanding';
 
 //landings
 import LandingPage from './landings/LandingPage';

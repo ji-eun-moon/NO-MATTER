@@ -13,6 +13,7 @@ import MainPage from '../pages/main/MainPage';
 
 //pages/routine
 import RoutinePage from '../pages/routine/RoutinePage';
+import AddRoutinePage from '../pages/routine/AddRoutinePage';
 
 //pages/setting
 import SettingPage from '../pages/setting/SettingPage';
@@ -29,7 +30,7 @@ const routes = [
     element: <RemotePage />
   },
   {
-    path:'/addhub',
+    path:'/hubs/addhub',
     element: <AddHubPage /> 
   },
   {
@@ -67,6 +68,10 @@ const routes = [
   {
     path:'/routine',
     element: <RoutinePage />
+  },
+  {
+    path:'/routine/addroutine',
+    element: <AddRoutinePage /> 
   },
   {
     path:'/setting',

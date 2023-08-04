@@ -17,7 +17,6 @@ import java.util.Optional;
 public class UserHubService {
 
     private final UserHubRepository userHubRepository;
-    private final UserRepository userRepository;
 
     public String register(UserHub userHub){
 
