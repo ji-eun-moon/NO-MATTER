@@ -47,9 +47,12 @@ function MainApp() {
         <>
           <div className='container'>
             <Routes>
-              <Route path='/' element={<LandingPage/>}/>
-              <Route path='/login' element={<LoginPage/>}/>
-              <Route path='/signup' element={<Signup/>}/>
+              <Route path='/' element={isSessionValid() ? 
+                    (<Navigate to='/main' />) : (<LandingPage/>)}/>
+              <Route path='/login' element={isSessionValid() ? 
+                    (<Navigate to='/main' />) : (<LoginPage/>)}/>
+              <Route path='/signup' element={isSessionValid() ? 
+                    (<Navigate to='/main' />) : (<Signup/>)}/>
               {routes.map((route) => {
                 return (
                   <Route key={route.path} path={route.path} element={isSessionValid() ? 
