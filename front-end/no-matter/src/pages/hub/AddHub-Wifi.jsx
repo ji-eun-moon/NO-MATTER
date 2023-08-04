@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Wifi } from '@mui/icons-material';
 import axios from 'axios';
-import Bluetooth from './Bluetooth';
+// import Bluetooth from './Bluetooth';
 
 const style = {
   position: 'absolute',
@@ -21,28 +21,28 @@ const style = {
   pb: 3,
 };
 
-const {name, setName} = useState("")
-const {password, setPassword} = useState("")
+// const {name, setName} = useState("")
+// const {password, setPassword} = useState("")
 
-  const handleWriteValue = (value) => {
-    if (characteristic) {
-      const data = new TextEncoder().encode(value);
-      characteristic.writeValue(data)
-        .then(() => {
-          console.log('Data written successfully:', value);
-          setCharacteristicValue(value);
-        })
-        .catch((error) => {
-          console.error('Error writing data:', error);
-        });
-    }
-  };
+  // const handleWriteValue = (value) => {
+  //   if (characteristic) {
+  //     const data = new TextEncoder().encode(value);
+  //     characteristic.writeValue(data)
+  //       .then(() => {
+  //         console.log('Data written successfully:', value);
+  //         setCharacteristicValue(value);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error writing data:', error);
+  //       });
+  //   }
+  // };
 
-  const handleSend = () => {
-    // 두 입력값을 합쳐서 하나의 값으로 보내는 경우
-    const combinedValue = name + '/' + password;
-    handleWriteValue(combinedValue);
-  };
+  // const handleSend = () => {
+  //   // 두 입력값을 합쳐서 하나의 값으로 보내는 경우
+  //   const combinedValue = name + '/' + password;
+  //   handleWriteValue(combinedValue);
+  // };
 
 function BasicTextFields() {
   return (
@@ -54,7 +54,7 @@ function BasicTextFields() {
       noValidate
       autoComplete="off"
     >
-      <TextField value={name} onChange={(e) => setName(e.target.value)} id="filled-basic" label="Wifi 이름" variant="filled" sx={{
+      <TextField id="filled-basic" label="Wifi 이름" variant="filled" sx={{
         '& .MuiFilledInput-input': {
           backgroundColor: 'white'
         },
@@ -65,13 +65,22 @@ function BasicTextFields() {
           backgroundColor: 'white'
         }
       }}/>
-      <TextField value={password} onChange={(e) => setPassword(e.target.value)} id="filled-basic" label="Wifi 비밀번호" variant="filled" />
+      <TextField id="filled-basic" label="Wifi 비밀번호" variant="filled" />
     </Box>
   );
 }
 
-function Send(){
-  const WifiSubmit = () => {
+
+export default function NestedModal() {
+  const [open, setOpen] = React.useState(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const send = () => {
     axios({
 
     })
@@ -82,19 +91,6 @@ function Send(){
 
     })
   }
-  return(
-    <Button onClick={handleSend}>Send</Button>
-  )
-}
-
-export default function NestedModal() {
-  const [open, setOpen] = React.useState(true);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div>
@@ -112,7 +108,7 @@ export default function NestedModal() {
           <br />
           <BasicTextFields />
           <div className="d-flex " style={{float:'right', marginTop:'10px'}}>
-            <Send />
+            <Button onClick={send}>SEND</Button>
             <Button onClick={handleClose}>CLOSE</Button>
           </div>
 
