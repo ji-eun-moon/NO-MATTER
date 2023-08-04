@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import './LoginPage.css';
 import { Container, CssBaseline, Typography, Grid, TextField, Button, Link } from '@material-ui/core'
-
+import Swal from 'sweetalert2'
 
 function LoginPage() {
   const URL = "http://localhost:8080/api/v1/user/login"
@@ -21,25 +21,58 @@ function LoginPage() {
     setUserPassword(e.target.value)
   }
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   const handleLogin = (e) => {
     e.preventDefault();
-    axios({
-      method: 'POST',
-      url: URL,
-      data: {userId:userID, userPassword:userPassword}
-    })
-    .then((res) => {
-      console.log(res)
-      sessionStorage.setItem('authToken', res.data)
-      navigate('/main')
-    })
-    .catch((err) => {
-      if (err.response.status === 401) {
-        alert("비밀번호를 다시 입력해 주세요.")
-      } else if (err.response.status === 404) {
-        alert("가입되지 않은 아이디 입니다.")
-      }
-    })
+    if (userID === '') {
+      Toast.fire({
+        icon: 'error',
+        title: '아이디를 입력해 주세요',
+        // footer: '<a href="">Why do I have this issue?</a>'
+      })
+    } else {
+      axios({
+        method: 'POST',
+        url: URL,
+        data: {userId:userID, userPassword:userPassword}
+      })
+      .then((res) => {
+        sessionStorage.setItem('authToken', res.data)
+        Toast.fire({
+          icon: 'success',
+          title: '환영합니다',
+          timer: 1500
+          // footer: '<a href="">Why do I have this issue?</a>'
+        })
+        navigate('/main')
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          Toast.fire({
+            icon: 'error',
+            title: '비밀번호를 다시 입력해 주세요',
+            // footer: '<a href="">Why do I have this issue?</a>'
+          })
+        } else if (err.response.status === 404) {
+          Toast.fire({
+            icon: 'error',
+            title: '가입되지 않은 아이디입니다',
+            // footer: '<a href="">Why do I have this issue?</a>'
+          })
+        }
+      })
+    }
   };
 
   const goGoogle = (e) => {
@@ -54,6 +87,9 @@ function LoginPage() {
 
   return (
     <div className="LoginPage">
+      <div className='d-flex justify-content-center p-5'>
+        <img src="images/logo2.png" alt="No Matter logo" className='logo-mobile'/>
+      </div>
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
           <div className="paper">
@@ -92,42 +128,49 @@ function LoginPage() {
               <Button
                 type="submit"
                 fullWidth
+                size="large"
                 variant="contained"
                 onSubmit={handleLogin}
                 color="primary"
                 className="button">
                 로그인
               </Button>
-              <Grid container justify="flex-end">
-                    <Grid item>
-                        <Link href="/signup" variant="body2">
-                          회원가입
-                        </Link>
-                    </Grid>
+              <Grid container justifyContent="flex-end">
+                <Grid item style={{marginTop:'7px'}}>
+                  <Link href="/signup" variant="body2" style={{fontSize:'12pt'}}>
+                    회원가입
+                  </Link>
                 </Grid>
+              </Grid>
             </form>
+            <hr />
               <Button
                 type="submit"
                 fullWidth
+                size="large"
                 variant="contained"
                 onClick = { goGoogle }
                 color="primary"
                 className="button">
                 Google
               </Button>
+              <p></p>
               <a href="naver-login">
               <Button
                 type="submit"
                 fullWidth
+                size="large"
                 variant="contained"
                 color="primary"
                 className="button">
                 Naver
               </Button>
               </a>
+              <p></p>
               <Button
                 type="submit"
                 fullWidth
+                size="large"
                 variant="contained"
                 onClick = { goGoogle }
                 color="primary"
