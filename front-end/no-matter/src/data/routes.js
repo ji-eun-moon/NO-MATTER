@@ -1,10 +1,3 @@
-//landings
-import LandingPage from '../landings/LandingPage';
-
-//pages/auth
-import LoginPage from '../pages/auth/LoginPage.jsx'
-import Signup from '../pages/auth/Signup'
-
 //pages/hub
 import HubPage from '../pages/hub/HubPage';
 import RemotePage from '../pages/hub/RemotePage';

@@ -5,11 +5,11 @@ import { isMobile } from 'react-device-detect';
 // routes
 import routes from './data/routes';
 import {
-  BrowserRouter as
-  Router,
+  BrowserRouter,
   Routes,
   Route,
-  Navigate
+  Navigate,
+  useLocation
 } from 'react-router-dom';
 
 // components
@@ -23,16 +23,28 @@ import LandingPage from './landings/LandingPage';
 import LoginPage from './pages/auth/LoginPage.jsx'
 import Signup from './pages/auth/Signup'
 
-
 function App() {
+  return (
+    <BrowserRouter>
+      <MainApp />
+    </BrowserRouter>
+  );
+}
+
+function MainApp() {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const isNavBarVisible = isMobile && currentPath !== '/' && currentPath !== '/login' && currentPath !== '/signup';
+
   const isSessionValid = () => {
     return !!sessionStorage.getItem('authToken')
   };
 
-  const renderItems = () => {
-    if(isMobile) {
-      return (
-        <Router> 
+  return (
+    <div>
+      {isMobile ? (
+        <>
           <div className='container'>
             <Routes>
               <Route path='/' element={<LandingPage/>}/>
@@ -46,18 +58,13 @@ function App() {
               })}
             </Routes>
           </div>
-          <NavBar />
-        </Router>
-      )
-    }
-    return <PCLanding />
-  }
-
-  return(
-    <div>
-      {renderItems()}
+          {isNavBarVisible && <NavBar />}
+        </>
+      ) : (
+        <PCLanding />
+      )}
     </div>
-  )
+  );
 }
 
 export default App;
