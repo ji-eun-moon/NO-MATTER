@@ -11,12 +11,21 @@
                 {
                     "title": "TV",
                     "id": 2
+                },
+                {
+                    "title": "공기청정기",
+                    "id": 3
                 }
             ]
         },
         {
             "title": "안방",
             "id": 2,
+            "remotes": []
+        },
+        {
+            "title": "작은방",
+            "id": 3,
             "remotes": []
         }
     ]

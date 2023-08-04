@@ -7,7 +7,7 @@ function Card({children}) {
 
   return (
     <div className="card mb-3" style={cardStyle}>
-        <div className="card-body">
+        <div className="card-body d-flex">
             {children}
         </div>
     </div>
