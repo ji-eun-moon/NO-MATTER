@@ -26,11 +26,11 @@ public class RemoteController {
     @GetMapping("/list/{usersHubsId}")
     public ResponseEntity<?> list(@PathVariable Long usersHubsId, Authentication authentication){
 
-        log.info(authentication.getName());
+        Long hubId = userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
 
-        Long hub_id = (Long) userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
+        log.info(String.valueOf(hubId));
 
-        List<Remote> list = remoteService.findAllByHubId(hub_id);
+        List<Remote> list = remoteService.findAllByHubId(hubId);
 
         return ResponseEntity.ok().body(list);
 

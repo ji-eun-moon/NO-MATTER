@@ -19,11 +19,11 @@ public class Remote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long remoteId;
 
-    private Long productId;
     private Long hubId;
     private String controllerName;
+    private String remoteType;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
-    private boolean isOpened;
+    private String remoteCode;
 
 }
