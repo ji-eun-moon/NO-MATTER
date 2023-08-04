@@ -1,7 +1,10 @@
 package com.example.nomatter.controller;
 
+import com.example.nomatter.domain.Hub;
 import com.example.nomatter.domain.Remote;
+import com.example.nomatter.repository.RemoteRepository;
 import com.example.nomatter.service.RemoteService;
+import com.example.nomatter.service.UserHubService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +20,27 @@ import java.util.List;
 public class RemoteController {
 
     private final RemoteService remoteService;
+    private final RemoteRepository remoteRepository;
+    private final UserHubService userHubService;
 
     @GetMapping("/list/{usersHubsId}")
     public ResponseEntity<?> list(@PathVariable Long usersHubsId, Authentication authentication){
 
-        List<Remote> list = remoteService.findAllByUsersHubsId(usersHubsId);
+        log.info(authentication.getName());
+
+        Long hub_id = (Long) userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
+
+        List<Remote> list = remoteService.findAllByHubId(hub_id);
 
         return ResponseEntity.ok().body(list);
+
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Remote remote, Authentication authentication){
+
+        remoteRepository.save(remote);
+
+        return ResponseEntity.ok().body("리모컨 등록 완료");
     }
 }

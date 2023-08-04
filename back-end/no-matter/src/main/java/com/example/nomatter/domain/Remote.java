@@ -17,10 +17,10 @@ public class Remote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long controllerId;
+    private Long remoteId;
 
     private Long productId;
-    private Long usersHubsId;
+    private Long hubId;
     private String controllerName;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;

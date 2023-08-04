@@ -27,7 +27,7 @@ public class OAuthController {
     @GetMapping("/login/oauth2/code/google")
     public String handleGoogleRedirect(@RequestParam("code") String authorizationCode) {
 
-        log.info(authorizationCode);
+        log.info("authorizationCode = " + authorizationCode);
         // Use the authorization code to complete the authentication process
         // and establish a session with the authenticated user
 

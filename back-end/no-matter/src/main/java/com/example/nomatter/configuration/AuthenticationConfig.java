@@ -55,3 +55,4 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .userService(oAuthService);
     }
 }
+

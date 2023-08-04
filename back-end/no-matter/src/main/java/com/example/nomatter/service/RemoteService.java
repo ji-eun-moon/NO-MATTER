@@ -13,9 +13,9 @@ public class RemoteService {
 
     private final RemoteRepository remoteRepository;
 
-    public List<Remote> findAllByUsersHubsId(Long usersHubsId){
+    public List<Remote> findAllByHubId(Long HubId){
 
-        return remoteRepository.findAllByUsersHubsId(usersHubsId);
+        return remoteRepository.findAllByHubId(HubId);
 
     }
 }

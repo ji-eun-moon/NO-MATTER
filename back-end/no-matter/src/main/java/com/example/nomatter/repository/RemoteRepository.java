@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface RemoteRepository extends JpaRepository<Remote, Long> {
 
-    List<Remote> findAllByUsersHubsId(Long userHubsId);
+    List<Remote> findAllByHubId(Long HubId);
 
 }

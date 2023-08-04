@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table
+@ToString
 public class Member {
 
     @Id
