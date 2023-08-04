@@ -102,7 +102,7 @@ export default function HorizontalNonLinearStepper() {
 
   return (
     <Box sx={{ width: '100%' }}>
-    <div className='m-5 text-center' style={{fontSize:"20px"}}>
+    <div className='text-center' style={{fontSize:"20px", margin:"45px"}}>
       허브를 등록해주세요
     </div>
       <Stepper nonLinear activeStep={activeStep}>
@@ -132,7 +132,7 @@ export default function HorizontalNonLinearStepper() {
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }} >
-              <p style={{fontSize:"20px", fontStyle:"bold"}}>
+              <p style={{fontSize:"20px", fontStyle:"bold", margin:"0px"}}>
                 Step {activeStep + 1}
               </p>
               <br />
