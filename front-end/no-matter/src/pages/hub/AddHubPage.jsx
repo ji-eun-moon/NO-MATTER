@@ -116,25 +116,16 @@ export default function HorizontalNonLinearStepper() {
       </Stepper>
       <div>
         {allStepsCompleted() ? (
-          // <React.Fragment>
-          //   <Typography sx={{ mt: 2, mb: 1 }}>
-          //     All steps completed - you&apos;re finished
-          //   </Typography>
-          //   <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-          //     <Box sx={{ flex: '1 1 auto' }} />
-          //     <Button onClick={handleReset}>Reset</Button>
-          //   </Box>
-          // </React.Fragment>
           <div style={{position:"absolute", top:"300px", left:"45%"}}>
             <AddHub />
           </div>
 
         ) : (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1, py: 1 }} >
-              <p style={{fontSize:"20px", fontStyle:"bold", margin:"0px"}}>
+            <div sx={{ mt: 2, mb: 1, py: 1 }} >
+              <span style={{fontSize:"20px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
                 Step {activeStep + 1}
-              </p>
+              </span>
               <br />
               {/* <Stepper nonLinear activeStep={activeStep}> */}
                 {steps.map((step, index) => (
@@ -143,7 +134,7 @@ export default function HorizontalNonLinearStepper() {
                   </Step>
                 ))}
               {/* </Stepper> */}
-            </Typography>
+            </div>
 
             <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
               <Button
