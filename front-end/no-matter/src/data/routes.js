@@ -15,6 +15,9 @@ import MainPage from '../pages/main/MainPage';
 //pages/routine
 import RoutinePage from '../pages/routine/RoutinePage';
 import AddRoutinePage from '../pages/routine/AddRoutinePage';
+import SchedulePage from '../pages/routine/SchedulePage'
+import WeatherPage from '../pages/routine/WeatherPage'
+import VoicePage from '../pages/routine/VoicePage'
 
 //pages/setting
 import SettingPage from '../pages/setting/SettingPage';
@@ -77,6 +80,18 @@ const routes = [
   {
     path:'/routine/addroutine',
     element: <AddRoutinePage /> 
+  },
+  {
+    path: '/routine/schedule',
+    element: <SchedulePage />
+  },
+  {
+    path: '/routine/weather',
+    element: <WeatherPage />
+  },
+  {
+    path: '/routine/voice',
+    element: <VoicePage />
   },
   {
     path:'/setting',
