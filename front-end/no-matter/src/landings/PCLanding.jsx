@@ -1,5 +1,5 @@
 import React from 'react'
-import './Landing.scss'
+import './PCLanding.scss'
 import InstallAccordion from './InstallAccordion.jsx'
 import { Fade } from "react-awesome-reveal";
 
@@ -76,7 +76,7 @@ function PCLanding() {
             <img src='images/intro/3.png' style={{width:"300px"}}/>
           </Fade>
         </div>
-        <Fade damping={0.5}>
+        <Fade direction='right'>
         <div className='intro-text'>
           <div className='mb-3'>
             <p className='intro-text-summary'>음성 인식 기능</p>

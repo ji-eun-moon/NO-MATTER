@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import './LoginPage.css';
 import { Container, CssBaseline, Typography, Grid, TextField, Button, Link } from '@material-ui/core'
 import Swal from 'sweetalert2'
+import GoBack from '../../components/GoBack.jsx'
 
 function LoginPage() {
   const URL = "http://localhost:8080/api/v1/user/login"
@@ -88,14 +89,17 @@ function LoginPage() {
   return (
     <div className="LoginPage">
       <div className='d-flex justify-content-center p-5'>
-        <img src="images/logo2.png" alt="No Matter logo" className='logo-mobile'/>
+        <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
       </div>
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
           <div className="paper">
-            <Typography component="h1" variant="h5">
-              Login
-            </Typography>
+            <div className='d-flex mb-3'>
+              <GoBack/>
+              <h1 className='font-700'>
+                Login
+              </h1>
+            </div>
             <form className="form" noValidate onSubmit={handleLogin}>
               <Grid item xs={12}>
                 <TextField
