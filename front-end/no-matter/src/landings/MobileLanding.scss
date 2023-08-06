@@ -1,0 +1,42 @@
+$main-color: #0097B2;
+
+.logo-mobile {
+    width: 150px;
+    height: 50px;
+  }
+  .auth-button {
+    .btn {
+      margin-right: 10px;
+      background-color: $main-color;
+      color: #FCFCFC;
+    }
+  }
+
+.intro-1-mobile {
+background-color: #FCFCFC;
+padding: 40px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+border-radius: 50px;
+}
+
+.intro-text-mobile {
+	h1 {
+		font-weight: 700;
+	}
+	&-summary {
+		color:#FCFCFC;
+		background-color: #0097B2;
+		font-size: 15px;
+		border-radius: 20px;
+		display: inline;
+		padding: 3px 10px;
+		font-weight: 500;
+	}
+	&-detail {
+		font-size: 15px;
+		font-weight: 500;
+		text-shadow: 10px;
+	}
+}
