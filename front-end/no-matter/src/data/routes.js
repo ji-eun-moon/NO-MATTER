@@ -1,6 +1,7 @@
 //pages/hub
 import HubPage from '../pages/hub/HubPage';
 import RemotePage from '../pages/hub/RemotePage';
+import HubMemberPage from '../pages/hub/HubMemberPage';
 import AddHubPage from '../pages/hub/AddHubPage';
 import AddRemote from '../pages/hub/AddRemote';
 
@@ -32,6 +33,10 @@ const routes = [
   {
     path:'/hubs/:id',
     element: <RemotePage />
+  },
+  {
+    path:'/hubs/:id/member',
+    element: <HubMemberPage />
   },
   {
     path:'/hubs/addhub',
