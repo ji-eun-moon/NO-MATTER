@@ -1,9 +1,9 @@
 //pages/hub
-import HubPage from '../pages/hub/HubPage';
-import RemotePage from '../pages/hub/RemotePage';
-import HubMemberPage from '../pages/hub/HubMemberPage';
-import AddHubPage from '../pages/hub/AddHubPage';
-import AddRemote from '../pages/hub/AddRemote';
+import HubPage from '../pages/hub/HubPage.jsx';
+import RemotePage from '../pages/hub/RemotePage.jsx';
+import HubMemberPage from '../pages/hub/HubMemberPage.jsx';
+import AddHubPage from '../pages/hub/AddHubPage.jsx';
+import AddRemote from '../pages/hub/AddRemote.jsx';
 
 import RmtTvUi from '../rmtUi/RmtTvUi.jsx';
 import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
