@@ -9,7 +9,7 @@ function GoBack() {
         };
   return (
     <div onClick={goBack}>
-        <i class="bi bi-chevron-left fs-2 me-3"></i>
+        <i className="bi bi-chevron-left fs-2 me-3"></i>
     </div>
   )
 }

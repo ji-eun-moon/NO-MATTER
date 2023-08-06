@@ -1,7 +1,7 @@
 import React from 'react'
 import { isMobile } from 'react-device-detect'
-import MoblieLanding from './MoblieLanding'
-import PCLanding from './PCLanding'
+import MoblieLanding from './MoblieLanding.jsx'
+import PCLanding from './PCLanding.jsx'
 
 function LandingPage() {
     const renderItems = () => {

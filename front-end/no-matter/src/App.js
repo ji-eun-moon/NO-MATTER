@@ -45,7 +45,7 @@ function MainApp() {
     <div>
       {isMobile ? (
         <>
-          <div className='container'>
+          <div>
             <Routes>
               <Route path='/' element={isSessionValid() ? 
                     (<Navigate to='/main' />) : (<LandingPage/>)}/>
