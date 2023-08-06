@@ -8,7 +8,19 @@ import { useNavigate } from 'react-router-dom'
 function AddRoutinePage() {
   const navigate = useNavigate();
   const [routines, setRoutines] = useState([]);
-  // const token = sessionStorage.getItem('authToken')
+
+  const onSchedule = () => {
+    navigate('/routine/schedule')
+  }
+
+  const onWeather = () => {
+    navigate('/routine/weather')
+  }
+
+  const onVoice = () => {
+    navigate('/routine/voice')
+  }
+  // const token = se ssionStorage.getItem('authToken')
 
 //   const getRoutines = () => {
 
@@ -49,7 +61,7 @@ function AddRoutinePage() {
                 </div>
             
                 <div>
-                    <i className="bi bi-chevron-right"></i>
+                    <i className="bi bi-chevron-right" onClick={onSchedule}></i>
                 </div>
             </div>
         </Card>
@@ -61,7 +73,7 @@ function AddRoutinePage() {
                     <p style={{fontSize:"3px", margin:'0'}}>예) 현재 온도가 28℃ 이상인 경우</p>
                 </div>
                 <div>
-                    <i className="bi bi-chevron-right"></i>
+                    <i className="bi bi-chevron-right" onClick={onWeather}></i>
                 </div>
             </div>
         </Card>
@@ -73,7 +85,7 @@ function AddRoutinePage() {
                     <p style={{fontSize:"3px", margin:'0'}}>예) 거실 티비 켜줘</p>
                 </div>           
                 <div>
-                  <i className="bi bi-chevron-right"></i>
+                  <i className="bi bi-chevron-right" onClick={onVoice}></i>
                 </div> 
             </div>
         </Card>
