@@ -1,55 +1,101 @@
 {
-    "hubs": [
+  "hubs": [
+    {
+      "title": "거실",
+      "id": 1,
+      "remotes": [
         {
-            "title": "거실",
-            "id": 1,
-            "remotes": [
-                {
-                    "title": "에어컨",
-                    "id": 1
-                },
-                {
-                    "title": "TV",
-                    "id": 2
-                },
-                {
-                    "title": "공기청정기",
-                    "id": 3
-                }
-            ]
+          "title": "에어컨",
+          "id": 1
         },
         {
-            "title": "안방",
-            "id": 2,
-            "remotes": []
+          "title": "TV",
+          "id": 2
         },
         {
-            "title": "작은방",
-            "id": 3,
-            "remotes": []
+          "title": "공기청정기",
+          "id": 3
         }
-    ],
-
-    "routines": [
-        {
-            "kind": "schedule",
-            "condition": "13:00",
-            "result" : "거실 에어컨 ON"
-        },
-        {
-            "kind": "schedule",
-            "condition": "23:00",
-            "result": "거실 에어컨 OFF"
-        },
-        {
-            "kind": "weather",
-            "condition": "28도 이상",
-            "result": "거실 에어컨 ON"
-        },
-        {
-            "kind": "voice",
-            "result": "거실 TV 꺼줘"
-        }
-        
-    ]
+      ]
+    },
+    {
+      "title": "안방",
+      "id": 2,
+      "remotes": []
+    },
+    {
+      "title": "작은방",
+      "id": 3,
+      "remotes": []
+    }
+  ],
+  "routines": [
+    {
+      "kind": "schedule",
+      "condition": "13:00",
+      "result": "거실 에어컨 ON",
+      "id": 1
+    },
+    {
+      "kind": "schedule",
+      "condition": "23:00",
+      "result": "거실 에어컨 OFF",
+      "id": 2
+    },
+    {
+      "kind": "weather",
+      "condition": "28도 이상",
+      "result": "거실 에어컨 ON",
+      "id": 3
+    },
+    {
+      "kind": "voice",
+      "result": "거실 TV 꺼줘",
+      "id": 4
+    },
+    {
+      "kind": "voice",
+      "condition": "거실 TV 켜줘",
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 2,
+        "userHubAuth": "admin",
+        "userHubName": "거실"
+      },
+      "selectedRemote": {
+        "remoteId": 2,
+        "hubId": 1,
+        "controllerName": "에어컨",
+        "remoteType": "Air Conditional",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 5
+    },
+    {
+      "kind": "voice",
+      "condition": "zz",
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 2,
+        "userHubAuth": "admin",
+        "userHubName": "거실"
+      },
+      "selectedRemote": {
+        "remoteId": 2,
+        "hubId": 1,
+        "controllerName": "에어컨",
+        "remoteType": "Air Conditional",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 6
+    }
+  ]
 }
