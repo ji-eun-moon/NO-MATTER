@@ -4,30 +4,83 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
+import LoadingSpinner from '../../components/LoadingSpinner.jsx';
 
 function RemotePage() {
-  const { id } = useParams()
+  const { id } = useParams()  // 허브 id
   const [ hub, setHub ] = useState([]);
   const [ remotes, setRemotes ] = useState([]);
+  const token = sessionStorage.getItem('authToken')
+  const [loading, setLoading] = useState(true);
+
+  // 특정 허브 정보 저장
+  const hubInfo = (id) => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.get('http://localhost:8080/api/v1/userhub/list')
+      .then((response) => {
+        const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
+        setHub(specificHub);
+      });
+  }
 
   const getRemote = (id) => {
-    axios.get(`http://localhost:3001/hubs/${id}`)
+    
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+    // json-server 테스트용
+    // axios.get(`http://localhost:3001/hubs/${id}`)
+    // .then((response) => {
+    //   setHub(response.data)  // 허브 정보
+    //   setRemotes(response.data.remotes) // 리모컨 리스트
+    // })
+
+    axios.get(`http://localhost:8080/api/v1/remote/list/${id}`)
     .then((response) => {
-      setHub(response.data)  // 허브 정보
-      setRemotes(response.data.remotes) // 리모컨 리스트
+      // console.log(response.data)
+      setRemotes(response.data) // 리모컨 리스트
+      setLoading(false);
     })
+
   }
 
   useEffect(() => {
+    hubInfo(id)
     getRemote(id)
-  }, [])
+  }, [id])
+
+  const renderRemoteList = () => {
+    if (loading) {
+      return (
+        <LoadingSpinner/>
+      )
+    }
+
+    if (remotes.length === 0) {
+      return (
+        <div className='centered m-5'>
+          아직 등록된 리모컨이 없습니다.
+        </div>
+      )}
+    
+    return remotes.map(remote => {
+      return (
+        <Card key={remote.remoteId}>
+          <div className='d-flex align-items-center justify-content-between'
+               style={{width:"100%"}}>
+            <div className='card-text'>{remote.controllerName}</div>
+            <div><i className="bi bi-chevron-right"></i></div>
+          </div>
+        </Card>
+      )
+    })
+  }
 
   return (
     <div className="container page-container">
       <div className='d-flex justify-content-between mt-5'>
         <div className='d-flex'>
           <GoBack />
-          <h1 className="font-700">{hub.title}</h1>
+          <h1 className="font-700">{hub.userHubName}</h1>
         </div>
         <div className='d-flex justify-content-center align-items-center' 
               style={{backgroundColor:"#fdd969", borderRadius:"15px", padding:"5px 10px 5px"}}>
@@ -36,17 +89,7 @@ function RemotePage() {
         </div>
       </div>
       <hr />
-      {remotes.map(remote => {
-        return (
-          <Card key={remote.id}>
-            <div className='d-flex align-items-center justify-content-between'
-                 style={{width:"100%"}}>
-              <div className='card-text'>{remote.title}</div>
-              <div><i className="bi bi-chevron-right"></i></div>
-            </div>
-          </Card>
-        )
-      })}
+      {renderRemoteList()}
       <Card>
         <div className="centered" style={{width:"100%"}}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
