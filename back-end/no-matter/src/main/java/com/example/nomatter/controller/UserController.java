@@ -83,12 +83,10 @@ public class UserController {
         return ResponseEntity.ok().body(user.toString());
     }
 
-    @PostMapping("/passwordCheck")
-    public ResponseEntity<?> passwordCheck(@RequestBody Map<String, String> map, Authentication authentication){
+    @GetMapping("/passwordCheck/{password}")
+    public ResponseEntity<?> passwordCheck(@PathVariable String password, Authentication authentication){
 
         User user = userService.findByUserId(authentication.getName()).get();
-
-        String password = map.get("password");
 
         userService.passwordCheck(password, user.getUserPassword());
 
