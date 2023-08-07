@@ -5,6 +5,7 @@ import GoBack from '../../components/GoBack.jsx'
 
 function VoicePage() {
   const [command, setCommand] = useState('');
+  const [inputCount, setInputCount] = useState(0);
   const navigate = useNavigate();
 
   const onSubmit = () => {
@@ -14,6 +15,11 @@ function VoicePage() {
       window.alert('등록할 명령어를 입력하세요.');
     }
   }
+
+  const onInputHandler = (e) => {
+    setInputCount(e.target.value.length);
+    setCommand(e.target.value)
+  };
 
   return (
     <div className='container'>
@@ -31,14 +37,17 @@ function VoicePage() {
       <div>
         <textarea 
           className='form-control'
-          placeholder='등록할 명령어를 입력하세요.'
+          placeholder='등록할 명령어를 입력하세요. (15자 내외)'
           value={command}
-          onChange={(event) => {
-            setCommand(event.target.value)
-          }}
+          maxLength="20"
+          onChange={onInputHandler}
           rows={5}
         />
       </div>
+      <p className='text-secondary d-flex justify-content-end'>
+        <span>{inputCount}</span>
+        <span>/20 자</span>
+      </p>
     </div>
   )
 }

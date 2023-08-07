@@ -12,7 +12,9 @@ function RoutineResult() {
   // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
   // const condition = location.state.condition  // 루틴 조건
 
+  console.log(location.state.kind)
   console.log(location.state.condition)
+
   const [kind, setKind] = useState('')
   const [condition, setCondition] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -65,13 +67,39 @@ function RoutineResult() {
         </div>
       )
     }
+    if (kind === 'temp') {
+      return (
+        <div style={conditionStyle}>
+          <h1 className='font-700' style={{color : "#0097B2"}}>조건</h1>
+          <p className='text-secondary' style={{marginBottom:"10px"}}>날씨</p>
+          <div className='d-flex'>
+            <h5 className="me-2" style={{marginBottom:"0px"}}>{condition.temperature} °C</h5>
+            <h5 className="me-2" style={{marginBottom:"0px"}}>{condition.updown === 'up' ? '초과' : '미만'}</h5>
+            <h5 style={{marginBottom:"0px"}}>일 때</h5>
+          </div>
+        </div>
+      )
+    }
+    if (kind === 'humidity') {
+      return (
+        <div style={conditionStyle}>
+          <h1 className='font-700' style={{color : "#0097B2"}}>조건</h1>
+          <p className='text-secondary' style={{marginBottom:"10px"}}>날씨</p>
+          <div className='d-flex'>
+            <h5 style={{marginBottom:"0px"}}>{condition.label}</h5>
+            <h5 style={{marginBottom:"0px"}} className='me-2'>할 때</h5>
+            <p className="me-2 text-secondary" style={{marginBottom:"0px"}}>(습도 {condition.detail})</p>
+          </div>
+        </div>
+      )
+    }
     if (kind === 'weather') {
       return (
         <div style={conditionStyle}>
           <h1 className='font-700' style={{color : "#0097B2"}}>조건</h1>
           <p className='text-secondary' style={{marginBottom:"10px"}}>날씨</p>
           <div className='d-flex'>
-            <h5 className="me-2" style={{marginBottom:"0px"}}>{condition}</h5>
+            <h5 className='me-1' style={{marginBottom:"0px"}}>{condition.label}</h5>
             <h5 style={{marginBottom:"0px"}}>일 때</h5>
           </div>
         </div>
@@ -147,7 +175,7 @@ function RoutineResult() {
         {renderCondition()}
       </div>
 
-      <div style={resultStyle} className='d-flex flex-column'>
+      <div style={resultStyle} className='d-flex flex-column container'>
         <div className='d-flex justify-content-between align-items-center'>
           <h1 className='font-700' style={{marginBottom:"0px"}}>결과</h1>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary" onClick={openModal}></i></div>
