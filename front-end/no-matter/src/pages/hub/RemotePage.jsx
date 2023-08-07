@@ -81,11 +81,16 @@ function RemotePage() {
         <div className='d-flex'>
           <GoBack />
           <h1 className="font-700">{hub.userHubName}</h1>
+          <div className='d-flex justify-content-center align-items-center ms-2' 
+                style={{backgroundColor:"#fdd969", borderRadius:"10px", padding:"5px 10px 5px"}}>
+            <img src="/images/crown.png" alt="crown" style={{width: "20px", height:"30px"}}/>
+            {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
+          </div>
         </div>
-        <div className='d-flex justify-content-center align-items-center' 
-              style={{backgroundColor:"#fdd969", borderRadius:"15px", padding:"5px 10px 5px"}}>
-          <img src="/images/crown.png" alt="crown" style={{width: "27px", height:"35px"}} className='me-2'/>
-          <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5>
+        <div className='d-flex'>
+          <div className="main-backgroud-color px-2 rounded centered">
+            <i className="bi bi-people-fill fs-2 text-white"></i>
+          </div>
         </div>
       </div>
       <hr />

@@ -14,15 +14,18 @@ import { useNavigate } from 'react-router-dom';
 
 const steps = [
   {
-    label: 'Bluetooth 연결',
+    label: 'Bluetooth',
+    label2: '연결',
     component: <Bluetooth />,
   },
   {
-    label: 'wifi 연결',
+    label: 'wifi',
+    label2: '연결',
     component: <Wifi />,
   },
   {
-    label: '허브 등록',
+    label: '허브',
+    label2: '등록',
     component: <Complete />,
   },
 ];
@@ -101,71 +104,74 @@ export default function HorizontalNonLinearStepper() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-    <div className='text-center' style={{fontSize:"20px", margin:"45px"}}>
-      허브를 등록해주세요
-    </div>
-      <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((step, index) => (
-          <Step key={step.label} completed={completed[index]}>
-            <StepButton color="inherit" onClick={handleStep(index)} style={{position:"relative"}}>
-              {step.label}
-            </StepButton>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {allStepsCompleted() ? (
-          <div style={{position:"absolute", top:"300px", left:"45%"}}>
-            <AddHub />
-          </div>
-
-        ) : (
-          <React.Fragment>
-            <div sx={{ mt: 2, mb: 1, py: 1 }} >
-              <span style={{fontSize:"20px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
-                Step {activeStep + 1}
-              </span>
-              <br />
-              {/* <Stepper nonLinear activeStep={activeStep}> */}
-                {steps.map((step, index) => (
-                  <Step key={step.label} completed={completed[index]}>
-                    {activeStep === index && step.component}
-                  </Step>
-                ))}
-              {/* </Stepper> */}
+    <div className='page-container container'> 
+      <Box sx={{ width: '100%' }}>
+      <div className='text-center' style={{fontSize:"20px", margin:"45px"}}>
+        허브를 등록해주세요
+      </div>
+        <Stepper nonLinear activeStep={activeStep}>
+          {steps.map((step, index) => (
+            <Step key={step.label} completed={completed[index]}>
+              <StepButton color="inherit" onClick={handleStep(index)} style={{position:"relative"}}>
+                {step.label}<br />
+                {step.label2}
+              </StepButton>
+            </Step>
+          ))}
+        </Stepper>
+        <div>
+          {allStepsCompleted() ? (
+            <div style={{position:"absolute", top:"300px", left:"45%"}}>
+              <AddHub />
             </div>
 
-            <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              
-              {/* <Box sx={{ flex: '1 1 auto' }} /> */}
-              
-              {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Button onClick={handleComplete}>
-                    <Typography variant="caption" style={{color:"gray"}}>
-                      Step {activeStep + 1} already completed
-                    </Typography>
-                  </Button>
-                ) : (
-                  <Button onClick={handleComplete}>
-                    {completedSteps() === totalSteps() - 1
-                      ? 'Complete'
-                      : 'Next'}
-                  </Button>
-              ))}
-            </Box>
-          </React.Fragment>
-        )}
-      </div>
-    </Box>
+          ) : (
+            <React.Fragment>
+              <div sx={{ mt: 2, mb: 1, py: 1 }} >
+                <span style={{fontSize:"20px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
+                  Step {activeStep + 1}
+                </span>
+                <br />
+                {/* <Stepper nonLinear activeStep={activeStep}> */}
+                  {steps.map((step, index) => (
+                    <Step key={step.label} completed={completed[index]}>
+                      {activeStep === index && step.component}
+                    </Step>
+                  ))}
+                {/* </Stepper> */}
+              </div>
+
+              <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+                
+                {/* <Box sx={{ flex: '1 1 auto' }} /> */}
+                
+                {activeStep !== steps.length &&
+                  (completed[activeStep] ? (
+                    <Button onClick={handleComplete}>
+                      <Typography variant="caption" style={{color:"gray"}}>
+                        Step {activeStep + 1} already completed
+                      </Typography>
+                    </Button>
+                  ) : (
+                    <Button onClick={handleComplete}>
+                      {completedSteps() === totalSteps() - 1
+                        ? 'Complete'
+                        : 'Next'}
+                    </Button>
+                ))}
+              </Box>
+            </React.Fragment>
+          )}
+        </div>
+      </Box>
+    </div>
   );
 }
