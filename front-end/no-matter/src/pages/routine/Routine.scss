@@ -48,3 +48,39 @@
 	font-weight: 600;
 	margin: 0px 0px 0px 10px;
 }
+
+.temp-btn {
+	/* 공통 스타일 */
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+	
+  }
+
+  .temp-btn.down {
+	border-radius: 10px 0px 0px 10px;
+  }
+
+  .temp-btn.up {
+	border-radius: 0px 10px 10px 0px;
+  }
+
+  .temp-btn.selected {
+	/* 선택된 버튼 스타일 */
+	background-color: #0097B2;
+	color: #FCFCFC;
+  }
+  
+  .temp-btn:not(.selected) {
+	/* 선택되지 않은 버튼 스타일 */
+	background-color: white;
+	color: #000;
+  }
+  
+  .weather-container {
+	background-color: #FCFCFC;
+	border-radius: 10px;
+	padding: 20px;
+  }
