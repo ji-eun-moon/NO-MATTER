@@ -100,7 +100,6 @@ public class UserService {
         userRepository.delete(selectedUser);
     }
 
-    @Transactional
     public String idCheck(String userId){
 
         userRepository.findByUserId(userId)
@@ -111,7 +110,6 @@ public class UserService {
         return "사용 가능한 아이디입니다.";
     }
 
-    @Transactional
     public Optional<User> findByUserId(String userId){
 
         return userRepository.findByUserId(userId);
