@@ -12,8 +12,8 @@ function RoutineResult() {
   // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
   // const condition = location.state.condition  // 루틴 조건
 
-  console.log(location.state.kind)
-  console.log(location.state.condition)
+  // console.log(location.state.kind)
+  // console.log(location.state.condition)
 
   const [kind, setKind] = useState('')
   const [condition, setCondition] = useState('')
@@ -112,9 +112,20 @@ function RoutineResult() {
           <div className='d-flex'>
             <p className='text-secondary me-3' style={{marginBottom:"10px"}}>스케줄</p>
             {/* 반복 요일 */}
-            <p>{condition}</p>
+            {condition.day.map((day, index) => (
+            <React.Fragment key={index}>
+              <p>{day}</p>
+              {index !== condition.day.length - 1 && <span>,&nbsp;</span>}
+            </React.Fragment>
+            ))}
+            <p>요일</p>
           </div>
-          <h5 style={{marginBottom:"0px"}}>{condition}</h5>
+          <div className='d-flex'>
+            <h5 style={{marginBottom:"0px"}} className='me-1'>{condition.ampm === 'am' ? '오전' : '오후'}</h5>
+            <h5 style={{marginBottom:"0px"}} className='me-1'>{condition.hour}시</h5>
+            <h5 style={{marginBottom:"0px"}} className='me-1'>{condition.minute}분</h5>
+            <h5 style={{marginBottom:"0px"}} className='me-1'>마다</h5>
+          </div>
         </div>
       )
     }

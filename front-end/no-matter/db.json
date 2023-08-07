@@ -32,26 +32,200 @@
   "routines": [
     {
       "kind": "schedule",
-      "condition": "13:00",
-      "result": "거실 에어컨 ON",
-      "id": 1
+      "condition": {
+        "day": [
+          "월",
+          "화"
+        ],
+        "hour": 5,
+        "minute": 5,
+        "ampm": "pm"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 1,
+        "hubId": 1,
+        "controllerName": "티비",
+        "remoteType": "TV",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 5
     },
     {
-      "kind": "schedule",
-      "condition": "23:00",
-      "result": "거실 에어컨 OFF",
-      "id": 2
-    },
-    {
-      "kind": "weather",
-      "condition": "28도 이상",
-      "result": "거실 에어컨 ON",
-      "id": 3
+      "kind": "temp",
+      "condition": {
+        "temperature": 19,
+        "updown": "up"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 2,
+        "hubId": 1,
+        "controllerName": "에어컨",
+        "remoteType": "AC",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 6
     },
     {
       "kind": "voice",
-      "result": "거실 TV 꺼줘",
-      "id": 4
+      "condition": "TV 켜줘",
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 1,
+        "hubId": 1,
+        "controllerName": "티비",
+        "remoteType": "TV",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 7
+    },
+    {
+      "kind": "humidity",
+      "condition": {
+        "label": "쾌적",
+        "detail": "40% ~ 70%",
+        "condition": "middle"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 2,
+        "hubId": 1,
+        "controllerName": "에어컨",
+        "remoteType": "AC",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 8
+    },
+    {
+      "kind": "weather",
+      "condition": {
+        "label": "맑은 날",
+        "condition": "0"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 3,
+        "hubId": 1,
+        "controllerName": "공기청정기",
+        "remoteType": "AC",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 9
+    },
+    {
+      "kind": "schedule",
+      "condition": {
+        "day": [
+          "월",
+          "화",
+          "수",
+          "목",
+          "금",
+          "토",
+          "일"
+        ],
+        "hour": 1,
+        "minute": 0,
+        "ampm": "am"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 1,
+        "hubId": 1,
+        "controllerName": "티비",
+        "remoteType": "TV",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 10
+    },
+    {
+      "kind": "schedule",
+      "condition": {
+        "day": [
+          "월",
+          "화",
+          "수",
+          "목",
+          "금",
+          "토"
+        ],
+        "hour": 12,
+        "minute": 25,
+        "ampm": "pm"
+      },
+      "selectedHub": {
+        "usersHubsId": 1,
+        "hubId": 1,
+        "userId": 1,
+        "userHubAuth": "admin",
+        "userHubName": "안방"
+      },
+      "selectedRemote": {
+        "remoteId": 2,
+        "hubId": 1,
+        "controllerName": "에어컨",
+        "remoteType": "AC",
+        "createDate": null,
+        "modifyDate": null,
+        "remoteCode": "A1B2C3D4"
+      },
+      "selectedRemoteAction": "ON",
+      "id": 11
     }
   ]
 }
