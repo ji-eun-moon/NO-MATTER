@@ -13,13 +13,13 @@ function SettingPage() {
     setDark(value)
   }
   const logout = () => {
-    navigate('/')
+    // navigate('/')
     sessionStorage.clear()
   }
   return (
     <div className="page-container container">
       <div className='d-flex justify-content-between mt-5 mb-3'>
-        <h1 className="font-700">설정</h1>
+        <h1 className="font-700">My Setting</h1>
       </div>
 
       <Card>
