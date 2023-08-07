@@ -36,4 +36,22 @@ public class HubService {
 
     }
 
+    public void save(Hub hub){
+
+        hubRepository.save(hub);
+
+    }
+
+    public Optional<Hub> findByHubId(Long hubId){
+
+        return hubRepository.findByHubId(hubId);
+
+    }
+
+    public Optional<Hub> findByInviteCode(String inviteCode){
+
+        return hubRepository.findByInviteCode(inviteCode);
+
+    }
+
 }
