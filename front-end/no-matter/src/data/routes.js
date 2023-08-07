@@ -1,27 +1,29 @@
 //pages/hub
-import HubPage from '../pages/hub/HubPage';
-import RemotePage from '../pages/hub/RemotePage';
-import AddHubPage from '../pages/hub/AddHubPage';
-import AddRemote from '../pages/hub/AddRemote';
+import HubPage from '../pages/hub/HubPage.jsx';
+import RemotePage from '../pages/hub/RemotePage.jsx';
+import HubMemberPage from '../pages/hub/HubMemberPage.jsx';
+import AddHubPage from '../pages/hub/AddHubPage.jsx';
+import AddRemote from '../pages/hub/AddRemote.jsx';
 
-import RmtTvUi from '../rmtUi/RmtTvUi';
-import RmtFanUi from '../rmtUi/RmtFanUi';
-import RmtCustom from '../rmtUi/RmtCustom';
-import RmtAc from '../rmtUi/RmtAc';
+import RmtTvUi from '../rmtUi/RmtTvUi.jsx';
+import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
+import RmtCustom from '../rmtUi/RmtCustom.jsx';
+import RmtAc from '../rmtUi/RmtAc.jsx';
 
 //pages/main
-import MainPage from '../pages/main/MainPage';
+import MainPage from '../pages/main/MainPage.jsx';
 
 //pages/routine
-import RoutinePage from '../pages/routine/RoutinePage';
-import AddRoutinePage from '../pages/routine/AddRoutinePage';
-import SchedulePage from '../pages/routine/SchedulePage'
-import WeatherPage from '../pages/routine/WeatherPage'
-import VoicePage from '../pages/routine/VoicePage'
+import RoutinePage from '../pages/routine/RoutinePage.jsx';
+import AddRoutinePage from '../pages/routine/AddRoutinePage.jsx';
+import SchedulePage from '../pages/routine/SchedulePage.jsx'
+import WeatherPage from '../pages/routine/WeatherPage.jsx'
+import VoicePage from '../pages/routine/VoicePage.jsx'
+import RoutineResult from '../pages/routine/RoutineResult.jsx';
 
 //pages/setting
-import SettingPage from '../pages/setting/SettingPage';
-import UserEditPage from '../pages/setting/UserEditPage';
+import SettingPage from '../pages/setting/SettingPage.jsx';
+import UserEditPage from '../pages/setting/UserEditPage.jsx';
 
 
 const routes = [
@@ -32,6 +34,10 @@ const routes = [
   {
     path:'/hubs/:id',
     element: <RemotePage />
+  },
+  {
+    path:'/hubs/:id/member',
+    element: <HubMemberPage />
   },
   {
     path:'/hubs/addhub',
@@ -66,7 +72,7 @@ const routes = [
     element: <RmtCustom />
   },
   {
-    path:'/hubs/rmtac/',
+    path:'/hubs/rmtac',
     element: <RmtAc />
   },
   {
@@ -92,6 +98,10 @@ const routes = [
   {
     path: '/routine/voice',
     element: <VoicePage />
+  },
+  {
+    path: '/routine/result',
+    element: <RoutineResult />
   },
   {
     path:'/setting',
