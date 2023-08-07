@@ -81,16 +81,13 @@ public class UserService {
     }
 
     @Transactional
-    public void modify(UserModifyRequest userModifyRequest){
+    public void modify(String password, String userId){
 
-        User selectUser = userRepository.findByUserId(userModifyRequest.getUserId())
-                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userModifyRequest.getUserId() + " is not found"));
+        User selectUser = userRepository.findByUserId(userId).get();
 
-        String userId = userModifyRequest.getUserId();
-        String userPassword = userModifyRequest.getUserPassword();
+        selectUser.setUserPassword(encoder.encode(password));
 
-        selectUser.setUserPassword(encoder.encode(userModifyRequest.getUserPassword()));
-
+        userRepository.save(selectUser);
     }
 
     @Transactional
@@ -103,10 +100,7 @@ public class UserService {
         userRepository.delete(selectedUser);
     }
 
-    @Transactional
     public String idCheck(String userId){
-
-        System.out.println("userId = " + userId);
 
         userRepository.findByUserId(userId)
                 .ifPresent(user -> {
@@ -116,12 +110,18 @@ public class UserService {
         return "사용 가능한 아이디입니다.";
     }
 
-    @Transactional
     public Optional<User> findByUserId(String userId){
 
         return userRepository.findByUserId(userId);
 
     }
 
+    public void passwordCheck(String password, String password2){
+
+        if(!encoder.matches(password, password2)){
+            throw new AppException(Errorcode.INVALID_ID_PASSWORD, "잘못된 비밀번호입니다/");
+        }
+
+    }
 
 }

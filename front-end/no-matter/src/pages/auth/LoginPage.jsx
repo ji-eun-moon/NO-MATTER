@@ -86,6 +86,16 @@ function LoginPage() {
 
   }
 
+  const goKakao = (e) => {
+
+    // const REST_API_KEY = "96b643173da8064d7b2774b812e747bb";
+    // const REDIRECT_URI = "http://localhost:8080/login/oauth2/callback/kakao"
+    const url = "https://kauth.kakao.com/oauth/authorize?client_id=96b643173da8064d7b2774b812e747bb&redirect_uri=http://localhost:8080/login/oauth2/callback/kakao&response_type=code";
+
+    window.location.href = url;
+
+  }
+
   return (
     <div className="LoginPage">
       <div className='d-flex justify-content-center p-5'>
@@ -136,7 +146,8 @@ function LoginPage() {
                 variant="contained"
                 onSubmit={handleLogin}
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 로그인
               </Button>
               <Grid container justifyContent="flex-end">
@@ -155,7 +166,8 @@ function LoginPage() {
                 variant="contained"
                 onClick = { goGoogle }
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Google
               </Button>
               <p></p>
@@ -166,7 +178,8 @@ function LoginPage() {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Naver
               </Button>
               </a>
@@ -176,9 +189,10 @@ function LoginPage() {
                 fullWidth
                 size="large"
                 variant="contained"
-                onClick = { goGoogle }
+                onClick = { goKakao }
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Kakao
               </Button>
           </div>

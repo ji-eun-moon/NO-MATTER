@@ -11,4 +11,8 @@ public interface HubRepository extends JpaRepository<Hub, Long> {
 
     Optional<Hub> findByHubUuid(String hubUuid);
 
+    Optional<Hub> findByHubId(Long hubId);
+
+    Optional<Hub> findByInviteCode(String inviteCode);
+
 }

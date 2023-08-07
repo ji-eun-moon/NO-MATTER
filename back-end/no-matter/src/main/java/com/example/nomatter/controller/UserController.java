@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Encoder;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modify(@RequestBody UserModifyRequest userModifyRequest){
+    public ResponseEntity<?> modify(@RequestBody Map<String, String> map, Authentication authentication){
 
-        userService.modify(userModifyRequest);
+        userService.modify(map.get("password"), authentication.getName());
 
         return ResponseEntity.ok().body("회원정보 수정 성공");
     }
@@ -70,7 +71,6 @@ public class UserController {
         log.info("로그아웃 GET");
 
         return ResponseEntity.ok().body("로그아웃 완료");
-
     }
 
     @GetMapping("/view")
@@ -81,6 +81,19 @@ public class UserController {
         log.info(user.toString());
 
         return ResponseEntity.ok().body(user.toString());
+    }
+
+    @PostMapping("/passwordCheck")
+    public ResponseEntity<?> passwordCheck(@RequestBody Map<String, String> map, Authentication authentication){
+
+        User user = userService.findByUserId(authentication.getName()).get();
+
+        String password = map.get("password");
+
+        userService.passwordCheck(password, user.getUserPassword());
+
+        return ResponseEntity.ok().body("비밀번호 인증에 성공하셨습니다.");
+
     }
 
 }
