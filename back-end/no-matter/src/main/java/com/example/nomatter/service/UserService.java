@@ -106,8 +106,6 @@ public class UserService {
     @Transactional
     public String idCheck(String userId){
 
-        System.out.println("userId = " + userId);
-
         userRepository.findByUserId(userId)
                 .ifPresent(user -> {
                     throw new AppException(Errorcode.USERID_DUPLICATED, " 이미 가입된 아이디입니다.");
@@ -123,5 +121,12 @@ public class UserService {
 
     }
 
+    public void passwordCheck(String password, String password2){
+
+        if(!encoder.matches(password, password2)){
+            throw new AppException(Errorcode.INVALID_ID_PASSWORD, "잘못된 비밀번호입니다/");
+        }
+
+    }
 
 }
