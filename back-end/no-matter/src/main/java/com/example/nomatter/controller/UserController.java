@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.beans.Encoder;
 import java.util.Map;
 import java.util.Optional;
@@ -34,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto){
-        String token = userService.login(dto);
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto, HttpServletResponse response){
+        String token = userService.login(dto, response);
 
         return ResponseEntity.ok().body(token);
     }

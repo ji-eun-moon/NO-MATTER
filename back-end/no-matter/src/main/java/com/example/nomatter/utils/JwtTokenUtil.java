@@ -27,6 +27,15 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+    public static String createRefreshToken(String key, long expireTime){
+
+        return Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
+
     public static String getUserName(String Token, String secretKey){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(Token)
                 .getBody()

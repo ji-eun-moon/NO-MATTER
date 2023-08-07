@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -31,7 +33,8 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long expireTime = 1000 * 60 * 60L;
+    private Long accessTokenExpiredTime = 1000 * 60 * 60L;
+    private Long refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L;
 
     @Transactional
     public String join(UserJoinRequest dto){
@@ -63,7 +66,8 @@ public class UserService {
     }
 
     @Transactional
-    public String login(UserLoginRequest dto){
+    public String login(UserLoginRequest dto, HttpServletResponse response){
+
 
         // 아이디가 존재하지 않는 경우
         User selectedUser = userRepository.findByUserId(dto.getUserId())
@@ -74,8 +78,20 @@ public class UserService {
             throw new AppException(Errorcode.INVALID_ID_PASSWORD, "옳지 않은 비밀번호입니다.");
         }
 
+        User user = userRepository.findByUserId(dto.getUserId()).get();
+
+        String refreshToken = JwtTokenUtil.createRefreshToken(secretKey, refreshTokenExpiredTime);
+
+        user.setRefreshToken(refreshToken);
+
         // Exception 안나면 token 발행
-        String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
+        String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, accessTokenExpiredTime);
+
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         return token;
     }
@@ -88,6 +104,7 @@ public class UserService {
         selectUser.setUserPassword(encoder.encode(password));
 
         userRepository.save(selectUser);
+
     }
 
     @Transactional
@@ -98,6 +115,7 @@ public class UserService {
 
         SecurityContextHolder.clearContext();
         userRepository.delete(selectedUser);
+
     }
 
     public String idCheck(String userId){

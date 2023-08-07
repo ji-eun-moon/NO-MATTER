@@ -26,6 +26,7 @@ public class User {
     private String userEmail;
     private String userImg;
     private String userPhone;
+    private String refreshToken;
     private String socialType;
     private LocalDateTime createDate;
     private boolean isPushAlertOn;
