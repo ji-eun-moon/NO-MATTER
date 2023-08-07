@@ -136,7 +136,8 @@ function LoginPage() {
                 variant="contained"
                 onSubmit={handleLogin}
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 로그인
               </Button>
               <Grid container justifyContent="flex-end">
@@ -155,7 +156,8 @@ function LoginPage() {
                 variant="contained"
                 onClick = { goGoogle }
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Google
               </Button>
               <p></p>
@@ -166,7 +168,8 @@ function LoginPage() {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Naver
               </Button>
               </a>
@@ -178,7 +181,8 @@ function LoginPage() {
                 variant="contained"
                 onClick = { goGoogle }
                 color="primary"
-                className="button">
+                className="button"
+                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Kakao
               </Button>
           </div>

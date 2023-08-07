@@ -11,6 +11,8 @@ function RoutineResult() {
   const navigate = useNavigate();
   // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
   // const condition = location.state.condition  // 루틴 조건
+
+  console.log(location.state.condition)
   const [kind, setKind] = useState('')
   const [condition, setCondition] = useState('')
   const [showModal, setShowModal] = useState(false)
