@@ -81,16 +81,13 @@ public class UserService {
     }
 
     @Transactional
-    public void modify(UserModifyRequest userModifyRequest){
+    public void modify(String password, String userId){
 
-        User selectUser = userRepository.findByUserId(userModifyRequest.getUserId())
-                .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, userModifyRequest.getUserId() + " is not found"));
+        User selectUser = userRepository.findByUserId(userId).get();
 
-        String userId = userModifyRequest.getUserId();
-        String userPassword = userModifyRequest.getUserPassword();
+        selectUser.setUserPassword(encoder.encode(password));
 
-        selectUser.setUserPassword(encoder.encode(userModifyRequest.getUserPassword()));
-
+        userRepository.save(selectUser);
     }
 
     @Transactional

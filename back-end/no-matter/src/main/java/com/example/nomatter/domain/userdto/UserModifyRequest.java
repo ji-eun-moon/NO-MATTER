@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 public class UserModifyRequest {
 
-    private String userId;
     private String userPassword;
 
 }

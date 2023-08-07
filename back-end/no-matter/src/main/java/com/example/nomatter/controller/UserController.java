@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modify(@RequestBody UserModifyRequest userModifyRequest){
+    public ResponseEntity<?> modify(@RequestBody Map<String, String> map, Authentication authentication){
 
-        userService.modify(userModifyRequest);
+        userService.modify(map.get("password"), authentication.getName());
 
         return ResponseEntity.ok().body("회원정보 수정 성공");
     }
