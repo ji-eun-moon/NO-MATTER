@@ -20,6 +20,9 @@ import SchedulePage from '../pages/routine/SchedulePage.jsx'
 import WeatherPage from '../pages/routine/WeatherPage.jsx'
 import VoicePage from '../pages/routine/VoicePage.jsx'
 import RoutineResult from '../pages/routine/RoutineResult.jsx';
+import SelectTemp from '../pages/routine/SelectTemp.jsx';
+import SelectHumid from '../pages/routine/SelectHumid.jsx';
+import SelectWeather from '../pages/routine/SelectWeather.jsx';
 
 //pages/setting
 import SettingPage from '../pages/setting/SettingPage.jsx';
@@ -94,6 +97,18 @@ const routes = [
   {
     path: '/routine/weather',
     element: <WeatherPage />
+  },
+  {
+    path: '/routine/weather/temp',
+    element: <SelectTemp />
+  },
+  {
+    path: '/routine/weather/humid',
+    element: <SelectHumid />
+  },
+  {
+    path: '/routine/weather/weather',
+    element: <SelectWeather />
   },
   {
     path: '/routine/voice',
