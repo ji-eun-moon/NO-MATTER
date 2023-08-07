@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class BoardController {
                 .userId(userService.findByUserId(authentication.getName()).get().getMemberId())
                 .remoteId(map.get("remoteId"))
                 .download(0L)
+                .createDate(LocalDateTime.now())
                 .build();
 
         boardService.save(board);
@@ -58,12 +60,12 @@ public class BoardController {
 
     }
 
-    @GetMapping("/view")
-    public ResponseEntity<?> view(@RequestBody Map<String, Long> map){
-
-
-
-    }
+//    @GetMapping("/view")
+//    public ResponseEntity<?> view(@RequestBody Map<String, Long> map){
+//
+//
+//
+//    }
 
 
 }

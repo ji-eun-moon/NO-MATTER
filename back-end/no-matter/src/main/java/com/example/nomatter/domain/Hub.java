@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -22,14 +23,7 @@ public class Hub {
     private String hubUuid;
     private String location;
     private String weatherKey;
+    private String inviteCode;
+    private LocalDateTime codeExpiredTime;
 
-    @Override
-    public String toString() {
-        return "Hub{" +
-                "hubId=" + hubId +
-                ", hubUuid='" + hubUuid + '\'' +
-                ", location='" + location + '\'' +
-                ", weatherKey='" + weatherKey + '\'' +
-                '}';
-    }
 }
