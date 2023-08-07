@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
+import GoBack from '../../components/GoBack.jsx'
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -28,6 +29,13 @@ export default function VerticalTabs() {
   const [minute, setMinute] = React.useState(0);
   const [ampm, setAmPm] = React.useState("am");
 
+  const selectedDays = Object.entries(day).reduce((selected, [day, isActive]) => {
+    if (isActive) {
+      selected.push(day);
+    }
+    return selected;
+  }, []);
+  
   const onDayChange = (event) => {
     console.log(event.target.name)
     setDay({ ...day, [event.target.name]: event.target.checked });
@@ -45,32 +53,29 @@ export default function VerticalTabs() {
     setAmPm(ampm);
   };
 
-//   const onSubmit = () => {
-//     if (command.trim() !== '') {
-//       navigate('/routine/result', { state: { kind: "schedule", condition: { day: day, hour: hour, minute: minute, ampm: ampm} } });
-//     } else {
-//       window.alert('등록할 스케줄을 입력하세요.');
-//     }
-//   }
+  const onSubmit = () => {
+    // if (command.trim() !== '') {
+      navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm} } });
+    // } else {
+    //   window.alert('등록할 스케줄을 입력하세요.');
+    // }
+  }
 
 
   return (
-    <div className='d-flex flex-column justify-content-center align-items-center' style={{height:"100%"}}>    
-        <div style={{ margin:"40px 0px"}}>
-            <b style={{fontSize:"30px"}}>Schedule</b>
+    // <div className='d-flex flex-column justify-content-center ' style={{height:"100%"}}>    
+      <div className='container'>
+        <div className='d-flex mt-5 mb-3'>
+          <GoBack /> 
+          <h1 className="font-700">스케줄 등록</h1>
         </div>
-
-        {/* <div className='d-flex mt-5 mb-3'>
-        <GoBack /> 
-        <h1 className="font-700">스케줄 등록</h1>
-      </div>
-      <div className='d-flex justify-content-end'>
-        <button 
-            className='mb-3 btn'
-            style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-            onClick={onSubmit}
-            >NEXT</button>
-      </div> */}
+        <div className='d-flex justify-content-end'>
+          <button 
+              className='mb-3 btn'
+              style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
+              onClick={onSubmit}
+              >NEXT</button>
+        </div>
 
         <div className='d-flex flex-column justify-content-center align-items-center' style={{width:"100%"}}>
             <p style={{fontSize:"15px", width:"80%", marginBottom:"3px", marginLeft:"5px"}}><i className="bi bi-calendar-week" style={{marginRight:"4px"}}></i>반복 요일 설정</p>
