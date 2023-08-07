@@ -1,7 +1,19 @@
 // userSlice.js
 import { createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import Swal from 'sweetalert2'
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 const userSlice = createSlice({
   name: 'user',
@@ -40,11 +52,24 @@ export const signup = (userId, userPassword, userName, userEmail, userNumber) =>
       console.log(response)
       const user = response.data
       dispatch(signupSuccess(user))
+      Toast.fire({
+        icon: 'success',
+        title: '회원가입 완료',
+        timer: 1500
+        // footer: '<a href="">Why do I have this issue?</a>'
+      })
+
     })
     .catch((err) => {
       console.log(userId, userPassword, userName, userEmail, userNumber)
       console.log(err)
       dispatch(signupFailure())
+      Toast.fire({
+        icon: 'error',
+        title: '회원가입 실패',
+        // footer: '<a href="">Why do I have this issue?</a>'
+      })
+
     })
   }
 }

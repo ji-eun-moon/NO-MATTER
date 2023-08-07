@@ -257,6 +257,7 @@ import axios from 'axios'
 import { signup } from '../../slice/userSlice'
 import { useNavigate } from 'react-router-dom';
 import { EventRepeat } from '@mui/icons-material'
+import GoBack from '../../components/GoBack.jsx'
 
 function Signup() {    
 
@@ -289,6 +290,7 @@ function Signup() {
     const [numberMsg, setNumberMsg] = useState("")
 
 
+    
 
     const onIdHandler = useCallback((event) => {
         setUserId(event.currentTarget.value)
@@ -410,162 +412,176 @@ function Signup() {
 
     const onSubmitHandler = async(e) => {
     e.preventDefault()        
-    dispatch(signup( userId, userPassword, userName, userEmail, userNumber ))
-    navigate('/login');    
+    if(idCheck==true && pwdCheck==true && confirmPwdCheck==true && emailCheck==true && nameCheck==true && numberCheck==true ){
+        dispatch(signup( userId, userPassword, userName, userEmail, userNumber ))
+        navigate('/login');    
     }
+    else{
+        alert('다시 확인하세요')
+    }}
     
         
 
 
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-            <div className="paper">        
-            
-            <Typography component="h1" variant="h5" style={{padding:"30px 10px"}}>
-                <b>Sign Up</b>
-            </Typography>
-            <form className="form" noValidate onSubmit={onSubmitHandler}>                     
-                <Grid item xs={12}>
-                    <div>
-                        <div className='d-flex'>
-                        
-                            <TextField
-                                autoComplete="id"
-                                name="id"
-                                variant="filled"
-                                value={userId}
-                                onChange={onIdHandler}
-                                required
-                                fullWidth
-                                id="userId"
-                                label="아이디"
-                                autoFocus
-                                error={!idCheck}
-                                // helperText={idCheck?null:'5글자 이상 입력해주세요'}
-                            />
-                            <Button                    
-                                type="submit"
-                                // variant="contained"
-                                onClick={idCheckHandler}
-                                // color="primary"
-                                fullWidth
-                                className="button"
-                                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
-                                    아이디 중복 확인
-                            </Button>
-                        </div>                            
-                        {userId.length > 0 && <span className={`message ${idCheck ? 'success' : 'error'}`}>{idMsg}</span>}              
-                    </div>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="filled"
-                        required
-                        fullWidth
-                        value={userPassword}
-                        onChange={onPasswordHandler}
-                        name="userPassword"
-                        // error={hasError('password')} // 해당 텍스트필드에 error 핸들러 추가
-                        label="비밀번호"
-                        type="password"
-                        id="userPassword"
-                        autoComplete="current-password"
-                        error={!pwdCheck}
-                    />
-                    {userPassword.length > 0 && <span className={`message ${pwdCheck ? 'success' : 'error'}`}>{pwdMsg}</span>}              
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="filled"
-                        required
-                        fullWidth
-                        value={userConfirmPassword}
-                        onChange={onconfirmPasswordHandler}
-                        name="confirmPassword"
-                        // error={hasNotSameError('confirmPassword')} // 해당 텍스트필드에 error 핸들러 추가
-                        // helperText={
-                        //     hasNotSameError('confirmPassword') ? "입력한 비밀번호와 일치하지 않습니다." : null
-                        // } // 에러일 경우에만 안내 문구 표시
-                        label="비밀번호 확인"
-                        type="password"
-                        id="userConfirmPassword"
-                        autoComplete="current-password"
-                        error={!confirmPwdCheck}
-                    />
-                    {userConfirmPassword.length > 0 && <span className={`message ${confirmPwdCheck ? 'success' : 'error'}`}>{confirmPwdMsg}</span>}              
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        autoComplete="fname"
-                        name="userName"
-                        variant="filled"
-                        value={userName}
-                        onChange={onNameHandler}
-                        required
-                        fullWidth
-                        id="userName"
-                        label="이름"
-                        error={!nameCheck}
-                    />
-                    {userName.length > 0 && <span className={`message ${nameCheck ? 'success' : 'error'}`}>{nameMsg}</span>}              
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="filled"
-                        required
-                        fullWidth
-                        value={userEmail}
-                        onChange={onEmailHandler}
-                        id="userEmail"
-                        label="이메일"
-                        name="email"
-                        autoComplete="email"
-                        error={!emailCheck}
-                    />
-                    {userEmail.length > 0 && <span className={`message ${emailCheck ? 'success' : 'error'}`}>{emailMsg}</span>}              
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="filled"
-                        required
-                        fullWidth
-                        value={userNumber}
-                        onChange={onNumberHandler}
-                        id="userNumber"
-                        label="전화번호"
-                        name="phone"
-                        autoComplete="phone"
-                        error={!numberCheck}
-                    />
-                    {userNumber.length > 0 && <span className={`message ${numberCheck ? 'success' : 'error'}`}>{numberMsg}</span>}              
-                </Grid>
-
-                <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onSubmit={onSubmitHandler}
-                // color="primary"
-                className="button"
-                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}
-                >
-                회원가입
-                </Button>
-                <Grid container justify="flex-end">
-                    <Grid item style={{margin:"10px 0px"}}>
-                        <Link href="/login" variant="body2" >
-                            이미 가입하셨다면, <b style={{fontWeight:"1000"}}>로그인</b>해 주세요!
-                        </Link>
-                    </Grid>
-                </Grid>
-            </form>
+        <div className="SignupPage">
+            <div className='d-flex justify-content-center p-5'>
+                <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
             </div>
-            <Box mt={5}>
-            
-            </Box>
-        </Container>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                <div className="paper">  
+                    <div className='d-flex mb-3'>
+                        <GoBack/>
+                        <h1 className='font-700'>
+                            Signup
+                        </h1>
+                    </div>      
+                
+                <form className="form" noValidate onSubmit={onSubmitHandler}>                     
+                    <Grid item xs={12}>
+                        <div>
+                            <div className='d-flex'>
+                            
+                                <TextField
+                                    autoComplete="id"
+                                    name="id"
+                                    variant="filled"
+                                    value={userId}
+                                    onChange={onIdHandler}
+                                    required
+                                    fullWidth
+                                    id="userId"
+                                    label="아이디"
+                                    autoFocus
+                                    error={!idCheck}
+                                    // helperText={idCheck?null:'5글자 이상 입력해주세요'}
+                                />
+                                <Button                    
+                                    type="submit"
+                                    // variant="contained"
+                                    onClick={idCheckHandler}
+                                    // color="primary"
+                                    fullWidth
+                                    className="button"
+                                    style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
+                                        아이디 중복 확인
+                                </Button>
+                            </div>                            
+                            {userId.length > 0 && <span className={`message ${idCheck ? 'success' : 'error'}`}>{idMsg}</span>}              
+                        </div>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="filled"
+                            required
+                            fullWidth
+                            value={userPassword}
+                            onChange={onPasswordHandler}
+                            name="userPassword"
+                            // error={hasError('password')} // 해당 텍스트필드에 error 핸들러 추가
+                            label="비밀번호"
+                            type="password"
+                            id="userPassword"
+                            autoComplete="current-password"
+                            error={!pwdCheck}
+                        />
+                        {userPassword.length > 0 && <span className={`message ${pwdCheck ? 'success' : 'error'}`}>{pwdMsg}</span>}              
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="filled"
+                            required
+                            fullWidth
+                            value={userConfirmPassword}
+                            onChange={onconfirmPasswordHandler}
+                            name="confirmPassword"
+                            // error={hasNotSameError('confirmPassword')} // 해당 텍스트필드에 error 핸들러 추가
+                            // helperText={
+                            //     hasNotSameError('confirmPassword') ? "입력한 비밀번호와 일치하지 않습니다." : null
+                            // } // 에러일 경우에만 안내 문구 표시
+                            label="비밀번호 확인"
+                            type="password"
+                            id="userConfirmPassword"
+                            autoComplete="current-password"
+                            error={!confirmPwdCheck}
+                        />
+                        {userConfirmPassword.length > 0 && <span className={`message ${confirmPwdCheck ? 'success' : 'error'}`}>{confirmPwdMsg}</span>}              
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            autoComplete="fname"
+                            name="userName"
+                            variant="filled"
+                            value={userName}
+                            onChange={onNameHandler}
+                            required
+                            fullWidth
+                            id="userName"
+                            label="이름"
+                            error={!nameCheck}
+                        />
+                        {userName.length > 0 && <span className={`message ${nameCheck ? 'success' : 'error'}`}>{nameMsg}</span>}              
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="filled"
+                            required
+                            fullWidth
+                            value={userEmail}
+                            onChange={onEmailHandler}
+                            id="userEmail"
+                            label="이메일"
+                            name="email"
+                            autoComplete="email"
+                            error={!emailCheck}
+                        />
+                        {userEmail.length > 0 && <span className={`message ${emailCheck ? 'success' : 'error'}`}>{emailMsg}</span>}              
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="filled"
+                            required
+                            fullWidth
+                            value={userNumber}
+                            onChange={onNumberHandler}
+                            id="userNumber"
+                            label="전화번호"
+                            name="phone"
+                            autoComplete="phone"
+                            error={!numberCheck}
+                        />
+                        {userNumber.length > 0 && <span className={`message ${numberCheck ? 'success' : 'error'}`}>{numberMsg}</span>}              
+                    </Grid>
+
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    onSubmit={onSubmitHandler}
+                    // color="primary"
+                    className="button"
+                    style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}
+                    >
+                    회원가입
+                    </Button>
+                    <Grid container justify="flex-end">
+                        <Grid item style={{margin:"10px 0px"}}>
+                            <Link href="/login" variant="body2" >
+                                이미 가입하셨다면, <b style={{fontWeight:"1000"}}>로그인</b>해 주세요!
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </form>
+                </div>
+                <Box mt={5}>
+                
+                </Box>
+            </Container>
+
+
+        </div>
     )
 }
 
