@@ -151,7 +151,6 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import Bluetooth from './Bluetooth';
 import { useSelector, useDispatch } from 'react-redux'
 import cha from '../../slice/chaSlice'
 
@@ -169,71 +168,7 @@ const style = {
   pb: 3,
 };
 
-
-function BasicTextFields() {
-  const dispatch = useDispatch()
-  const characteristic = useSelector(state => state.cha.characteristic)
-
-  const [name, setName] = useState("")
-  const [password, setPassword] = useState("")
-
-  const onNameChange  = useCallback((event) => {
-    setName(event.currentTarget.value)
-  },[])
-  const onPwdChange  = useCallback((event) => {
-    setPassword(event.currentTarget.value)
-  },[])
-
-  const send = () => {
-    axios({
-
-    })
-    .then({
-
-    })
-    .catch({
-
-    })    
-
-    const combinedValue = name + '/' + password;
-    dispatch(cha(combinedValue, characteristic))
-  }
-
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField 
-        id="filled-basic" 
-        label="Wifi 이름" 
-        variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' }}}
-        value={name}
-        onChange={onNameChange}
-        required
-        autoFocus
-      />
-      <TextField 
-        id="filled-basic" 
-        label="Wifi 비밀번호" 
-        variant="filled" 
-        value={password}
-        onChange={onPwdChange}
-        required
-      />      
-      <Button onClick={send}>SEND</Button>
-    </Box>
-
-    
-  );
-}
-
-
-export default function NestedModal(props) {
+export default function NestedModal({onWifi, characteristic}) {  
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => {
     setOpen(true);
@@ -242,33 +177,100 @@ export default function NestedModal(props) {
     setOpen(false);
   };
 
+  function BasicTextFields() {
+    const [name, setName] = useState("")
+    const [password, setPassword] = useState("")
+    const [characteristicValue, setCharacteristicValue] = useState('');
+    // const [characteristic, setCharacteristic] = useState(null);
+    const onNameChange  = useCallback((event) => {
+      setName(event.currentTarget.value)
+      console.log(event.currentTarget.value)
+    },[])
+    const onPwdChange  = useCallback((event) => {
+      setPassword(event.currentTarget.value)
+      console.log(event.currentTarget.value)
 
-//   return (
-//     <div>
-//       <Button onClick={handleOpen}>Wifi 정보 입력하기</Button>
-//       <Modal
-//         open={open}
-//         onClose={handleClose}
-//         aria-labelledby="parent-modal-title"
-//         aria-describedby="parent-modal-description"
-//       >
-//         <Box sx={{ ...style, width: 300, position:"relative" }}>
-//           <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-//           <br />
-//           <div className='d-flex align-items-center'>
-//             <img src='/images/WifiGif.gif' alt='wifi gif' style={{width:"30px", height:"30px", marginRight:"10px"}}></img>
-//             <div>
-//               <span>연결할 와이파이 이름과</span><br />
-//               <span>비밀번호를 입력해주세요</span>
-//             </div>
-//           </div>
-//           <br />
-//           <BasicTextFields handleWriteValue={props.handleWriteValue} />
-//         </Box>
-//       </Modal>
-//     </div>
-//   );
-// }
+    },[])
+
+    const handleWriteValue = useCallback((value) => {
+      console.log('char', characteristic)
+      if (characteristic) {
+        const data = new TextEncoder().encode(value);
+        characteristic.writeValue(data)
+          .then(() => {
+            console.log('Data written successfully:', value);
+            setCharacteristicValue(value);
+            onWifi(characteristicValue)
+          })
+          .then((characteristic) => {
+            if(characteristic.readValue()==='success'){
+              handleClose()
+            }
+            else{
+              console.log('wifi 이름과 비밀번호를 다시 입력해주세요')
+            }
+          }
+          )
+          .catch((error) => {
+            console.error('Error writing data:', error);
+          });
+      }
+    }, [characteristic, characteristicValue]);
+
+    const send = () => {
+      axios({
+        method : 'Get',
+        url : 'http://localhost:8080/api/v1/user/view'
+      })
+      .then((response)=>{
+
+        const str = response.data
+        let startBracket = str.indexOf('(');
+        let endBracket = str.indexOf(')');
+        let properties = str.slice(startBracket + 1, endBracket).split(', ');
+
+        let memberIdProperty = properties.find(property => property.startsWith('memberId'));
+        let memberId = memberIdProperty.split('=')[1];
+        const combinedValue = memberId + '/' + name + '/' + password;
+
+        console.log('mem',combinedValue)
+        handleWriteValue(combinedValue);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
+    return (
+      <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField 
+          id="filled-basic" 
+          label="Wifi 이름" 
+          variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' }}}
+          value={name}
+          onChange={onNameChange}
+          required
+          autoFocus
+        />
+        <TextField 
+          id="filled-basic" 
+          label="Wifi 비밀번호" 
+          variant="filled" 
+          value={password}
+          onChange={onPwdChange}
+          required
+        />      
+        <Button onClick={send}>SEND</Button>
+      </Box>      
+    );
+  }
 
 
   return (
