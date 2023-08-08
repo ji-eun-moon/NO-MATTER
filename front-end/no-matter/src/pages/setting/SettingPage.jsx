@@ -13,7 +13,7 @@ function SettingPage() {
     setDark(value)
   }
   const logout = () => {
-    // navigate('/')
+    navigate('/')
     sessionStorage.clear()
   }
   return (
