@@ -31,7 +31,7 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long expireTime = 1000 * 60 * 60L;
+    private Long expireTime = 1000 * 30L;
 
     @Transactional
     public String join(UserJoinRequest dto){
@@ -76,6 +76,12 @@ public class UserService {
 
         // Exception 안나면 token 발행
         String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
+
+        String refreshToken = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+
+        selectedUser.setRefreshToken(refreshToken);
+
+        userRepository.save(selectedUser);
 
         return token;
     }

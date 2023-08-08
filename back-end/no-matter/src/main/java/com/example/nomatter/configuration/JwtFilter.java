@@ -2,6 +2,8 @@ package com.example.nomatter.configuration;
 
 import com.example.nomatter.service.UserService;
 import com.example.nomatter.utils.JwtTokenUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(authorization == null || !authorization.startsWith("Bearer ")){
 
-            log.error("Token이 없거나 잘못되었습니다.");
+            log.error("Token  없거나 잘못되었습니다.");
             filterChain.doFilter(request, response);
 
             return ;
@@ -44,9 +46,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String Token = authorization.split(" ")[1];
         log.info("Token : " + Token);
 
+        boolean flag = JwtTokenUtil.isExpired(Token, secretKey);
+
         // Token Expired 여부
-        if(JwtTokenUtil.isExpired(Token, secretKey)){
+        if(flag){
+            Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(Token).getBody();
+
             log.info("Token이 만료되었습니다.");
+
+            log.info("userName = " + userService.findByUserId(JwtTokenUtil.getUserName(Token, secretKey)).get());
+
             filterChain.doFilter(request, response);
             return ;
         }

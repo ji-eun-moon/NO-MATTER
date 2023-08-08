@@ -27,6 +27,7 @@ public class User {
     private String userImg;
     private String userPhone;
     private String socialType;
+    private String refreshToken;
     private LocalDateTime createDate;
     private boolean isPushAlertOn;
     private boolean isDarkAlertOn;
