@@ -48,33 +48,32 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if(JwtTokenUtil.isExpired(Token, secretKey)){
                 log.error("accessToken 만료");
+                String userId = JwtTokenUtil.getUserName(Token, secretKey);
+                log.info(userId);
+                String refreshToken = userService.findByUserId(userId).get().getRefreshToken();
+
+                log.info("refreshToken = " + refreshToken);
+
+                try {
+                    if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
+                        log.error("refreshToken 만료");
+                    }
+
+                    Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
+                    response.setHeader("AUTHORIZATION", Token);
+
+                    log.info("new Token = " + Token);
+
+                    filterChain.doFilter(request, response);
+                    return ;
+                }catch (Exception ef){
+                    log.error(ef.getMessage());
+                    filterChain.doFilter(request, response);
+                    return ;
+                }
             }
         } catch (Exception e){
-
-            String userId = JwtTokenUtil.getUserName(Token, secretKey);
-            
-            String refreshToken = userService.findByUserId(userId).get().getRefreshToken();
-
-            log.info("refreshToken = " + refreshToken);
-
-            try {
-                if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
-                   log.error("refreshToken 만료"); 
-                }
-
-                Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
-                response.setHeader("AUTHORIZATION", Token);
-
-                log.info("new Token = " + Token);
-
-                filterChain.doFilter(request, response);
-                return ;
-            }catch (Exception ef){
-                log.error(ef.getMessage());
-                filterChain.doFilter(request, response);
-                return ;
-            }
-            
+            log.info(e.getMessage());
         }
 
         // userName 꺼내기
