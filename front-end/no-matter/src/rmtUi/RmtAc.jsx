@@ -133,7 +133,7 @@ function RmtAc() {
                 <button 
                   className='mb-3 btn'
                   style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-                  onClick={remoteShare}
+                  onClick={remoteModify}
                   >저장하기
                 </button> : 
                 <button 
@@ -170,14 +170,14 @@ function RmtAc() {
           {isOn ? (
             <div onClick={handleTurnOff} className='flex-column centered'
             onTouchStart={()=>{onTouchStart('turnoff')}}
-          onTouchEnd={()=>{onTouchEnd()}}>
+            onTouchEnd={()=>{onTouchEnd()}}>
               <img src='/images/turnon.png' style={{width:"80px"}}/>
               {/* <p style={{fontSize:"30px", fontWeight:"500"}}>OFF</p> */}
             </div>
-          ) : (
+            ) : (
             <div onClick={handleTurnOn} className='flex-column centered'
             onTouchStart={()=>{onTouchStart('turnon')}}
-          onTouchEnd={()=>{onTouchEnd()}}>
+            onTouchEnd={()=>{onTouchEnd()}}>
               <img src='/images/turnoff.png' style={{width:"80px"}}/>
               {/* <p style={{fontSize:"30px", fontWeight:"500"}}>ON</p> */}
             </div>
