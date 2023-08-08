@@ -15,9 +15,11 @@ function SelectResult({setShowModal, handleSelection}) {
 
   const getHubs = () => {
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    axios.get('http://localhost:8080/api/v1/userhub/list')
+    axios({
+      method : 'Get',
+      url : 'http://localhost:8080/api/v1/userhub/list',
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
     .then((response) => {  
       setHubs(response.data)
     })
@@ -25,9 +27,11 @@ function SelectResult({setShowModal, handleSelection}) {
 
   const getRemote = (id) => {
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    axios.get(`http://localhost:8080/api/v1/remote/list/${id}`)
+    axios({
+      method : 'Get',
+      url : `http://localhost:8080/api/v1/remote/list/${id}`,
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
     .then((response) => {
       // console.log(response.data)
       setRemotes(response.data) // 리모컨 리스트

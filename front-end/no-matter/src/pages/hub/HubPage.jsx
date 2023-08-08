@@ -8,12 +8,10 @@ import LoadingSpinner from '../../components/LoadingSpinner.jsx';
 function HubPage() {
   const navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
-  const token = sessionStorage.getItem('authToken')
   const [loading, setLoading] = useState(true);
 
   const getHubs = () => {
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
     // 테스트 - json-server
     // axios.get('http://localhost:3001/hubs/')
@@ -22,7 +20,11 @@ function HubPage() {
     //   setHubs(response.data)
     // })
 
-    axios.get('http://localhost:8080/api/v1/userhub/list')
+    axios({
+      method : 'Get',
+      url : 'http://localhost:8080/api/v1/userhub/list',
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
     .then((response) => {  
       // console.log(response.data)
       setHubs(response.data)
