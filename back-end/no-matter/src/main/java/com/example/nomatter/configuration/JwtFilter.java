@@ -1,5 +1,6 @@
 package com.example.nomatter.configuration;
 
+import com.example.nomatter.domain.User;
 import com.example.nomatter.service.UserService;
 import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,10 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String secretKey;
 
     @Override
-
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization : " + authorization);
+        log.info("doFilterInternal authorization : " + authorization);
 
         if(authorization == null || !authorization.startsWith("Bearer ")){
 
@@ -40,15 +40,41 @@ public class JwtFilter extends OncePerRequestFilter {
             return ;
         }
 
-        // token에서 username 꺼내기
+        // token 분리
         String Token = authorization.split(" ")[1];
         log.info("Token : " + Token);
 
         // Token Expired 여부
-        if(JwtTokenUtil.isExpired(Token, secretKey)){
-            log.info("Token이 만료되었습니다.");
-            filterChain.doFilter(request, response);
-            return ;
+        try {
+            if(JwtTokenUtil.isExpired(Token, secretKey)){
+                log.error("accessToken 만료");
+            }
+        } catch (Exception e){
+
+            String userId = JwtTokenUtil.getUserName(Token, secretKey);
+            
+            String refreshToken = userService.findByUserId(userId).get().getRefreshToken();
+
+            log.info("refreshToken = " + refreshToken);
+
+            try {
+                if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
+                   log.error("refreshToken 만료"); 
+                }
+
+                Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
+                response.setHeader("AUTHORIZATION", Token);
+
+                log.info("new Token = " + Token);
+
+                filterChain.doFilter(request, response);
+                return ;
+            }catch (Exception ef){
+                log.error(ef.getMessage());
+                filterChain.doFilter(request, response);
+                return ;
+            }
+            
         }
 
         // userName 꺼내기

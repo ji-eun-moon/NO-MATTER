@@ -33,7 +33,7 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long accessTokenExpiredTime = 1000 * 60 * 60L;
+    private Long accessTokenExpiredTime = 1000 * 30L;
     private Long refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L;
 
     @Transactional
@@ -86,12 +86,6 @@ public class UserService {
 
         // Exception 안나면 token 발행
         String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, accessTokenExpiredTime);
-
-        Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        response.addCookie(cookie);
 
         return token;
     }
