@@ -64,12 +64,12 @@ export default function VerticalTabs() {
 
   return (
     // <div className='d-flex flex-column justify-content-center ' style={{height:"100%"}}>    
-      <div className='container'>
+      <div className='container page-container'>
         <div className='d-flex mt-5 mb-3'>
           <GoBack /> 
           <h1 className="font-700">스케줄 등록</h1>
         </div>
-        <div className='d-flex justify-content-end'>
+        <div className='d-flex justify-content-end container'>
           <button 
               className='mb-3 btn'
               style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}

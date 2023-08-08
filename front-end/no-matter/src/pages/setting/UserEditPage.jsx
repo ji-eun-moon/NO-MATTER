@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import axiosInstance from '../../config/axios'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 function UserEditPage() {
   const navigate = useNavigate()
@@ -25,24 +26,25 @@ function UserEditPage() {
     setCurPwd(event.currentTarget.value)
 
   },[])
+
   const onNewPasswordHandler = useCallback((event) => {
     const newPwdReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
     setNewPwd(event.currentTarget.value)
 
-    if(!newPwdReg.test(event.currentTarget.value)){
+    if(event.currentTarget.value===curPwd){
+      setNewPwdMsg('현재 비밀번호와 다른 비밀번호를 설정해주세요')
+      setNewPwdCheck(false)
+    }    
+    else if(!newPwdReg.test(event.currentTarget.value)){
       setNewPwdMsg('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요')
       setNewPwdCheck(false)
     }
-    else if(newPwd===curPwd){
-      setNewPwdMsg('현재 비밀번호 다른 비밀번호를 설정해주세요')
-      setNewPwdCheck(false)
-    }    
     else{
       setNewPwdMsg('안전한 비밀번호입니다')
         setNewPwdCheck(true)
     }        
-  },[])
+  })
 
 const onNewConfirmPasswordHandler = useCallback((event) => {
   setNewConfirmPassword(event.currentTarget.value)
@@ -57,16 +59,15 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
     }        
   },[newPwd])
 
-  const onSubmitHandler = async(e) => {
-    e.preventDefault()   
-    
-  }     
     
 
   const onCheck = (event) => {
+    event.preventDefault()
+    console.log('check')
     axios({
-      method : 'Post',
-      url : `http://localhost:8080/api/v1/user/passwordCheck`,
+      method : 'Get',
+      url : `http://localhost:8080/api/v1/user/passwordCheck/${curPwd}`,
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
       console.log('response',response)
@@ -81,17 +82,60 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
   }
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault()
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
+
+    axios({
+      method : 'Post',
+      url : `http://localhost:8080/api/v1/user/modify`,
+      data : {password:newPwd},
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+  })
+  .then((response) => {
+      console.log('response',response)
+      window.confirm('비밀번호 수정이 완료되었습니다')
+      setCur(false)
+      navigate('/login')
+  })
+  .catch((err) => {
+      console.log('err',err)
+      alert('비밀번호 수정이 완료되지 않았습니다')
+      setCur(true)
+    })
+  }
+
+
 
   const deleteUser = (e) => {
-    axiosInstance.delete('/user/delete')
-    .then((res) => {
-      alert('잘가시게')
-      sessionStorage.clear()
-      console.log(res)
-      navigate('/')
-    })
-    .catch((err) => {
-      console.log(err)
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
+    Swal.fire({
+      html: '<h2 style="font-size: 1.3em;">진짜 탈퇴하시겠습니까?</h2>',      
+      showConfirmButton: false,
+      showDenyButton: true,
+      showCancelButton: true,
+      denyButtonText: `탈퇴`,
+      cancelButtonText: `취소`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isDenied) {
+        axios({
+          method : 'Delete',
+          url : `http://localhost:8080/api/v1/user/delete`,
+          headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+        })
+        .then((res) => {
+          Swal.fire('회원탈퇴가 완료되었습니다.', '', 'info')
+          sessionStorage.clear()
+          console.log(res)
+          navigate('/')
+        })
+        .catch((err) => {
+          console.log(err)
+          console.log(err.response.status)
+          // if (err.response.status === 403) {}
+        })
+      }
     })
   }
 
@@ -103,7 +147,7 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
       <div style={{marginTop:"20px"}}>
         <div style={{marginBottom:"20px"}}>
-          <p style={{margin:"3px"}}>현재 비밀번호를 입력해주세요</p>
+          <p style={{margin:"8px"}}>현재 비밀번호를 입력해주세요</p>
           <TextField
             variant={cur?"outlined":"filled"}
             required
@@ -122,19 +166,19 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
           type="submit"
           fullWidth
           variant="contained"
-          onSubmit={onCheck}
+          onClick={onCheck}
           // color="primary"
           className="button"
-          style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}
+          style={{ backgroundColor: "#0097B2", color: "#FFFFFF", margin:"1px"}}
           >
             확인
           </Button>
         </div>
 
         <div style={{marginBottom:"20px"}}>
-          <p style={{margin:"1px"}}>새로운 비밀번호를 입력해주세요</p>
+          <p style={{margin:"8px"}}>새로운 비밀번호를 입력해주세요</p>
           <TextField
-            variant={cur?"filled":"ourlined"}
+            variant={cur?"filled":"outlined"}
             required
             fullWidth
             value={newPwd}
@@ -152,9 +196,9 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
         </div>
 
         <div style={{marginBottom:"20px"}}>
-          <p style={{margin:"1px"}}>새로운 비밀번호를 다시 입력해주세요</p>
+          <p style={{margin:"8px"}}>새로운 비밀번호를 다시 입력해주세요</p>
           <TextField
-            variant={cur?"filled":"ourlined"}
+            variant={cur?"filled":"outlined"}
             required
             fullWidth
             value={newConfirmPassword}
@@ -175,26 +219,17 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
           type="submit"
           fullWidth
           variant="contained"
-          onSubmit={onSubmitHandler}
+          onClick={onSubmitHandler}
           // color="primary"
           className="button"
-          style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}
-          >
-          회원가입
+          style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}} >
+          비밀번호 수정
           </Button>
       </div>
+      <div onClick={deleteUser} className='centered' style={{color:"crimson", textDecoration:"underline", margin:"60px"}}>
+        <SentimentVeryDissatisfiedIcon style={{fontSize:"24px"}}/>회원 탈퇴
+      </div>
 
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        onClick={deleteUser}
-        style={{ backgroundColor: '#CC0000', color: 'white' }}
-        className="button"
-        >
-          <SentimentVeryDissatisfiedIcon/>
-        회원 탈퇴
-      </Button>
     </div>
   )
 }

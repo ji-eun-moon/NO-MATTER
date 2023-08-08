@@ -59,11 +59,7 @@ const routes = [
     element: <RmtTvUi />
   },
   {
-    path:'/hubs/rmtfan/1',
-    element: <RmtFanUi />
-  },
-  {
-    path:'/hubs/rmtfan/0',
+    path:'/hubs/rmtfan',
     element: <RmtFanUi />
   },
   {

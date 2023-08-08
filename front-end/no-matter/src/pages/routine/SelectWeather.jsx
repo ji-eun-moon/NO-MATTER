@@ -14,35 +14,36 @@ import FormLabel from '@mui/material/FormLabel';
 function SelectWeather() {
 
   const navigate = useNavigate();
-  const [selectedWeather, setSelectedWeather] = useState(0);
+  const [selectedWeather, setSelectedWeather] = useState('0');
 
   const weathers = [
     {
       label: '맑은 날',
-      condition: 0,
+      condition: '0',
     },
     {
       label: '비 오는 날',
-      condition: 1,
+      condition: '1',
     },
     {
       label: '비/눈 오는 날',
-      condition: 2,
+      condition: '2',
     },
     {
       label: '눈 오는 날',
-      condition: 3,
+      condition: '3',
     },
   ];
 
   const handleChange = (event) => {
     setSelectedWeather(event.target.value);
-    // console.log(event.target.value)
+    console.log(event.target.value)
   };
 
   const onSubmit = () => {
     const selectedCondition = weathers.find((item) => item.condition === selectedWeather)
-    navigate('/routine/result', { state: { kind: 'weather', condition: selectedCondition  } });
+    console.log(selectedCondition)
+    navigate('/routine/result', { state: { kind: 'weather', condition: selectedCondition} });
   };
 
   return (

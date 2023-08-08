@@ -10,22 +10,23 @@ function RemotePage() {
   const { id } = useParams()  // 허브 id
   const [ hub, setHub ] = useState([]);
   const [ remotes, setRemotes ] = useState([]);
-  const token = sessionStorage.getItem('authToken')
   const [loading, setLoading] = useState(true);
 
   // 특정 허브 정보 저장
   const hubInfo = (id) => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.get('http://localhost:8080/api/v1/userhub/list')
-      .then((response) => {
-        const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
-        setHub(specificHub);
-      });
+    axios({
+      method : 'Get',
+      url : 'http://localhost:8080/api/v1/userhub/list',
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
+    .then((response) => {
+      const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
+      setHub(specificHub);
+    });
   }
 
   const getRemote = (id) => {
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
     // json-server 테스트용
     // axios.get(`http://localhost:3001/hubs/${id}`)
@@ -34,7 +35,11 @@ function RemotePage() {
     //   setRemotes(response.data.remotes) // 리모컨 리스트
     // })
 
-    axios.get(`http://localhost:8080/api/v1/remote/list/${id}`)
+    axios({
+      method : 'Get',
+      url : `http://localhost:8080/api/v1/remote/list/${id}`,
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
     .then((response) => {
       // console.log(response.data)
       setRemotes(response.data) // 리모컨 리스트
