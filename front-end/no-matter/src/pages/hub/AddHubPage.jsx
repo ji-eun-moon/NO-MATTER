@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -12,16 +12,59 @@ import axios from 'axios';
 import Loading from '../../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom';
 
+
+
+const AddHub = () => {
+  const navigate = useNavigate();
+  axios({
+    method:'Post',
+    url: 'http://localhost:8080/api/v1/userhub/register'
+  })
+  .then((response) => {
+    console.log(response)
+    navigate('/hubs');    
+  })
+  .catch((error) => {
+    console.log(error)
+  })  
+return(
+  <div>
+    <Loading/>
+    <p style={{marginTop:"15px"}}>연결중</p>      
+  </div>
+)}
+
+
+export default function HorizontalNonLinearStepper() {
+
+const [characteristicValue, setCharacteristicValue] = useState('');
+const [characteristic, setCharacteristic] = useState(null);
+
+const onBluetooth = (newcharacteristic, newcharacteristicValue)=>{
+  setCharacteristic(newcharacteristic)
+  setCharacteristicValue(newcharacteristicValue)
+}
+// console.log(typeof onBluetooth);
+
+useEffect(() => {
+  console.log('부모의 char', characteristic)
+}, [characteristic, characteristicValue])
+
+
+const onWifi = (newcharacteristicValue)=>{
+  setCharacteristicValue(newcharacteristicValue)
+}
+
 const steps = [
   {
     label: 'Bluetooth',
     label2: '연결',
-    component: <Bluetooth />,
+    component: <Bluetooth onBluetooth={onBluetooth}/>,
   },
   {
     label: 'wifi',
     label2: '연결',
-    component: <Wifi />,
+    component: <Wifi onWifi={onWifi} characteristic={characteristic}/>,
   },
   {
     label: '허브',
@@ -30,28 +73,6 @@ const steps = [
   },
 ];
 
-  const AddHub = () => {
-    const navigate = useNavigate();
-    axios({
-      method:'Post',
-      url: 'http://localhost:8080/api/v1/userhub/register'
-    })
-    .then((response) => {
-      console.log(response)
-      navigate('/hubs');    
-    })
-    .catch((error) => {
-      console.log(error)
-    })  
-  return(
-    <div>
-      <Loading/>
-      <p style={{marginTop:"15px"}}>연결중</p>      
-    </div>
-  )}
-
-
-export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   // const [allCompleted, setAllCompleted] = React.useState(false);
@@ -140,8 +161,8 @@ export default function HorizontalNonLinearStepper() {
                   ))}
                 {/* </Stepper> */}
               </div>
-
               <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
+                
                 <Button
                   color="inherit"
                   disabled={activeStep === 0}
