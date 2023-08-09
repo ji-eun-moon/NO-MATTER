@@ -1,6 +1,6 @@
-
 import React from 'react'
 import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
@@ -25,15 +25,22 @@ function AddRoutinePage() {
 
 //   const getRoutines = () => {
 
-//     // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+//     
 
-//     axios.get('http://localhost:3001/routines/')
+    // axiosInstance({
+    //   method: 'get',
+    //   url: 'http://localhost:3001/routines/'
+    // })
 //     .then((response) => {
 //       // console.log(response.data)
 //       setRoutines(response.data)
 //     })
 
-//     // axios.get('http://localhost:8080/api/v1/userhub/list')
+    // axiosInstance({
+    //   method: 'get',
+    //   url: 'http://localhost:8080/api/v1/userhub/list'
+    // })
+
 //     // .then((response) => {  
 //     //   console.log(response.data)
 //     //   setHubs(response.data)
