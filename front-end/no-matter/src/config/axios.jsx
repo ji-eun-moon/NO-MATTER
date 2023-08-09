@@ -1,5 +1,6 @@
 // axios.js
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 
 // 인스턴스 생성
 const instance = axios.create({
@@ -9,12 +10,10 @@ const instance = axios.create({
 // 요청 인터셉터 추가
 instance.interceptors.request.use(
   (config) => {
-    // 요청 전에 처리해야 할 작업을 수행합니다. 예: 헤더에 인증 토큰 추가
+    // 요청 전에 처리해야 할 작업을 수행
     const authToken = sessionStorage.getItem('authToken')
-    // const refreshToken = sessionStorage.getItem('refreshToken')
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`
-      // config.headers.Authorization = `Bearer ${authToken} ${refreshToken}`
     }
     return config;
   },
@@ -28,31 +27,28 @@ instance.interceptors.request.use(
 // 응답 인터셉터 추가
 instance.interceptors.response.use(
   (response) => {
-    // 응답을 받은 후 처리해야 할 작업을 수행합니다.
+    // 응답을 받은 후 처리해야 할 작업을 수행
     return response;
   }, (error) => {
-    console.log(error)
     const originalRequest = error.config;
-    // 토큰이 만료되었거나 유효하지 않은 경우에만 토큰을 재발급 받을 수 있도록 조건을 설정합니다.
+    // 토큰이 만료되었거나 유효하지 않은 경우에만 토큰을 재발급 받을 수 있도록 조건을 설정
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
-      // 여기서 토큰을 재발급 받는 작업을 수행합니다.
-      // const nowauthtoken = sessionStorage.getItem('authToken')
-      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: sessionStorage.getItem('refreshToken') })
+      // 여기서 토큰을 재발급 받는 작업을 수행
+      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
-          // 새로 발급된 토큰을 저장합니다.
-          console.log(response)
           const newAuthToken = response.data[0];
           sessionStorage.setItem('authToken', response.data[0]);
-          sessionStorage.setItem('refreshToken', response.data[1]);
-
-          // 기존 요청에 새로 발급된 토큰을 추가하여 다시 요청합니다.
+          localStorage.setItem('refreshToken', response.data[1]);
+          // 기존 요청에 새로 발급된 토큰을 추가하여 다시 요청
           originalRequest.headers.Authorization = `Bearer ${newAuthToken}`;
           return axios(originalRequest);
         })
         .catch((error) => {
-          // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행합니다.
-          // 여기에 오류 처리 코드를 작성합니다.
+          // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
+          // 여기에 오류 처리 코드를 작성
+          const navigate = useNavigate()
+          navigate('/login')
           return Promise.reject(error);
         });
     }
