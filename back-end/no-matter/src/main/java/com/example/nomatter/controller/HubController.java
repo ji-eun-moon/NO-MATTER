@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -106,6 +107,15 @@ public class HubController {
         }
 
         return ResponseEntity.ok().body(code);
+
+    }
+
+    @GetMapping("/members/{hubId}")
+    public ResponseEntity<?> getMembers(@PathVariable Long hubId, Authentication authentication){
+
+        List<Object> list = hubService.findAllByHubId(hubId);
+
+        return ResponseEntity.ok().body(list);
 
     }
 

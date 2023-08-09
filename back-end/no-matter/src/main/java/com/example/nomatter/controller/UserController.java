@@ -89,9 +89,7 @@ public class UserController {
 
         Optional<User> user = userService.findByUserId(authentication.getName());
 
-        log.info(user.toString());
-
-        return ResponseEntity.ok().body(user.toString());
+        return ResponseEntity.ok().body(user.get());
     }
 
     @GetMapping("/passwordCheck/{password}")

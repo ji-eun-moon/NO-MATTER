@@ -25,12 +25,12 @@ public class BoardController {
     private final RemoteService remoteService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, Long> map, Authentication authentication){
+    @PostMapping("/register/{remoteId}")
+    public ResponseEntity<?> register(@PathVariable Long remoteId, Authentication authentication){
 
         Board board = Board.builder()
                 .userId(userService.findByUserId(authentication.getName()).get().getMemberId())
-                .remoteId(map.get("remoteId"))
+                .remoteId(remoteId)
                 .download(0L)
                 .createDate(LocalDateTime.now())
                 .build();
@@ -56,7 +56,7 @@ public class BoardController {
 
         log.info(map.toString());
 
-        return ResponseEntity.ok().body(map.get("controllerName") + "에 대한 검색어 =  " + list);
+        return ResponseEntity.ok().body(list);
 
     }
 

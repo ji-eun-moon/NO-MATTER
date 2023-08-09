@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -51,6 +52,12 @@ public class HubService {
     public Optional<Hub> findByInviteCode(String inviteCode){
 
         return hubRepository.findByInviteCode(inviteCode);
+
+    }
+
+    public List<Object> findAllByHubId(Long hubId){
+
+        return hubRepository.findAllByHubId(hubId);
 
     }
 
