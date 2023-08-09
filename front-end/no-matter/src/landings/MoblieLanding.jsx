@@ -23,6 +23,7 @@ function MoblieLanding() {
         .then((response) => {
           sessionStorage.setItem('authToken', response.data[0]);
           localStorage.setItem('refreshToken', response.data[1]);
+          navigate('/main')
           return true
         })
         .catch(() => {
