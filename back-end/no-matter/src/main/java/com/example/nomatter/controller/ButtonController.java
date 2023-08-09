@@ -2,6 +2,7 @@ package com.example.nomatter.controller;
 
 import com.example.nomatter.domain.Button;
 import com.example.nomatter.service.ButtonService;
+import com.example.nomatter.service.RemoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,9 +16,16 @@ import java.util.List;
 public class ButtonController {
 
     private final ButtonService buttonService;
+    private final RemoteService remoteService;
 
-    @PostMapping("/saveButtons")
-    public ResponseEntity<?> saveButtons(@RequestBody List<Button> list, Authentication authentication){
+    @PostMapping("/registerButtons")
+    public ResponseEntity<?> registerButtons(@RequestBody List<Button> list, Authentication authentication){
+
+        Long remoteId = remoteService.findRecentlyRemoteId();
+
+        for(Button button : list){
+            button.setRemoteId(remoteId);
+        }
 
         buttonService.saveAll(list);
 
