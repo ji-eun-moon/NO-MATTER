@@ -119,14 +119,15 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isDenied) {
-        axios({
+        axiosInstance({
           method : 'Delete',
-          url : `http://localhost:8080/api/v1/user/delete`,
-          headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          url : `user/delete`,
+          // headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
         })
         .then((res) => {
           Swal.fire('회원탈퇴가 완료되었습니다.', '', 'info')
           sessionStorage.clear()
+          localStorage.clear()
           console.log(res)
           navigate('/')
         })
