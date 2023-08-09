@@ -67,4 +67,10 @@ public class UserHubService {
         userHubRepository.delete(userHub);
 
     }
+
+    public Optional<UserHub> findByUserIdAndHubId(Long memberId, Long hubId){
+
+        return userHubRepository.findByUserIdAndHubId(memberId, hubId);
+
+    }
 }
