@@ -15,7 +15,8 @@ public enum Errorcode {
     USER_NOT_GRADE(HttpStatus.UNAUTHORIZED, ""),
     INVITE_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
     EXPIRED_INVITE_CODE(HttpStatus.UNAUTHORIZED, ""),
-    NOT_MODIFY_PASSWORD(HttpStatus.NOT_MODIFIED, "")
+    NOT_MODIFY_PASSWORD(HttpStatus.NOT_MODIFIED, ""),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "")
     ;
 
     private HttpStatus httpStatus;

@@ -28,7 +28,7 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**").permitAll()
+                .antMatchers("/api/v1/user/login", "/api/v1/user/join", "/api/v1/user/idCheck/**", "/api/v1/user/refreshToken").permitAll()
                 .antMatchers("/login/oauth2/callback/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
