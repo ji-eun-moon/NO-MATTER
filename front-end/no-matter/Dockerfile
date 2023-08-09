@@ -1,12 +1,9 @@
-FROM node:14 as builder
+FROM nginx:alpine
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY /nginx/default.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir ./app
-WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
+RUN rm -rf /usr/share/nginx/html/*
+COPY /build /usr/share/nginx/html
 
-
-#nginx
-FROM nginx
-COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
