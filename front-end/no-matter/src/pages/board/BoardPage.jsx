@@ -11,6 +11,7 @@ function BoardPage() {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('recent');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredRemotes, setFilteredRemotes] = useState([]);
 
   const getRemotes = () => {
     // json-server 테스트용
@@ -27,6 +28,18 @@ function BoardPage() {
   }
 
   useEffect(() => {
+    if (searchQuery === '') {
+      setFilteredRemotes(remotes);
+    } else {
+      const filteredResults = remotes.filter(remote =>
+        remote.remoteCode.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredRemotes(filteredResults);
+      setCurrentPage(1);
+    }
+  }, [searchQuery, remotes]);
+
+  useEffect(() => {
     getRemotes();
   }, []);
 
@@ -34,7 +47,7 @@ function BoardPage() {
     setSortBy(event.target.value);
   }
 
-  const sortedRemotes = [...remotes].sort((a, b) => {
+  const sortedRemotes = [...filteredRemotes].sort((a, b) => {
     if (sortBy === 'recent') {
       return b.id - a.id;
     } else if (sortBy === 'downloads') {
@@ -44,6 +57,19 @@ function BoardPage() {
     }
     return 0;
   });
+
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const postsPerPage = 8; // 페이지당 게시글 수
+  const totalPages = Math.ceil(sortedRemotes.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const endIndex = startIndex + postsPerPage;
+  const postsForCurrentPage = sortedRemotes.slice(startIndex, endIndex);
+  
+  const handleChangePage = (event, newPage) => {
+    if (newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <div className='container page-container'>
@@ -55,7 +81,6 @@ function BoardPage() {
       </div>
       <hr />
 
-
       <div className='d-flex'>
         <div className='me-1'>
         <TextField
@@ -64,11 +89,11 @@ function BoardPage() {
             size="small"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            style={{ width: "100%" }}
+            style={{ width: "100%", padding:"0px"}}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton>
+                  <IconButton style={{ padding:"0px"}}>
                     <SearchIcon />
                   </IconButton>
                 </InputAdornment>
@@ -86,29 +111,30 @@ function BoardPage() {
           </FormControl>
         </div>
       </div>
-
-      <div className="table-responsive" style={{borderRadius:"10px"}}>
+      
+ 
+        <div className="table-responsive" style={{borderRadius:"10px"}}>
         <table className="table" >
           <thead className='table-light'>
             <tr>
               <th scope="col" className="text-center">No</th>
-              <th scope="col" className="text-center">Code</th>
+              <th scope="col" className="text-center">Product Code</th>
               <th scope="col" className="text-center">Downloads</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={3}>Loading...</td>
+                <td colSpan={3} className="text-center">Loading...</td>
               </tr>
-            ) : sortedRemotes.length === 0 ? (
+            ) :  postsForCurrentPage.length === 0 ? (
               <tr>
                 <td colSpan={3} className="text-center">다운로드 가능한 리모컨이 없습니다.</td>
               </tr>
             ) : (
-              sortedRemotes.map((remote, index) => (
+              postsForCurrentPage.map((remote, index) => (
                 <tr key={remote.id}>
-                  <td className="text-center">{index + 1}</td>
+                  <td className="text-center">{startIndex + index + 1}</td>
                   <td className="text-center">{remote.remoteCode}</td>
                   <td className="text-center">{remote.download}</td>
                 </tr>
@@ -117,10 +143,20 @@ function BoardPage() {
           </tbody>
         </table>
       </div>
+
       
       <div className='centered'>
         <Stack spacing={2}>
-          <Pagination count={5} />
+          {/* <Pagination 
+            count={totalPages} page={currentPage}
+            onChange={(event, page) => setCurrentPage(page)} /> */}
+            <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handleChangePage}
+            size='midium'
+            siblingCount={0}
+          />
         </Stack>
       </div>
       </div>
