@@ -18,6 +18,7 @@ public enum Errorcode {
     NOT_MODIFY_PASSWORD(HttpStatus.NOT_MODIFIED, ""),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, ""),
     USER_HUB_DUPLICATED(HttpStatus.CONFLICT, ""),
+    ROUTINE_NOT_FOUND(HttpStatus.NOT_FOUND, "")
     ;
 
     private HttpStatus httpStatus;
