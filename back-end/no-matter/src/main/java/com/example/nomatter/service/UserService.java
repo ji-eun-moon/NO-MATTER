@@ -1,10 +1,8 @@
 package com.example.nomatter.service;
 
 import com.example.nomatter.domain.User;
-import com.example.nomatter.domain.UserHub;
 import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
-import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.exception.AppException;
 import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.UserRepository;
@@ -16,8 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,8 +29,9 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long accessTokenExpiredTime = 1000 * 30L;
+    private Long accessTokenExpiredTime = 1000 * 1L;
     private Long refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L;
+    private Long expireTime = 1000 * 30L;
 
     @Transactional
     public String join(UserJoinRequest dto){
@@ -66,7 +63,7 @@ public class UserService {
     }
 
     @Transactional
-    public String login(UserLoginRequest dto, HttpServletResponse response){
+    public String login(UserLoginRequest dto){
 
 
         // 아이디가 존재하지 않는 경우
@@ -86,6 +83,10 @@ public class UserService {
 
         // Exception 안나면 token 발행
         String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, accessTokenExpiredTime);
+
+        selectedUser.setRefreshToken(refreshToken);
+
+        userRepository.save(selectedUser);
 
         return token;
     }
@@ -136,4 +137,15 @@ public class UserService {
 
     }
 
+    public Optional<User> findByRefreshToken(String token){
+
+        return userRepository.findByRefreshToken(token);
+
+    }
+
+    public void save(User user){
+
+        userRepository.save(user);
+
+    }
 }

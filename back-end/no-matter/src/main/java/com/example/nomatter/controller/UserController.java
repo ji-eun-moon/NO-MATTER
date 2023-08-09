@@ -35,10 +35,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto, HttpServletResponse response){
-        String token = userService.login(dto, response);
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest dto){
 
-        return ResponseEntity.ok().body(token);
+        String token = userService.login(dto);
+
+        String refreshToken = userService.findByUserId(dto.getUserId()).get().getRefreshToken();
+
+        String[] arr = new String[2];
+
+        arr[0] = token;
+        arr[1] = refreshToken;
+
+        return ResponseEntity.ok().body(arr);
     }
 
     @PostMapping("/modify")

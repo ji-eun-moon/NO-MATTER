@@ -18,6 +18,7 @@ public class JwtTokenUtil {
         } catch (JwtException | IllegalArgumentException e) {
             // Handle the exception (log, return false, etc.)
             return true; // Assuming you want to treat any exception as token expired
+
         }
     }
 

@@ -1,8 +1,13 @@
 package com.example.nomatter.configuration;
 
 import com.example.nomatter.domain.User;
+import com.example.nomatter.exception.AppException;
+import com.example.nomatter.exception.Errorcode;
+import com.example.nomatter.repository.UserRepository;
 import com.example.nomatter.service.UserService;
 import com.example.nomatter.utils.JwtTokenUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -32,62 +37,70 @@ public class JwtFilter extends OncePerRequestFilter {
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("doFilterInternal authorization : " + authorization);
 
-        if(authorization == null || !authorization.startsWith("Bearer ")){
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
 
-            log.error("Token이 없거나 잘못되었습니다.");
+            log.error("Token  없거나 잘못되었습니다.");
             filterChain.doFilter(request, response);
 
-            return ;
+            return;
         }
 
         // token 분리
         String Token = authorization.split(" ")[1];
+        String refreshToken = authorization.split(" ")[2];
         log.info("Token : " + Token);
+        log.info("refreshToken = " + refreshToken);
 
-        // Token Expired 여부
-        try {
-            if(JwtTokenUtil.isExpired(Token, secretKey)){
-                log.error("accessToken 만료");
-                String userId = JwtTokenUtil.getUserName(Token, secretKey);
-                log.info(userId);
-                String refreshToken = userService.findByUserId(userId).get().getRefreshToken();
 
-                log.info("refreshToken = " + refreshToken);
+        if(JwtTokenUtil.isExpired(Token, secretKey)){
+            log.info("accessToken 만료");
 
-                try {
-                    if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
-                        log.error("refreshToken 만료");
-                    }
+            User user = userService.findByRefreshToken(refreshToken)
+                    .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, "에 해당하는 아이디가 없습니다."));
 
-                    Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
-                    response.setHeader("AUTHORIZATION", Token);
+            if(user != null){
 
-                    log.info("new Token = " + Token);
+                log.info(user.toString());
 
-                    filterChain.doFilter(request, response);
-                    return ;
-                }catch (Exception ef){
-                    log.error(ef.getMessage());
-                    filterChain.doFilter(request, response);
-                    return ;
-                }
+                String userId = user.getUserId();
+
+                Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
+                log.info("newToken = " + Token);
+                refreshToken = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+                log.info("newRefreshToken = " +  refreshToken);
+                user.setRefreshToken(refreshToken);
+
+                userService.save(user);
+
+                String[] arr = new String[2];
+                arr[0] = Token;
+                arr[1] = refreshToken;
+
+                response.setHeader("newToken", Token);
+                response.setHeader("newRefreshToken", refreshToken);
+
+            }else{
+
+                filterChain.doFilter(request, response);
+
+                return ;
+
             }
-        } catch (Exception e){
-            log.info(e.getMessage());
+
+
         }
 
-        // userName 꺼내기
-        String userName = JwtTokenUtil.getUserName(Token, secretKey);
+            // userName 꺼내기
+            String userName = JwtTokenUtil.getUserName(Token, secretKey);
 
-        // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
+            // 권한 부여
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
 
-        // Detail 넣기
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request, response);
+            // Detail 넣기
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
 
     }
-
 }
