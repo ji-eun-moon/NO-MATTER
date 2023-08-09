@@ -82,4 +82,12 @@ public class UserHubController {
         return ResponseEntity.ok().body(" 권한 변경 완료");
     }
 
+    @PostMapping("/deleteUserHub/{hubId}")
+    public ResponseEntity<?> deleteUserHub(@PathVariable Long hubId, Authentication authentication){
+
+        userHubService.deleteUserHub(hubId, userService.findByUserId(authentication.getName()).get().getMemberId());
+
+        return ResponseEntity.ok().body("허브 삭제 완료");
+    }
+
 }

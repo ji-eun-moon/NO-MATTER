@@ -59,4 +59,12 @@ public class UserHubService {
 
         return "권한 변경 완료";
     }
+
+    public void deleteUserHub(Long hubId, Long memberId){
+
+        UserHub userHub = userHubRepository.findByHubIdAndUserId(hubId, memberId).get();
+
+        userHubRepository.delete(userHub);
+
+    }
 }
