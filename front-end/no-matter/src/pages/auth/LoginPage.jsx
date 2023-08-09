@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import axios from 'axios';
+import axiosInstance from '../../config/axios'
 import {useNavigate} from 'react-router-dom'
 import './LoginPage.css';
 import { Container, CssBaseline, Typography, Grid, TextField, Button, Link } from '@material-ui/core'
@@ -43,7 +43,7 @@ function LoginPage() {
         // footer: '<a href="">Why do I have this issue?</a>'
       })
     } else {
-      axios({
+      axiosInstance({
         method: 'POST',
         url: URL,
         data: {userId:userID, userPassword:userPassword}

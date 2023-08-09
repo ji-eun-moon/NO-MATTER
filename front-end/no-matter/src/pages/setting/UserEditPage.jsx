@@ -4,7 +4,6 @@ import { TextField, Button } from '@material-ui/core'
 import {useNavigate} from 'react-router-dom'
 import axiosInstance from '../../config/axios'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import axios from 'axios'
 import Swal from 'sweetalert2'
 
 function UserEditPage() {
@@ -64,7 +63,7 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
   const onCheck = (event) => {
     event.preventDefault()
     console.log('check')
-    axios({
+    axiosInstance({
       method : 'Get',
       url : `http://localhost:8080/api/v1/user/passwordCheck/${curPwd}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
@@ -86,7 +85,7 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
     event.preventDefault()
     // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
 
-    axios({
+    axiosInstance({
       method : 'Post',
       url : `http://localhost:8080/api/v1/user/modify`,
       data : {password:newPwd},
