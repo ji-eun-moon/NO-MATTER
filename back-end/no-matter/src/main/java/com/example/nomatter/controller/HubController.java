@@ -92,6 +92,10 @@ public class HubController {
                 throw new AppException(Errorcode.EXPIRED_INVITE_CODE, "기한이 만료된 초대코드입니다.");
             }else{
 
+                userHubService.findByUserIdAndHubId(userService.findByUserId(authentication.getName()).get().getMemberId(), hub.getHubId())
+                        .ifPresent((err) -> {
+                            throw new AppException(Errorcode.USER_HUB_DUPLICATED, "이미 등록된 허브입니다.");
+                        });
                 UserHub userHub = new UserHub();
 
                 userHub.setHubId(hub.getHubId());
