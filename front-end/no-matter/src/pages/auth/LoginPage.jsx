@@ -49,7 +49,8 @@ function LoginPage() {
         data: {userId:userID, userPassword:userPassword}
       })
       .then((res) => {
-        sessionStorage.setItem('authToken', res.data)
+        sessionStorage.setItem('authToken', res.data[0])
+        localStorage.setItem('refreshToken', res.data[1])
         Toast.fire({
           icon: 'success',
           title: '환영합니다',
