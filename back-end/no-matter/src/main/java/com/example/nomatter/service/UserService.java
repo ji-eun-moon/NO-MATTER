@@ -29,7 +29,7 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long accessTokenExpiredTime = 1000 * 1L;
+    private Long accessTokenExpiredTime = 1000 * 60 * 60L;
     private Long refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L;
     private Long expireTime = 1000 * 30L;
 
@@ -162,8 +162,8 @@ public class UserService {
 
         String[] arr = new String[2];
 
-        arr[0] = JwtTokenUtil.createToken(user.getUserId(), secretKey, 1000 * 10L);
-        arr[1] = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+        arr[0] = JwtTokenUtil.createToken(user.getUserId(), secretKey, 1000 * 60 * 60L);
+        arr[1] = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60 * 24 * 7L);
 
         user.setRefreshToken(arr[1]);
 
