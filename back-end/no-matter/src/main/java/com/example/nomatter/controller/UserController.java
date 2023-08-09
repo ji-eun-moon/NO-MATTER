@@ -5,14 +5,17 @@ import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
 import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.service.UserService;
+import com.example.nomatter.utils.JwtTokenUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.beans.Encoder;
 import java.util.Map;
 import java.util.Optional;
@@ -34,10 +37,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto){
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest dto){
+
         String token = userService.login(dto);
 
-        return ResponseEntity.ok().body(token);
+        String refreshToken = userService.findByUserId(dto.getUserId()).get().getRefreshToken();
+
+        String[] arr = new String[2];
+
+        arr[0] = token;
+        arr[1] = refreshToken;
+
+        return ResponseEntity.ok().body(arr);
     }
 
     @PostMapping("/modify")
@@ -92,6 +103,18 @@ public class UserController {
 
         return ResponseEntity.ok().body("비밀번호 인증에 성공하셨습니다.");
 
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> checkRefreshToken(@RequestBody Map<String, String> map){
+
+        String refreshToken = map.get("refreshToken");
+
+        log.info("refreshToken api = " + refreshToken);
+
+        String[] as = userService.checkRefreshToken(refreshToken);
+
+        return ResponseEntity.ok().body(as);
     }
 
 }

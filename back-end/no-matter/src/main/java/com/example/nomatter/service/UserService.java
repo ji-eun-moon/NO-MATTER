@@ -1,10 +1,8 @@
 package com.example.nomatter.service;
 
 import com.example.nomatter.domain.User;
-import com.example.nomatter.domain.UserHub;
 import com.example.nomatter.domain.userdto.UserJoinRequest;
 import com.example.nomatter.domain.userdto.UserLoginRequest;
-import com.example.nomatter.domain.userdto.UserModifyRequest;
 import com.example.nomatter.exception.AppException;
 import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.UserRepository;
@@ -31,7 +29,9 @@ public class UserService {
     private String secretKey;
 
     // 만료 시간 => 1초 * 60 * 60 => 1분 설정
-    private Long expireTime = 1000 * 60 * 60L;
+    private Long accessTokenExpiredTime = 1000 * 1L;
+    private Long refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L;
+    private Long expireTime = 1000 * 30L;
 
     @Transactional
     public String join(UserJoinRequest dto){
@@ -65,6 +65,7 @@ public class UserService {
     @Transactional
     public String login(UserLoginRequest dto){
 
+
         // 아이디가 존재하지 않는 경우
         User selectedUser = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, dto.getUserId() + "는 존재하지 않는 아이디입니다. "));
@@ -74,8 +75,18 @@ public class UserService {
             throw new AppException(Errorcode.INVALID_ID_PASSWORD, "옳지 않은 비밀번호입니다.");
         }
 
+        User user = userRepository.findByUserId(dto.getUserId()).get();
+
+        String refreshToken = JwtTokenUtil.createRefreshToken(secretKey, refreshTokenExpiredTime);
+
+        user.setRefreshToken(refreshToken);
+
         // Exception 안나면 token 발행
-        String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, expireTime);
+        String token = JwtTokenUtil.createToken(dto.getUserId(), secretKey, accessTokenExpiredTime);
+
+        selectedUser.setRefreshToken(refreshToken);
+
+        userRepository.save(selectedUser);
 
         return token;
     }
@@ -88,6 +99,7 @@ public class UserService {
         selectUser.setUserPassword(encoder.encode(password));
 
         userRepository.save(selectUser);
+
     }
 
     @Transactional
@@ -98,6 +110,7 @@ public class UserService {
 
         SecurityContextHolder.clearContext();
         userRepository.delete(selectedUser);
+
     }
 
     public String idCheck(String userId){
@@ -124,4 +137,38 @@ public class UserService {
 
     }
 
+    public Optional<User> findByRefreshToken(String token){
+
+        return userRepository.findByRefreshToken(token);
+
+    }
+
+    public void save(User user){
+
+        userRepository.save(user);
+
+    }
+
+    public String[] checkRefreshToken(String refreshToken) {
+
+        if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
+            throw new AppException(Errorcode.EXPIRED_TOKEN, " refreshToken 기간 만료 에러");
+        }
+
+        userRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new AppException(Errorcode.EXPIRED_TOKEN, " refreshToken DB 에 없음"));
+
+        User user = userRepository.findByRefreshToken(refreshToken).get();
+
+        String[] arr = new String[2];
+
+        arr[0] = JwtTokenUtil.createToken(user.getUserId(), secretKey, 1000 * 10L);
+        arr[1] = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+
+        user.setRefreshToken(arr[1]);
+
+        userRepository.save(user);
+
+        return arr;
+    }
 }
