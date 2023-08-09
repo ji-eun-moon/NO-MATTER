@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosInstance from '../../config/axios'
 import GoBack from '../../components/GoBack.jsx';
 import { InputLabel, MenuItem, FormControl, Select, TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,7 +16,10 @@ function BoardPage() {
 
   const getRemotes = () => {
     // json-server 테스트용
-    axios.get('http://localhost:3001/boards')
+    axiosInstance({
+      method: 'GET',
+      url: 'http://localhost:3001/boards'
+    })
       .then((response) => {
         // console.log(response.data);
         setRemotes(response.data); // 리모컨 리스트

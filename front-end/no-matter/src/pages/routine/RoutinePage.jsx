@@ -1,6 +1,6 @@
-
 import React from 'react'
 import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
@@ -14,7 +14,10 @@ function RoutinePage() {
 
     // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-    axios.get('http://localhost:3001/routines/')
+    axiosInstance({
+      method: 'get',
+      url: 'http://localhost:3001/routines/'
+    })
     .then((response) => {
       // console.log(response.data)
       setRoutines(response.data)
