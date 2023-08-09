@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+
 import './App.scss';
 import { isMobile } from 'react-device-detect';
 
@@ -9,7 +11,8 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation
+  useLocation,
+  useNavigate
 } from 'react-router-dom';
 
 // components
@@ -33,12 +36,34 @@ function App() {
 
 function MainApp() {
   const location = useLocation();
+  const navigate = useNavigate()
   const currentPath = location.pathname;
 
   const isNavBarVisible = isMobile && currentPath !== '/' && currentPath !== '/login' && currentPath !== '/signup';
 
+  const automaticLogin = () => {
+    const isValidRefresh = !!localStorage.getItem('refreshToken')
+    if (isValidRefresh === true) {
+      axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+        .then((response) => {
+          sessionStorage.setItem('authToken', response.data[0]);
+          localStorage.setItem('refreshToken', response.data[1]);
+          navigate('/main')
+          return true
+        })
+        .catch((err) => {
+          return false
+        })
+    }
+  }
+
+  useEffect(() => {
+    automaticLogin()
+  }, [])
+
   const isSessionValid = () => {
-    return !!sessionStorage.getItem('authToken')
+    const isValid = !!sessionStorage.getItem('authToken')
+    return isValid
   };
 
   return (

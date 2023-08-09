@@ -15,6 +15,7 @@ function SettingPage() {
   const logout = () => {
     navigate('/')
     sessionStorage.clear()
+    localStorage.clear()
   }
   return (
     <div className="page-container container">
