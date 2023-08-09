@@ -253,7 +253,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Link, Box } from '@material-ui/core'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import { signup } from '../../slice/userSlice'
 import { useNavigate } from 'react-router-dom';
 import { EventRepeat } from '@mui/icons-material'
@@ -305,7 +305,7 @@ function Signup() {
     },[])
     const idCheckHandler = (event) => {
         event.preventDefault()
-        axios({
+        axiosInstance({
             method : 'Get',
             url : `http://localhost:8080/api/v1/user/idCheck/${userId}`,
         })

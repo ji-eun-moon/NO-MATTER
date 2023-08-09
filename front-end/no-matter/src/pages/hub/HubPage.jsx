@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +20,7 @@ function HubPage() {
     //   setHubs(response.data)
     // })
 
-    axios({
+    axiosInstance({
       method : 'Get',
       url : 'http://localhost:8080/api/v1/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
