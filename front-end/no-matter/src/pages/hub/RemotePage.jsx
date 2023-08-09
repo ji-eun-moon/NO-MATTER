@@ -228,44 +228,16 @@ import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import swal from 'sweetalert';
 
 function RemotePage() {
   const { id } = useParams()  // 허브 id
   const [ hub, setHub ] = useState([]);
   const [ remotes, setRemotes ] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [ inviteCode, setInviteCode ] = useState(null);
-  const [ date, setDate ] = useState(null);
-  const [ codeStatus, setCodeStatus ] = useState(false)
-  const [ open, setOpen ] = React.useState(false);
   const navigate = useNavigate();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setCodeStatus(false)
-  };
   // 특정 허브 정보 저장
   const hubInfo = (id) => {
     axiosInstance({
@@ -279,29 +251,6 @@ function RemotePage() {
     });
   }
 
-  const getCode = (event) => {
-    console.log(id)
-    const hubId = id
-    event.preventDefault()
-    axiosInstance({
-        method : 'Get',
-        url : `http://localhost:8080/api/v1/hub/inviteCode/${hubId}`,
-        headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-    })
-    .then((response) => {
-        console.log('초대 코드 생성 성공', response.data)
-        const res = response.data.split(' ')
-        const code = res[0]
-        const date = res[1].substring(0, 16).replace('T', ' ')
-        setInviteCode(code)
-        setDate(date)
-        setCodeStatus(true)
-    })
-    .catch((err) => {
-        console.log('초대 코드 생성 실패', err)
-        setCodeStatus(false)
-      })        
-}
 
   const getRemote = (id) => {
     
@@ -358,16 +307,29 @@ function RemotePage() {
     })
   }
 
+
   const hubDelete = () => {
-    axiosInstance({
-      method : 'Post',
-      url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
-      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    swal({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제하시면 다시 되돌릴 수 없습니다",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
     })
-    .then((response) => {
-      console.log(response.data)
-      navigate('/hubs')
-    })
+    .then((willDelete) => {
+      if (willDelete) {
+        axiosInstance({
+          method : 'Post',
+          url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
+          headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+        })
+        .then((response) => {
+          console.log(response.data)
+          navigate('/hubs')
+        })
+      }
+    });
+
   }
   return (
     <div className="container page-container">
