@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import './MobileLanding.scss'
 import InstallAccordion from './InstallAccordion.jsx'
@@ -14,6 +15,26 @@ function MoblieLanding() {
   const signupPage = () => {
     navigate('/signup')
   }
+
+  const automaticLogin = () => {
+    const isValidRefresh = !!localStorage.getItem('refreshToken')
+    if (isValidRefresh === true) {
+      axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+        .then((response) => {
+          sessionStorage.setItem('authToken', response.data[0]);
+          localStorage.setItem('refreshToken', response.data[1]);
+          return true
+        })
+        .catch(() => {
+          return false
+        })
+    }
+  }
+
+  useEffect(() => {
+    automaticLogin()
+  }, [])
+
   return (
     <div>
       <div className='d-flex justify-content-around py-3 container'>
