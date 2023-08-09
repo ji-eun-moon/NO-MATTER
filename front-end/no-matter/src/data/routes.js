@@ -10,6 +10,9 @@ import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
 import RmtCustom from '../rmtUi/RmtCustom.jsx';
 import RmtAc from '../rmtUi/RmtAc.jsx';
 
+//pages/board
+import BoardPage from '../pages/board/BoardPage.jsx';
+
 //pages/main
 import MainPage from '../pages/main/MainPage.jsx';
 
@@ -49,6 +52,10 @@ const routes = [
   {
     path:'/hubs/addrmt',
     element: <AddRemote />
+  },
+  {
+    path:'/hubs/board',
+    element: <BoardPage />
   },
   {
     path:'/hubs/rmttv/1',
