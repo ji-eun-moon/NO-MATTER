@@ -22,7 +22,6 @@ class MessageService(Service):
         Service.__init__(self, index, self.MESSAGE_SVC_UUID, True)
         self.add_characteristic(MsgCharacteristic(self))
 
-    # getter->(허브 메모리 에서)READ, setter->(허브 메모리 에)WRITE
     def get_msg_detail(self):
         return self.msg_detail
 
