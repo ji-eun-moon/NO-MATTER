@@ -148,4 +148,27 @@ public class UserService {
         userRepository.save(user);
 
     }
+
+    public String[] checkRefreshToken(String refreshToken) {
+
+        if(JwtTokenUtil.isExpired(refreshToken, secretKey)){
+            throw new AppException(Errorcode.EXPIRED_TOKEN, " refreshToken 기간 만료 에러");
+        }
+
+        userRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new AppException(Errorcode.EXPIRED_TOKEN, " refreshToken DB 에 없음"));
+
+        User user = userRepository.findByRefreshToken(refreshToken).get();
+
+        String[] arr = new String[2];
+
+        arr[0] = JwtTokenUtil.createToken(user.getUserId(), secretKey, 1000 * 10L);
+        arr[1] = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+
+        user.setRefreshToken(arr[1]);
+
+        userRepository.save(user);
+
+        return arr;
+    }
 }

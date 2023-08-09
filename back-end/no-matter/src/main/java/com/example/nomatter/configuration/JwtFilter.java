@@ -47,48 +47,45 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // token 분리
         String Token = authorization.split(" ")[1];
-        String refreshToken = authorization.split(" ")[2];
+//        String refreshToken = authorization.split(" ")[2];
         log.info("Token : " + Token);
-        log.info("refreshToken = " + refreshToken);
+//        log.info("refreshToken = " + refreshToken);
 
 
-        if(JwtTokenUtil.isExpired(Token, secretKey)){
-            log.info("accessToken 만료");
-
-            User user = userService.findByRefreshToken(refreshToken)
-                    .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, "에 해당하는 아이디가 없습니다."));
-
-            if(user != null){
-
-                log.info(user.toString());
-
-                String userId = user.getUserId();
-
-                Token = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
-                log.info("newToken = " + Token);
-                refreshToken = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
-                log.info("newRefreshToken = " +  refreshToken);
-                user.setRefreshToken(refreshToken);
-
-                userService.save(user);
-
-                String[] arr = new String[2];
-                arr[0] = Token;
-                arr[1] = refreshToken;
-
-                response.setHeader("newToken", Token);
-                response.setHeader("newRefreshToken", refreshToken);
-
-            }else{
-
-                filterChain.doFilter(request, response);
-
-                return ;
-
-            }
-
-
-        }
+//        if(JwtTokenUtil.isExpired(Token, secretKey)){
+//            log.info("accessToken 만료");
+//
+//            User user = userService.findByRefreshToken(refreshToken)
+//                    .orElseThrow(() -> new AppException(Errorcode.USERID_NOT_FOUND, "아이디가 없어여"));
+//
+//            if(user != null){
+//
+//                log.info(user.toString());
+//
+//                String userId = user.getUserId();
+//
+//                String newToken = JwtTokenUtil.createToken(userId, secretKey, 1000 * 30L);
+//                log.info("newToken = " + newToken);
+//                String newRefreshToken = JwtTokenUtil.createRefreshToken(secretKey, 1000 * 60 * 60L);
+//
+//                user.setRefreshToken(newRefreshToken);
+//
+//                userService.save(user);
+//
+//                String[] arr = new String[2];
+//                arr[0] = newToken;
+//                arr[1] = newRefreshToken;
+//
+//                response.setHeader("newToken", newToken);
+//                response.setHeader("newRefreshToken", newRefreshToken);
+//
+//
+//                log.info("newRefreshToken", newRefreshToken);
+//            }
+//
+//
+//            filterChain.doFilter(request, response);
+//        }
 
             // userName 꺼내기
             String userName = JwtTokenUtil.getUserName(Token, secretKey);
@@ -101,6 +98,7 @@ public class JwtFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
+
 
     }
 }
