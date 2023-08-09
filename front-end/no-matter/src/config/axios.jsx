@@ -38,19 +38,20 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행합니다.
       // const nowauthtoken = sessionStorage.getItem('authToken')
-      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: sessionStorage.getItem('refreshToken') })
+      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
           // 새로 발급된 토큰을 저장합니다.
           console.log(response)
           const newAuthToken = response.data[0];
           sessionStorage.setItem('authToken', response.data[0]);
-          sessionStorage.setItem('refreshToken', response.data[1]);
+          localStorage.setItem('refreshToken', response.data[1]);
 
           // 기존 요청에 새로 발급된 토큰을 추가하여 다시 요청합니다.
           originalRequest.headers.Authorization = `Bearer ${newAuthToken}`;
           return axios(originalRequest);
         })
         .catch((error) => {
+          console.log(error)
           // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행합니다.
           // 여기에 오류 처리 코드를 작성합니다.
           return Promise.reject(error);

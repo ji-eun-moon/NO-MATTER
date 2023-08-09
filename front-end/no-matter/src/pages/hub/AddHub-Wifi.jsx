@@ -150,9 +150,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
+import axiosInstance from '../../config/axios'
 import { useSelector, useDispatch } from 'react-redux'
-import cha from '../../slice/chaSlice'
 
 const style = {
   position: 'absolute',
@@ -218,7 +217,7 @@ export default function NestedModal({onWifi, characteristic}) {
     }, [characteristic, characteristicValue]);
 
     const send = () => {
-      axios({
+      axiosInstance({
         method : 'Get',
         url : 'http://localhost:8080/api/v1/user/view'
       })

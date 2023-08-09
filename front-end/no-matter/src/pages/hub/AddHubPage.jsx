@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Bluetooth from './AddHub-Bluetooth'
 import Wifi from './AddHub-Wifi'
 import Complete from './AddHub-Complete'
-import axios from 'axios';
+import axiosInstance from '../../config/axios'
 import Loading from '../../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddHub = () => {
   const navigate = useNavigate();
-  axios({
+  axiosInstance({
     method:'Post',
     url: 'http://localhost:8080/api/v1/userhub/register'
   })
