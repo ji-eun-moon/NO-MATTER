@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import GoBack from '../../components/GoBack.jsx'
 import SelectResult from './SelectResult.jsx';
 import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import './Routine.scss'
 import { useNavigate } from 'react-router-dom'
 
