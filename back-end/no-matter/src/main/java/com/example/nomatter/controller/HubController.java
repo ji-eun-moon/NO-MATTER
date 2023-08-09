@@ -43,34 +43,26 @@ public class HubController {
 
         Hub hub = hubService.findByHubId(hubId).get();
 
-        if(hub.getCodeExpiredTime() == null || LocalDateTime.now().isAfter(hub.getCodeExpiredTime().plus(1, ChronoUnit.DAYS))){
+        if(hub.getCodeExpiredTime() == null || LocalDateTime.now().isAfter(hub.getCodeExpiredTime())){
             String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             SecureRandom random = new SecureRandom();
 
             String code = "";
 
-            while (true){
+            StringBuilder stringBuilder = new StringBuilder(characters.length());
 
-                StringBuilder stringBuilder = new StringBuilder(characters.length());
+            // Add a character to the generated string
+            stringBuilder.append(characters.charAt(random.nextInt(20)));
 
-                // Add a character to the generated string
-                stringBuilder.append(characters.charAt(random.nextInt(20)));
-
-                // Add digits to the generated string
-                for (int i = 0; i < 20 - 1; i++) {
-                    stringBuilder.append(characters.charAt(random.nextInt(characters.length()))); // Selecting digits only
-                }
-
-                code = stringBuilder.toString();
-
-                if(!hubService.findByInviteCode(code).isPresent()){
-                    break;
-                }
-
+            // Add digits to the generated string
+            for (int i = 0; i < 20 - 1; i++) {
+                stringBuilder.append(characters.charAt(random.nextInt(characters.length()))); // Selecting digits only
             }
 
+            code = stringBuilder.toString();
+
             hub.setInviteCode(code);
-            hub.setCodeExpiredTime(LocalDateTime.now());
+            hub.setCodeExpiredTime(LocalDateTime.now().plus(1, ChronoUnit.DAYS));
 
             hubService.save(hub);
         }
