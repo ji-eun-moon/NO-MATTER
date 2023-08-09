@@ -37,10 +37,10 @@ public class HubController {
         return ResponseEntity.ok().body(authentication.getName() + "허브 등록 완료");
     }
 
-    @GetMapping("/inviteCode")
-    public ResponseEntity<?> inviteCode(@RequestBody Map<String, Long> map, Authentication authentication){
+    @GetMapping("/inviteCode/{hubId}")
+    public ResponseEntity<?> inviteCode(@PathVariable long hubId, Authentication authentication){
 
-        Hub hub = hubService.findByHubId(map.get("hubId")).get();
+        Hub hub = hubService.findByHubId(hubId).get();
 
         if(hub.getCodeExpiredTime() == null || LocalDateTime.now().isAfter(hub.getCodeExpiredTime().plus(1, ChronoUnit.DAYS))){
             String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
