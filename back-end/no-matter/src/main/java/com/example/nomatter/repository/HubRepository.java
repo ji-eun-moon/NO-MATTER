@@ -19,7 +19,7 @@ public interface HubRepository extends JpaRepository<Hub, Long> {
     Optional<Hub> findByInviteCode(String inviteCode);
 
 
-    @Query("SELECT u.userName, uh FROM User u JOIN UserHub uh ON u.memberId = uh.userId WHERE uh.hubId = :hubId")
+    @Query("SELECT uh.usersHubsId, u.userName, uh.userHubAuth FROM User u JOIN UserHub uh ON u.memberId = uh.userId WHERE uh.hubId = :hubId")
     List<Object> findAllByHubId(@Param("hubId") Long hubId);
 
 }
