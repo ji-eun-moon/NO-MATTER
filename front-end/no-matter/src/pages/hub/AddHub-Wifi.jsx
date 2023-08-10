@@ -191,28 +191,36 @@ export default function NestedModal({onWifi, characteristic}) {
 
     },[])
 
-    const handleWriteValue = useCallback((value) => {
-      console.log('char', characteristic)
+    const handleWriteValue = useCallback((e) => {
       if (characteristic) {
-        const data = new TextEncoder().encode(value);
+        const data = new TextEncoder().encode(e);        
         characteristic.writeValue(data)
-          .then(() => {
-            console.log('Data written successfully:', value);
-            setCharacteristicValue(value);
+        .catch(() => {
+          console.log('연결중')
+        })
+        
+        console.log('연결중')
+        setTimeout(function(){
+          console.log('char', characteristic)
+          characteristic.readValue()
+          .then((value) => {
+            const decodedValue = new TextDecoder().decode(value);
+            console.log('Data written successfully:', decodedValue);
+            setCharacteristicValue(decodedValue);
             onWifi(characteristicValue)
-          })
-          .then((characteristic) => {
-            if(characteristic.readValue()==='success'){
+            if(decodedValue==='success'){
               handleClose()
+              console.log(characteristic)
             }
             else{
               console.log('wifi 이름과 비밀번호를 다시 입력해주세요')
             }
-          }
-          )
+          })
           .catch((error) => {
-            console.error('Error writing data:', error);
+            console.log('Error writing data:', error);
           });
+        }, 45000);
+        
       }
     }, [characteristic, characteristicValue]);
 
