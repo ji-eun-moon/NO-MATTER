@@ -23,7 +23,6 @@ public class Remote {
     private String controllerName;
     private String remoteType;
     private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
     private String remoteCode;
 
 }
