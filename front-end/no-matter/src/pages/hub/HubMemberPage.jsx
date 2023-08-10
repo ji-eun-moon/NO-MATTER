@@ -154,9 +154,9 @@ function HubMemberPage() {
 
     return users.map((user, index) => {
       return (
-        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px'}}>
-          <div className='card-body' style={{position:'relative', padding:'0', width:"100%", zIndex:"1"}}>
-            <SwipeCard style={{height:"80px"}}>
+        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+          {/* <div className='card-body' style={{position:'relative', padding:'0', width:"100%", zIndex:"1"}}> */}
+            <SwipeCard>
               <div className='d-flex align-items-center justify-content-between' 
                 style={{width:"100%"}}>
                 <div className='centered' >
@@ -168,10 +168,10 @@ function HubMemberPage() {
                 </div>
               </div>
             </SwipeCard>
-        </div>
+        {/* </div> */}
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
             {/* 멤버 설정 */}
-            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px'}} onClick={clickModify}>
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}} onClick={clickModify}>
               <div className="card-body centered">
                 <SyncAltOutlinedIcon fontSize='large' style={{color:'white'}} />
               </div>
