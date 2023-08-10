@@ -58,11 +58,7 @@ const routes = [
     element: <BoardPage />
   },
   {
-    path:'/hubs/rmttv/1',
-    element: <RmtTvUi />
-  },
-  {
-    path:'/hubs/rmttv/0',
+    path:'/hubs/rmttv',
     element: <RmtTvUi />
   },
   {
