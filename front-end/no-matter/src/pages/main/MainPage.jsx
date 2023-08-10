@@ -38,16 +38,17 @@ function MainPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-      const responseData = response.data;
-      const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
-      const userDataPairs = userDataString.split(', ');
-      const extractedData = {};
-      userDataPairs.forEach(pair => {
-        const [key, value] = pair.split('=');
-        extractedData[key] = value;
-      });
-      const userName = extractedData.userName;
-      setUserName(userName)
+      console.log(response.data.userName)
+      // const responseData = response.data;
+      // const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
+      // const userDataPairs = userDataString.split(', ');
+      // const extractedData = {};
+      // userDataPairs.forEach(pair => {
+      //   const [key, value] = pair.split('=');
+      //   extractedData[key] = value;
+      // });
+      // const userName = extractedData.userName;
+      setUserName(response.data.userName)
     })
   }
 

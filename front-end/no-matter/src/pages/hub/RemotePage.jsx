@@ -251,6 +251,7 @@ function RemotePage() {
     });
   }
 
+  console.log(hub)
 
   const getRemote = (id) => {
     
