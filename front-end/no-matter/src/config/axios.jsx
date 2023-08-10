@@ -33,6 +33,7 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
     // 토큰이 만료되었거나 유효하지 않은 경우에만 토큰을 재발급 받을 수 있도록 조건을 설정
     if (error.response.status === 403 && !originalRequest._retry) {
+      console.log(error)
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행
       return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
@@ -47,6 +48,7 @@ instance.interceptors.response.use(
         .catch((error) => {
           // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
           // 여기에 오류 처리 코드를 작성
+          console.log(error)
           const navigate = useNavigate()
           navigate('/login')
           return Promise.reject(error);
