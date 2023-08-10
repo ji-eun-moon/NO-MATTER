@@ -18,4 +18,10 @@ public class RemoteService {
         return remoteRepository.findAllByHubId(HubId);
 
     }
+
+    public Long findRecentlyRemoteId(){
+
+        return remoteRepository.findRecentlyRemoteId();
+
+    }
 }
