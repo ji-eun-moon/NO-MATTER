@@ -68,3 +68,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### PWA ###
+.env
