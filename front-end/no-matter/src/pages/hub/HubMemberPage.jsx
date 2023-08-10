@@ -39,18 +39,25 @@ function HubMemberPage() {
   const [ codeStatus, setCodeStatus ] = useState(false)
   const [ inviteCode, setInviteCode ] = useState(null);
   const [ date, setDate ] = useState(null);
+  const [ checkStatus, setCheckStatus ] = useState(false)
 
-
-  const handleOpen = () => {
+  const handleOpen = (e) => {
+    console.log('click')
     setOpen(true);
+    e.stopPropagation();
   };
   const handleClose = (e) => {
-    setOpen(false);
     e.stopPropagation();
+    setOpen(false);
     setCodeStatus(false)
   };
 
-
+  const click = () => {
+    console.log('click')
+  }
+  const onCheck = () => {
+    setCheckStatus(!checkStatus)
+  }
   // 특정 허브 정보 저장
   const hubInfo = (id) => {
     axiosInstance({
@@ -131,7 +138,7 @@ function HubMemberPage() {
           아직 등록된 유저가 없습니다.
         </div>
       )}
-    
+
     return users.map(user => {
       return (
         <div className='card mb-3' style={{height:'80px', padding:'0', border:'0px'}}>
@@ -152,9 +159,11 @@ function HubMemberPage() {
 
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
             {/* 멤버 설정 */}
-            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px'}}>
-              <div className="card-body centered">
-                <SyncAltOutlinedIcon fontSize='large' style={{color:'white'}} />
+            <div >
+              <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px'}} onClick={console.log()}>
+                <div className="card-body centered">
+                  <SyncAltOutlinedIcon fontSize='large' style={{color:'white'}}/>
+                </div>
               </div>
             </div>
             {/* 멤버 삭제 */}
