@@ -11,7 +11,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import CopyToClipboard from 'react-copy-to-clipboard';
+
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'; // 멤버 아이콘
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
@@ -118,6 +121,16 @@ function HubMemberPage() {
       })        
   }
 
+  const clickDelete = (e) => {
+    e.stopPropagation();
+    console.log('click Delete')
+  }
+
+  const clickModify = (e) => {
+    e.stopPropagation();
+    console.log('click Modify')
+  }
+
   const renderUserList = () => {
     if (loading) {
       return (
@@ -131,15 +144,15 @@ function HubMemberPage() {
           아직 등록된 유저가 없습니다.
         </div>
       )}
-    
-    return users.map(user => {
+
+    return users.map((user, index) => {
       return (
-        <div className='card mb-3' style={{height:'80px', padding:'0', border:'0px'}}>
-          <div className='card-body' style={{position:'relative', zIndex:'1', padding:'0'}}>
-            <SwipeCard key={user.userId} style={{height:"80px"}}>
+        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px'}}>
+          <div className='card-body' style={{position:'relative', padding:'0', width:"100%", zIndex:"1"}}>
+            <SwipeCard style={{height:"80px"}}>
               <div className='d-flex align-items-center justify-content-between' 
                 style={{width:"100%"}}>
-                <div className='centered'>
+                <div className='centered' >
                   <AccountCircleOutlinedIcon fontSize='large' style={{marginRight:'10px'}}/>
                   <div className='card-text' style={{marginBottom:'0'}}>{user[1]}</div>
                 </div>
@@ -148,23 +161,22 @@ function HubMemberPage() {
                 </div>
               </div>
             </SwipeCard>
-          </div>
-
+        </div>
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
             {/* 멤버 설정 */}
-            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px'}}>
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px'}} onClick={clickModify}>
               <div className="card-body centered">
                 <SyncAltOutlinedIcon fontSize='large' style={{color:'white'}} />
               </div>
             </div>
             {/* 멤버 삭제 */}
-            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
+            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}} onClick={clickDelete}>
               <div className="card-body centered">
                 <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
               </div>
             </div>
           </div>
-      </div>
+          </div>
       )
     })
   }
@@ -181,6 +193,7 @@ function HubMemberPage() {
       <hr />
       {renderUserList()}
 
+      <ToastContainer />
       <Card>
         <div className="centered" style={{width:"100%"}} onClick={handleOpen}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
@@ -193,22 +206,27 @@ function HubMemberPage() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-      <Box sx={{ ...style, width: 300, position:"relative" }}>
+      <Box sx={{ ...style, width: 300, position:"relative" }} style={{borderRadius:"15px"}}>
           <div>
             <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-            <b>초대코드</b>
+            <h4 className='font-700 text-center'>초대코드</h4>
             <br />
-            {!codeStatus? 
-                <Button onClick={getCode} style={{padding:'10px 0px 0px 0px'}}>초대 코드 생성하기</Button>
+            {!codeStatus?
+                <div className='centered'>
+                  <Button variant="contained" size="large" onClick={getCode}>초대 코드 생성하기</Button>
+                </div>
                 : <CopyToClipboard
                     text={inviteCode}
-                    onCopy={() => toast.success(`초대 링크가 복사되었습니다.`)}
+                    // onCopy={() => toast.success(`초대 링크가 복사되었습니다.`, {autoClose: 3000})}
                   >
-                    <div>
+                    <div className='flex-column centered'>
                       <p style={{padding:'10px 0px 0px 0px'}}>{inviteCode}</p>
-                      <p style={{padding:'10px 0px 0px 0px', fontSize:'10px'}}>※ 위 코드는 {date}까지만 사용 가능합니다</p>
-                  
-                      <Button className='justify-content-start' style={{padding:'10px 0px 0px 0px', margin:'0px'}}>복사</Button>
+                      <div className='flex-column centered' 
+                        onClick={() => toast.success(`초대 링크가 복사되었습니다.`, { autoClose: 3000 })}>
+                        <Button variant="contained" size="large" style={{ margin:'10px'}} 
+                       >복사</Button>
+                        <p style={{padding:'10px 0px 0px 0px', fontSize:'15px'}}>※ 위 코드는 {date}까지만 사용 가능합니다</p>
+                      </div>
                     </div>
                   </CopyToClipboard>
             }
