@@ -36,7 +36,7 @@ instance.interceptors.response.use(
       console.log(error)
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행
-      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+      return axios.post('http://localhost:5000/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
           const newAuthToken = response.data[0];
           sessionStorage.setItem('authToken', response.data[0]);

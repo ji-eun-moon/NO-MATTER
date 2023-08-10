@@ -91,7 +91,7 @@ function LoginPage() {
 
     // const REST_API_KEY = "96b643173da8064d7b2774b812e747bb";
     // const REDIRECT_URI = "http://localhost:8080/login/oauth2/callback/kakao"
-    const url = "https://kauth.kakao.com/oauth/authorize?client_id=96b643173da8064d7b2774b812e747bb&redirect_uri=http://localhost:8080/login/oauth2/callback/kakao&response_type=code";
+    const url = "https://kauth.kakao.com/oauth/authorize?client_id=96b643173da8064d7b2774b812e747bb&redirect_uri=http://localhost:5000/login/oauth2/callback/kakao&response_type=code";
 
     window.location.href = url;
 
