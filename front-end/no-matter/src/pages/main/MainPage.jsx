@@ -12,10 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 
 function MainPage() {
   const navigate = useNavigate();
-  
+
   // const hublist = ['1번']
-  const [ hubs, setHubs ] = useState([]);
-  const [ remotes, setRemotes ] = useState([]);
+  const [hubs, setHubs] = useState([]);
+  const [remotes, setRemotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [initialHubId, setInitialHubId] = useState(null);
@@ -50,6 +50,19 @@ function MainPage() {
       // const userName = extractedData.userName;
       setUserName(response.data.userName)
     })
+      .then((response) => {
+        // console.log(response.data.userName)
+        // const responseData = response.data;
+        // const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
+        // const userDataPairs = userDataString.split(', ');
+        // const extractedData = {};
+        // userDataPairs.forEach(pair => {
+        //   const [key, value] = pair.split('=');
+        //   extractedData[key] = value;
+        // });
+        // const userName = extractedData.userName;
+        setUserName(response.data.userName)
+      })
   }
 
   useEffect(() => {
@@ -66,6 +79,10 @@ function MainPage() {
       // console.log(response.data)
       setHubs(response.data)
     })
+      .then((response) => {
+        // console.log(response.data)
+        setHubs(response.data)
+      })
   }
 
   useEffect(() => {
@@ -73,10 +90,10 @@ function MainPage() {
     if (hubs.length > 0 && initialHubId === null) {
       setInitialHubId(hubs[0].hubId);
     }
-  }, [ ])
+  }, [])
 
   const getRemote = (id) => {
-    setLoading(true); 
+    setLoading(true);
     axiosInstance({
       method : 'Get',
       url : `/remote/list/${id}`,
@@ -87,6 +104,11 @@ function MainPage() {
       setRemotes(response.data) // 리모컨 리스트
       setLoading(false);
     })
+      .then((response) => {
+        // console.log(response.data)
+        setRemotes(response.data) // 리모컨 리스트
+        setLoading(false);
+      })
 
   }
 
@@ -122,7 +144,7 @@ function MainPage() {
         </div>
       </div>
        */}
-      
+
       {/* <Swiper
         spaceBetween={50}
         slidesPerView={1}
@@ -152,69 +174,86 @@ function MainPage() {
           })
         }
       </Swiper> */}
-      <div className='container' style={{backgroundColor: '#E2EAE9', padding:"20px", borderRadius:"15px", height:"680px"}}>
-        <div className='d-flex justify-content-between align-items-center mb-3' >
-          <h1 className="font-700 ms-2" >연결된 기기</h1>
+      <div className='container' style={{ backgroundColor: '#E2EAE9', padding: "20px", borderRadius: "15px", height: "80vh" }}>
+        <div className='d-flex mb-3 justify-content-between align-items-center'>
+          <h1 className="font-700 ms-2" style={{ marginBottom: "0px" }}>연결된 기기</h1>
           <Fab color="action" aria-label="add" onClick={handleMenuOpen}>
             <AddIcon />
           </Fab>
-          <Menu
-          anchorEl={menuAnchorEl}
-          open={Boolean(menuAnchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={() => {
-            navigate('/hubs/addhub');
-            handleMenuClose();
-          }} style={{ fontWeight: "900", fontSize: "20px" }}>
-            허브 추가
-          </MenuItem>
-          <MenuItem onClick={() => {
-            navigate('/routine/addroutine')
-            handleMenuClose();
-          }} style={{ fontWeight: "900", fontSize: "20px" }}>
-            루틴 추가
-          </MenuItem>
-        </Menu>
         </div>
-        <div className='remote-card-list-container'>
+        <div>
+          <Menu
+            anchorEl={menuAnchorEl}
+            open={Boolean(menuAnchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={() => {
+              navigate('/hubs/addhub');
+              handleMenuClose();
+            }} style={{ fontWeight: "900", fontSize: "20px" }}>
+              허브 추가
+            </MenuItem>
+            <MenuItem onClick={() => {
+              navigate('/routine/addroutine')
+              handleMenuClose();
+            }} style={{ fontWeight: "900", fontSize: "20px" }}>
+              루틴 추가
+            </MenuItem>
+          </Menu>
+        </div>
 
-        
-        <Swiper spaceBetween={50} slidesPerView={1}
-                onSlideChange={handleSlideChange} 
-                onSwiper={(swiper) => handleSlideChange(swiper)}>
-          {hubs.map((hub) => (
-            <SwiperSlide key={hub.hubId}>
-              
-              <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius:"15px"}}>
-                  <div className="card-text centered" style={{ paddingTop: '15px', fontSize:'25px'}}>
-                    {hub.userHubName}
-                  </div>
-                  <div className="card-body d-flex row justify-content-start align-items-baseline">
-                        {remotes.map((remote) =>{
+        <div className='remote-card-list-container'>
+          {hubs.length === 0 ?
+            <div className='centered' style={{ height: "60vh" }}>
+              <h3>등록된 기기가 없습니다.</h3>
+            </div>
+            :
+            <Swiper spaceBetween={50} slidesPerView={1}
+              onSlideChange={handleSlideChange}
+              onSwiper={(swiper) => handleSlideChange(swiper)}>
+              {hubs.map((hub) => (
+                <SwiperSlide key={hub.hubId}>
+
+                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"55vh" }}>
+                    <div className="card-text centered" style={{ paddingTop: '15px', fontSize: '25px' }}>
+                      {hub.userHubName}
+                    </div>
+                    {remotes.length === 0 ? 
+                      <div className='centered' style={{ height: "60vh" }}>
+                        <h5>등록된 리모컨이 없습니다.</h5>
+                      </div>
+                    :
+                      <div className="card-body">
+                        <div className='d-flex row justify-content-start align-items-baseline'>
+                        {remotes.map((remote) => {
                           return (
-                          <div className="col-6" key={remote.remoteId}>
-                            <Card>
-                              <div className='centered' style={{width:"100%"}}>
-                                <span style={{fontWeight:"700", marginBottom:"0px", fontSize:"18px"}}>{remote.controllerName}</span>
-                              </div>
-                            </Card>
-                          </div>
+                            <div className="col-6" key={remote.remoteId}>
+                              <Card>
+                                <div className='centered' style={{ width: "100%" }}>
+                                  <span style={{ fontWeight: "700", marginBottom: "0px", fontSize: "18px" }}>{remote.controllerName}</span>
+                                </div>
+                              </Card>
+                            </div>
                           )
                         })}
-                    </div>
-                </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-      <div className="pagination-dots-container">
-          {hubs.map((_, index) => (
-            <div key={index} className={`pagination-dot ${activeSlide === index ? 'active' : ''}`} />
-          ))}
-      </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>}
+        </div>
+        <div className='centered'>
+          <div className="pagination-dots-container" style={{ position: "absolute", bottom: "90px" }}>
+            {hubs.map((_, index) => (
+              <div key={index} className={`pagination-dot ${activeSlide === index ? 'active' : ''}`} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
+
   )
 }
 

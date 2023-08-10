@@ -11,7 +11,7 @@ import Complete from './AddHub-Complete'
 import axiosInstance from '../../config/axios'
 import Loading from '../../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom';
-
+import GoBack from '../../components/GoBack.jsx'
 
 
 const AddHub = () => {
@@ -125,12 +125,16 @@ const steps = [
   };
 
   return (
-    <div className='page-container container'> 
-      <Box sx={{ width: '100%' }}>
-      <div className='text-center' style={{fontSize:"20px", margin:"45px"}}>
-        허브를 등록해주세요
+    <div className='page-container container'>
+      <div className='d-flex justify-content-between mt-5'>
+        <div className='d-flex'>
+          <GoBack />
+          <h1 className="font-700">허브 등록</h1>
+        </div>
       </div>
-        <Stepper nonLinear activeStep={activeStep}>
+      <hr />
+      <Box sx={{ width: '100%', marginTop:"50px"}}>
+        <Stepper nonLinear activeStep={activeStep} className='my-4'>
           {steps.map((step, index) => (
             <Step key={step.label} completed={completed[index]}>
               <StepButton color="inherit" onClick={handleStep(index)} style={{position:"relative"}}>
@@ -148,10 +152,10 @@ const steps = [
 
           ) : (
             <React.Fragment>
-              <div sx={{ mt: 2, mb: 1, py: 1 }} >
-                <span style={{fontSize:"20px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
+              <div sx={{ mt: 2, mb: 1, py: 1 }} className='container'>
+                {/* <span style={{fontSize:"25px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
                   Step {activeStep + 1}
-                </span>
+                </span> */}
                 <br />
                 {/* <Stepper nonLinear activeStep={activeStep}> */}
                   {steps.map((step, index) => (
