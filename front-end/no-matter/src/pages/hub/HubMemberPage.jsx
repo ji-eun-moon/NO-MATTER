@@ -62,7 +62,7 @@ function HubMemberPage() {
   const hubInfo = (id) => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -81,7 +81,7 @@ function HubMemberPage() {
 
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/hub/members/${id}`,
+      url : `/hub/members/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -107,7 +107,7 @@ function HubMemberPage() {
     event.preventDefault()
     axiosInstance({
         method : 'Get',
-        url : `http://localhost:8080/api/v1/hub/inviteCode/${hubId}`,
+        url : `/hub/inviteCode/${hubId}`,
         headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
