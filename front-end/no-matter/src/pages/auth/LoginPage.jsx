@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import GoBack from '../../components/GoBack.jsx'
 
 function LoginPage() {
-  const URL = "http://localhost:8080/api/v1/user/login"
+  const URL = "http://localhost:5000/api/v1/user/login"
   
   let [userID, setUserID] = useState("")
   let [userPassword, setUserPassword] = useState("")

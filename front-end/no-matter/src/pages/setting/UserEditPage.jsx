@@ -65,7 +65,7 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
     console.log('check')
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/user/passwordCheck/${curPwd}`,
+      url : `/user/passwordCheck/${curPwd}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
@@ -87,7 +87,7 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
     axiosInstance({
       method : 'Post',
-      url : `http://localhost:8080/api/v1/user/modify`,
+      url : `/user/modify`,
       data : {password:newPwd},
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })

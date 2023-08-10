@@ -242,7 +242,7 @@ function RemotePage() {
   const hubInfo = (id) => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -250,7 +250,6 @@ function RemotePage() {
       setHub(specificHub);
     });
   }
-
   console.log(hub)
 
   const getRemote = (id) => {
@@ -265,7 +264,7 @@ function RemotePage() {
 
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/remote/list/${id}`,
+      url : `/remote/list/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -310,26 +309,75 @@ function RemotePage() {
 
 
   const hubDelete = () => {
-    swal({
-      title: "정말 삭제하시겠습니까?",
-      text: "삭제하시면 다시 되돌릴 수 없습니다",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        axiosInstance({
-          method : 'Post',
-          url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
-          headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-        })
-        .then((response) => {
-          console.log(response.data)
-          navigate('/hubs')
-        })
-      }
-    });
+    if(hub && hub.userHubAuth === 'master' && hub.length === 1){
+      swal({
+        title: "정말 삭제하시겠습니까?",
+        text: "삭제하시면 다시 되돌릴 수 없습니다",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
+  
+    }
+    else if(hub && hub.userHubAuth === 'master' && hub.length > 1){
+      swal({
+        title: "master 이외에 사용자가 있어 삭제할 수 없습니다",
+        text: "삭제하시면 다시 되돌릴 수 없습니다",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
+
+    }
+    else{
+      swal({
+        title: "정말 나가시겠습니까?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
+
+
+    }
 
   }
   return (
@@ -338,11 +386,28 @@ function RemotePage() {
         <div className='d-flex'>
           <GoBack />
           <h1 className="font-700">{hub.userHubName}</h1>
-          <div className='d-flex justify-content-center align-items-center ms-2' 
-                style={{backgroundColor:"#fdd969", borderRadius:"10px", padding:"5px 10px 5px"}}>
-            <img src="/images/crown.png" alt="crown" style={{width: "20px", height:"30px"}}/>
-            {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
-          </div>
+          {hub.userHubAuth === 'admin' ? 
+                <div className='d-flex flex-column justify-content-center align-items-center ms-2' 
+                  style={{backgroundColor:"#fdd969", borderRadius:"10px", padding:"5px 10px 5px"}}>
+                  <img src="/images/crown.png" alt="crown" style={{width: "16px", height:"25px"}}/>
+                  <p style={{fontWeight:'bold', fontSize:'7px', color:"white", margin:"0px"}}>ADMIN</p>
+                  {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
+                </div>
+            :hub.userHubAuth === 'manager'?
+                  <div className='d-flex flex-column justify-content-center align-items-center ms-2' 
+                    style={{backgroundColor:"#11c942", borderRadius:"10px", padding:"5px 10px 5px"}}>
+                    <img src="/images/crown.png" alt="crown" style={{width: "16px", height:"25px"}}/>
+                    <p style={{fontWeight:'bold', fontSize:'6px', color:"white", margin:"0px"}}>MANAGER</p>
+                    {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
+                  </div>
+                  :
+                  <div className='d-flex flex-column justify-content-center align-items-center ms-2' 
+                    style={{backgroundColor:"#b6b6b6", borderRadius:"10px", padding:"5px 10px 5px"}}>
+                    <img src="/images/crown.png" alt="crown" style={{width: "16px", height:"25px"}} />
+                    <p style={{fontWeight:'bold', fontSize:'8px', color:"white", margin:"0px"}}>USER</p>
+                    {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
+                  </div>
+          }
         </div>
         <div className='d-flex' onClick={() => navigate(`/hubs/${id}/member`)}>
           <div className="main-backgroud-color px-2 rounded centered">
@@ -353,13 +418,14 @@ function RemotePage() {
       <hr />
       {renderRemoteList()}
       <Card>
-        <div className="centered" style={{width:"100%"}}>
+        <div className="centered" style={{width:"100%"}} onClick={() => navigate('/hubs/addrmt', { state: hub })}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
           <div className="text-secondary">리모컨 추가하기</div>
         </div>
       </Card>
 
       <div className='centered' style={{color:"crimson", textDecoration:"underline"}} onClick={hubDelete}>
+        {}
         허브 나가기
       </div>
     </div> 

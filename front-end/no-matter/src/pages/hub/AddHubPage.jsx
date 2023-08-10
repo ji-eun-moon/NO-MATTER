@@ -18,7 +18,7 @@ const AddHub = () => {
   const navigate = useNavigate();
   axiosInstance({
     method:'Post',
-    url: 'http://localhost:8080/api/v1/userhub/register'
+    url: '/userhub/register'
   })
   .then((response) => {
     console.log(response)

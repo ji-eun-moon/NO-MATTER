@@ -33,9 +33,22 @@ function MainPage() {
 
   const getUserInfo = () => {
     axiosInstance({
-      method: 'Get',
-      url: 'http://localhost:8080/api/v1/user/view',
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+      method : 'Get',
+      url : '/user/view',
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
+    .then((response) => {
+      console.log(response.data.userName)
+      // const responseData = response.data;
+      // const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
+      // const userDataPairs = userDataString.split(', ');
+      // const extractedData = {};
+      // userDataPairs.forEach(pair => {
+      //   const [key, value] = pair.split('=');
+      //   extractedData[key] = value;
+      // });
+      // const userName = extractedData.userName;
+      setUserName(response.data.userName)
     })
       .then((response) => {
         // console.log(response.data.userName)
@@ -58,9 +71,13 @@ function MainPage() {
 
   const getHubs = () => {
     axiosInstance({
-      method: 'Get',
-      url: 'http://localhost:8080/api/v1/userhub/list',
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+      method : 'Get',
+      url : '/userhub/list',
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
+    .then((response) => {  
+      // console.log(response.data)
+      setHubs(response.data)
     })
       .then((response) => {
         // console.log(response.data)
@@ -78,9 +95,14 @@ function MainPage() {
   const getRemote = (id) => {
     setLoading(true);
     axiosInstance({
-      method: 'Get',
-      url: `http://localhost:8080/api/v1/remote/list/${id}`,
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+      method : 'Get',
+      url : `/remote/list/${id}`,
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+    })
+    .then((response) => {
+      // console.log(response.data)
+      setRemotes(response.data) // 리모컨 리스트
+      setLoading(false);
     })
       .then((response) => {
         // console.log(response.data)

@@ -42,23 +42,30 @@ function HubMemberPage() {
   const [ codeStatus, setCodeStatus ] = useState(false)
   const [ inviteCode, setInviteCode ] = useState(null);
   const [ date, setDate ] = useState(null);
+  const [ checkStatus, setCheckStatus ] = useState(false)
 
-
-  const handleOpen = () => {
+  const handleOpen = (e) => {
+    console.log('click')
     setOpen(true);
+    e.stopPropagation();
   };
   const handleClose = (e) => {
-    setOpen(false);
     e.stopPropagation();
+    setOpen(false);
     setCodeStatus(false)
   };
 
-
+  const click = () => {
+    console.log('click')
+  }
+  const onCheck = () => {
+    setCheckStatus(!checkStatus)
+  }
   // 특정 허브 정보 저장
   const hubInfo = (id) => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -77,7 +84,7 @@ function HubMemberPage() {
 
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/hub/members/${id}`,
+      url : `/hub/members/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -103,7 +110,7 @@ function HubMemberPage() {
     event.preventDefault()
     axiosInstance({
         method : 'Get',
-        url : `http://localhost:8080/api/v1/hub/inviteCode/${hubId}`,
+        url : `/hub/inviteCode/${hubId}`,
         headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
