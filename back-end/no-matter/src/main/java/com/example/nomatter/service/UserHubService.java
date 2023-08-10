@@ -21,7 +21,7 @@ public class UserHubService {
     public String register(UserHub userHub){
 
         if(userHub.getUserHubAuth() == null){
-            userHub.setUserHubAuth("user");
+            userHub.setUserHubAuth("admin");
         }
 
         userHubRepository.save(userHub);
