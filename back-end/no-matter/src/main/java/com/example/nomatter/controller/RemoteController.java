@@ -30,12 +30,9 @@ public class RemoteController {
 
         log.info(String.valueOf(hubId));
 
-        List<Remote> list = remoteService.findAllByHubId(hubId);
-
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(remoteService.findAllByHubId(hubId));
 
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Remote remote, Authentication authentication){
 
