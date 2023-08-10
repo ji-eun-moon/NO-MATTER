@@ -1,5 +1,4 @@
 import json
-
 import dbus
 
 from ble_gatt_server.advertisement import Advertisement
