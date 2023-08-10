@@ -50,19 +50,6 @@ function MainPage() {
       // const userName = extractedData.userName;
       setUserName(response.data.userName)
     })
-      .then((response) => {
-        // console.log(response.data.userName)
-        // const responseData = response.data;
-        // const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
-        // const userDataPairs = userDataString.split(', ');
-        // const extractedData = {};
-        // userDataPairs.forEach(pair => {
-        //   const [key, value] = pair.split('=');
-        //   extractedData[key] = value;
-        // });
-        // const userName = extractedData.userName;
-        setUserName(response.data.userName)
-      })
   }
 
   useEffect(() => {
@@ -79,10 +66,6 @@ function MainPage() {
       // console.log(response.data)
       setHubs(response.data)
     })
-      .then((response) => {
-        // console.log(response.data)
-        setHubs(response.data)
-      })
   }
 
   useEffect(() => {
@@ -104,12 +87,6 @@ function MainPage() {
       setRemotes(response.data) // 리모컨 리스트
       setLoading(false);
     })
-      .then((response) => {
-        // console.log(response.data)
-        setRemotes(response.data) // 리모컨 리스트
-        setLoading(false);
-      })
-
   }
 
   useEffect(() => {
