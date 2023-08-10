@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 // 인스턴스 생성
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
+  baseURL: 'http://localhost:5000/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
 });
 
 // 요청 인터셉터 추가

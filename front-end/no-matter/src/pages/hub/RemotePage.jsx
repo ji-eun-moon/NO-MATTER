@@ -242,7 +242,7 @@ function RemotePage() {
   const hubInfo = (id) => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -265,7 +265,7 @@ function RemotePage() {
 
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/remote/list/${id}`,
+      url : `/remote/list/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
