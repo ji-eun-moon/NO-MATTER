@@ -219,7 +219,7 @@ export default function NestedModal({onWifi, characteristic}) {
     const send = () => {
       axiosInstance({
         method : 'Get',
-        url : 'http://localhost:8080/api/v1/user/view'
+        url : '/user/view'
       })
       .then((response)=>{
 

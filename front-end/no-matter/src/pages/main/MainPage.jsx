@@ -34,7 +34,7 @@ function MainPage() {
   const getUserInfo = () => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/user/view',
+      url : '/user/view',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -59,7 +59,7 @@ function MainPage() {
   const getHubs = () => {
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {  
@@ -73,13 +73,13 @@ function MainPage() {
     if (hubs.length > 0 && initialHubId === null) {
       setInitialHubId(hubs[0].hubId);
     }
-  }, [hubs])
+  }, [ ])
 
   const getRemote = (id) => {
     setLoading(true); 
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/remote/list/${id}`,
+      url : `/remote/list/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {

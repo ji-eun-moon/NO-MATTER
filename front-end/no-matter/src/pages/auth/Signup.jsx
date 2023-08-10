@@ -307,7 +307,7 @@ function Signup() {
         event.preventDefault()
         axiosInstance({
             method : 'Get',
-            url : `http://localhost:8080/api/v1/user/idCheck/${userId}`,
+            url : `/user/idCheck/${userId}`,
         })
         .then((response) => {
             console.log('response',response)

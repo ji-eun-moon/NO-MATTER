@@ -59,7 +59,7 @@ function HubPage() {
     try {
       const response = await axiosInstance({
         method: 'Post',
-        url: 'http://localhost:8080/api/v1/hub/readCode',
+        url: '/hub/readCode',
         data: {
           'code': code,
           'userHubName': hubName
@@ -110,7 +110,7 @@ function HubPage() {
 
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {  
