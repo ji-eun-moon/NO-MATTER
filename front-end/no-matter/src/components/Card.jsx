@@ -3,6 +3,7 @@ import React from 'react'
 function Card({children}) {
   const cardStyle = {
     height: '80px',
+    width: "100%"
   };
 
   return (
