@@ -49,26 +49,21 @@ function SwipeCard({ children }) {
   };
 
   return (
-    <div
-      className="card-container"
-      style={{ overflow: 'hidden' }}
-      ref={containerRef}
-    >
       <div
-        className="card mb-3"
+        ref={containerRef}
+        className="card"
         style={{
-          height: '80px',
+          height: '100px',
           transition: 'transform 0.3s ease',
-          transform: `translateX(${endX}px)`,
+          transform: `translateX(${endX}px)`, position:'relative', padding:'0', width:"100%", zIndex:"1"
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        ref={cardRef}
+        
       >
         <div className="card-body d-flex">{children}</div>
       </div>
-    </div>
   );
 }
 
