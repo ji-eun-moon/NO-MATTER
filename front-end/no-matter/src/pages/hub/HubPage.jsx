@@ -9,6 +9,8 @@ import Paper from '@mui/material/Paper';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import KeyIcon from '@mui/icons-material/Key';
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 
 const style = {
   position: 'absolute',
@@ -211,12 +213,13 @@ function HubPage() {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box sx={{ ...style, width: 300, position:"relative" }}>
+              <Box sx={{ ...style, width: 300, position:"relative" }} 
+                   style={{ backgroundColor:"#FCFCFC", borderRadius:"10px", border:"1px solid #FCFCFC", padding:"20px"}}>
                 <div>
                 <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-                  <b>허브 등록 방법을 선택하세요</b>
+                  <p style={{fontSize:"18px", fontWeight:"700"}} className='ms-2'>허브 등록 방법을 선택하세요.</p>
                   <br />
-                    <div className='d-flex justify-content-center' style={{marginTop:"10px"}}>
+                    <div className='d-flex justify-content-center'>
                       <Box
                         onClick = {clickCode}
                         sx={{
@@ -230,9 +233,11 @@ function HubPage() {
                           }
                         }}                     
                       >
-                        <Paper elevation={3} className={'d-flex flex-column align-content-center justify-conetent-center text-center'} style={{position:'relative'}}>
-                          <p style={{fontSize:'30px', fontWeight:'bold'}}>초대 코드</p>
-                          <i class="bi bi-key" style={{fontSize:'70px', width:'70px', height:'70px', position:'absolute', top:'50%', left:'50%', transform:'translate(-50%, -50%)'}}></i>                      
+                        <Paper elevation={3} style={{padding:"5px"}} className='centered'>
+                          <div className='centered flex-column'>
+                            <p style={{fontSize:'18px', fontWeight:'bold', marginBottom:"0px"}}>초대 코드 입력</p>
+                            <KeyIcon fontSize='large'/>
+                          </div>
                         </Paper>
                       </Box>               
 
@@ -249,9 +254,12 @@ function HubPage() {
                           }
                         }}
                       >
-                        <Paper elevation={3} className={'d-flex flex-column align-content-center justify-conetent-center text-center'} style={{position:'relative'}}>
-                          <p style={{fontSize:'30px', fontWeight:'bold'}}>직접</p>
-                          <i class="bi bi-hand-index-thumb" style={{fontSize:'50px', width:'70px', height:'70px', position:'absolute', top:'60%', left:'50%', transform:'translate(-50%, -50%)'}}></i>
+                        <Paper elevation={3} style={{padding:"5px"}} className='centered'>
+                          <div className='centered flex-column'>
+                            <p style={{fontSize:'18px', fontWeight:'bold' , marginBottom:"0px"}}>직접 추가</p>
+                            <PanToolAltIcon fontSize='large'/>
+                          </div>
+                  
                         </Paper>
                       </Box>               
 

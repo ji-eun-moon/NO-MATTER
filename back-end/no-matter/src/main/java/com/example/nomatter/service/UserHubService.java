@@ -20,7 +20,9 @@ public class UserHubService {
 
     public String register(UserHub userHub){
 
-        userHub.setUserHubAuth("admin");
+        if(userHub.getUserHubAuth() == null){
+            userHub.setUserHubAuth("admin");
+        }
 
         userHubRepository.save(userHub);
 
@@ -65,6 +67,12 @@ public class UserHubService {
         UserHub userHub = userHubRepository.findByHubIdAndUserId(hubId, memberId).get();
 
         userHubRepository.delete(userHub);
+
+    }
+
+    public Optional<UserHub> findByUserIdAndHubId(Long memberId, Long hubId){
+
+        return userHubRepository.findByUserIdAndHubId(memberId, hubId);
 
     }
 }
