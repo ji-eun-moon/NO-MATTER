@@ -58,7 +58,7 @@ function SettingPage() {
           <div style={{fontSize:"18px", fontWeight:"bold"}}>
             다크 모드
           </div>
-          <div class="form-check form-switch">
+          <div className="form-check form-switch">
             <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={dark} onChange={() => onDark(!dark)}/>
             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
               {dark ? 'ON' : 'OFF'}
