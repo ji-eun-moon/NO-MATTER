@@ -9,7 +9,7 @@ export default function Inputs() {
   return (   
     <div>
       <div className='centered'>
-        <h2>허브의 이름을 설정해주세요.</h2>
+        <h2 className='font-700'>허브의 이름을 설정해주세요.</h2>
       </div>
       <br />
 
@@ -23,7 +23,7 @@ export default function Inputs() {
         style={{margin:"40px 20px 20px 5px"}}
         className='centered'
       >
-        <Input  placeholder="허브 이름" inputProps={ariaLabel} />
+        <Input  placeholder="허브 이름(5자 이내)" inputProps={{ ...ariaLabel, maxLength: 5 }} />
       </Box>
 
     </div> 
