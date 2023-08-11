@@ -191,7 +191,7 @@ function MainPage() {
               {hubs.map((hub) => (
                 <SwiperSlide key={hub.hubId}>
 
-                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"55vh" }}>
+                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"100%"}}>
                     <div className="card-text centered" style={{ paddingTop: '15px', fontSize: '25px' }}>
                       {hub.userHubName}
                     </div>
