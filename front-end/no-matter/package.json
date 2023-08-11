@@ -21,6 +21,7 @@
     "firebase": "^10.1.0",
     "json-server": "^0.17.3",
     "jsonwebtoken": "^9.0.1",
+    "mqtt": "^5.0.2",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.5",
@@ -37,6 +38,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.7.20",
     "swiper": "^10.1.0",
+    "url": "^0.11.1",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.6.0",
     "workbox-broadcast-update": "^6.6.0",
@@ -52,7 +54,8 @@
     "workbox-streams": "^6.6.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
