@@ -7,11 +7,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 
-function RmtAc() {
+function RmtAc(props) {
   const navigate = useNavigate();
+  const isCreate = props.isCreate
 
   const [open, setOpen] = React.useState(false);
-  const [isAdd, setIsAdd] = useState(false)
 
   const [isOn, setIsOn] = useState(false);
   const [temperature, setTemperature] = useState(25);
@@ -21,8 +21,8 @@ function RmtAc() {
   const [btnData, setBtnData] = useState({asdf:'adsf'})
   const [isModify, setIsModify] = useState(false)
   const [isNew, setIsNew] = useState(0)
+  const [notSave, setNotSave] = useState(false)
 
-  const [justBack, setJustBack] = useState(false)
 
   const getBtnData = () => {
     // axios 추가 필요
@@ -33,66 +33,24 @@ function RmtAc() {
     getBtnData()
   }, [])
 
-  const remoteShare = () => {
-    console.log('share')
-  }
-
   const remoteSave = () => {
     console.log('Save')
+    setNotSave(false)
+
   }
-
-  const remoteModify = () => {
-    console.log('modify')
-  }
-  // 공유, 저장, 수정 버튼 끝
-
-
-  // 버튼 꾹 누르면 설정
-  const [isSelect, setIsSelect] = useState(false)
-  const [btnName, setBtnName] = useState('')
-
-  const onTouchStart = (btnname) => {
-    setIsSelect(true)
-    setBtnName(btnname)
-  }
-
-  const onTouchEnd = () => {
-    setIsSelect(false)
-    setBtnName('')
-  }
-
-  let intervalId
-  useEffect(() => {
-    if (isSelect) {
-      intervalId = setInterval(() => {
-        if (isAdd === false) {
-          setIsAdd(true)
-        }
-        setOpen(!open);
-      }, 2000)
-    } else {
-      clearInterval(intervalId)
-    }
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [isSelect])
-
-  useEffect(() => {
-    if (open) {
-      console.log(open)
-      btnSetting(btnName)
-      setIsModify(true)
-    }
-  }, [open])
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleClick = (e) => {
-    console.log(e)
-    // 신호를 입출력할 함수 필요
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+    } else {
+      console.log(e)
+      // 신호를 입출력할 함수 필요
+    }
   }
 
   const modalStyle = {
@@ -108,11 +66,6 @@ function RmtAc() {
     px: 4,
     pb: 3,
   };
-
-  const btnSetting = (btnname) => {
-    console.log(btnname)
-  }
-  // 버튼 꾹 누르면 설정 끝
 
   const increaseTemperature = () => {
     setTemperature((prevTemperature) => prevTemperature + 1);
@@ -152,14 +105,14 @@ function RmtAc() {
   ));
 
   return (
-    <div className='page-container container'>
+    // <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
           <div className='d-flex'>
             {
-              isModify ? 
-              <div onClick={() => setJustBack(true)}>
+              isModify === true ?
+              <div onClick={() => setNotSave(true)}>
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
             }
@@ -167,39 +120,25 @@ function RmtAc() {
           </div>
           <div>
             {
-              isNew === 0 ? 
+              isCreate === true ? 
               <button 
                 className='btn'
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
                 onClick={remoteSave}
                 >저장하기
               </button> : 
-              (
-                isModify === true ? 
-                <button 
-                  className='btn'
-                  style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-                  onClick={remoteModify}
-                  >저장하기
-                </button> : 
-                <button 
-                  className='btn'
-                  style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-                  onClick={remoteShare}
-                  >공유하기
-                </button>
-              )
+              null
             }
           </div>
         </div>
       <hr />
-      <div className='ac-body' style={{width:"100%"}}>
-        <Modal
-            open={justBack}
-            onClose={() => setJustBack(false)}
-            aria-labelledby="child-modal-title"
-            aria-describedby="child-modal-description"
-            >
+        { isCreate === true ?
+          <Modal
+          open={notSave}
+          onClose={() => setNotSave(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
             <Box sx={{ ...modalStyle, width: 300 }}>
               <h2 id="child-modal-title">리모컨 선택화면으로 돌아갑니다</h2>
               <p id="child-modal-description">
@@ -207,12 +146,13 @@ function RmtAc() {
               </p>
               <div style={{display: 'flex', justifyContent:'flex-end'}}>
                 <Button onClick={() => (navigate(-1))}>확인</Button>
-                <Button onClick={() => setJustBack(false)}>취소</Button>
+                <Button onClick={() => setNotSave(false)}>취소</Button>
               </div>
             </Box>
-          </Modal>
+          </Modal> : null
+        }
         {
-          isAdd ? <Modal
+          isCreate ? <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="child-modal-title"
@@ -229,87 +169,71 @@ function RmtAc() {
           </Box>
         </Modal> : null
         }
-        <div>
-          {isOn? (
-            <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
-              <p style={{ fontSize:"50px", color:"black", fontWeight:"700"}}>{temperature}°C</p>
-              {/* <p className='ac-wind-speed'>바람 세기: {windSpeed}</p>
-              <img src='/images/fan.png' style={{width:"30px"}} className='fan-image'/> */}
-              <div className='d-flex'>
-                {filledFanImages}
-                {emptyFanImages}
-              </div>
-            </div>
-          ) : (
-            <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
-              <p style={{ fontSize:"50px", color:"white", fontWeight:"700"}}>OFF</p>
-            </div>
-          )}
-        </div>
 
-        <div className='my-3'>
-          {isOn ? (
-            <div onClick={handleTurnOff} className='flex-column centered'
-            onTouchStart={()=>{onTouchStart('turnoff')}}
-            onTouchEnd={()=>{onTouchEnd()}}>
-              <img src='/images/turnon.png' style={{width:"80px"}}/>
-              {/* <p style={{fontSize:"30px", fontWeight:"500"}}>OFF</p> */}
-            </div>
+        <div style={{borderWidth:'1px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC', padding:'30px'}}>
+          <div>
+            {isOn? (
+              <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
+                <p style={{ fontSize:"50px", color:"black", fontWeight:"700"}}>{temperature}°C</p>
+                {/* <p className='ac-wind-speed'>바람 세기: {windSpeed}</p>
+                <img src='/images/fan.png' style={{width:"30px"}} className='fan-image'/> */}
+                <div className='d-flex'>
+                  {filledFanImages}
+                  {emptyFanImages}
+                </div>
+              </div>
             ) : (
-            <div onClick={handleTurnOn} className='flex-column centered'
-            onTouchStart={()=>{onTouchStart('turnon')}}
-            onTouchEnd={()=>{onTouchEnd()}}>
-              <img src='/images/turnoff.png' style={{width:"80px"}}/>
-              {/* <p style={{fontSize:"30px", fontWeight:"500"}}>ON</p> */}
+              <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
+                <p style={{ fontSize:"50px", color:"white", fontWeight:"700"}}>OFF</p>
+              </div>
+            )}
+          </div>
+
+          <div className='my-3'>
+            {isOn ? (
+              <div onClick={handleTurnOff} className='flex-column centered'>
+                <img src='/images/turnon.png' style={{width:"80px"}}/>
+                {/* <p style={{fontSize:"30px", fontWeight:"500"}}>OFF</p> */}
+              </div>
+              ) : (
+              <div onClick={handleTurnOn} className='flex-column centered'>
+                <img src='/images/turnoff.png' style={{width:"80px"}}/>
+                {/* <p style={{fontSize:"30px", fontWeight:"500"}}>ON</p> */}
+              </div>
+            )}
+          </div>
+          
+          <div className='d-flex justify-content-around'>
+            <div className='d-flex flex-column centered'>
+                <div onClick={increaseTemperature} className='control-button-up centered'>
+                  <i className="bi bi-chevron-up fs-1"></i>
+                </div>
+              <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>온도</p>
+                <div onClick={decreaseTemperature} className='control-button-down centered'>
+                  <i className="bi bi-chevron-down fs-1"></i>
+                </div>
             </div>
-          )}
-        </div>
-        
-        <div className='d-flex justify-content-around'>
-          <div className='d-flex flex-column centered'>
-              <div onClick={increaseTemperature} className='control-button-up centered'
-              onTouchStart={()=>{onTouchStart('tempup')}}
-              onTouchEnd={()=>{onTouchEnd()}}>
+
+            <div className='d-flex flex-column centered'>
+              <div onClick={increaseWindSpeed} className='control-button-up centered'>
                 <i className="bi bi-chevron-up fs-1"></i>
               </div>
-            <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>온도</p>
-              <div onClick={decreaseTemperature} className='control-button-down centered'
-              onTouchStart={()=>{onTouchStart('tempdown')}}
-              onTouchEnd={()=>{onTouchEnd()}}>
+                <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>바람</p>
+              <div onClick={decreaseWindSpeed} className='control-button-down centered'>
                 <i className="bi bi-chevron-down fs-1"></i>
               </div>
-          </div>
-
-          <div className='d-flex flex-column centered'>
-            <div onClick={increaseWindSpeed} className='control-button-up centered'
-            onTouchStart={()=>{onTouchStart('windup')}}
-            onTouchEnd={()=>{onTouchEnd()}}>
-              <i className="bi bi-chevron-up fs-1"></i>
-            </div>
-              <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>바람</p>
-            <div onClick={decreaseWindSpeed} className='control-button-down centered'
-            onTouchStart={()=>{onTouchStart('winddown')}}
-            onTouchEnd={()=>{onTouchEnd()}}>
-              <i className="bi bi-chevron-down fs-1"></i>
             </div>
           </div>
-        </div>
 
-        <div className='d-flex justify-content-around mt-4'>
-          <button className='btn mode-btn btn-lg'
-          onTouchStart={()=>{onTouchStart('mode1')}}
-          onTouchEnd={()=>{onTouchEnd()}}>mode 1</button>
-          <button className='btn mode-btn btn-lg'
-          onTouchStart={()=>{onTouchStart('mode2')}}
-          onTouchEnd={()=>{onTouchEnd()}}>mode 2</button>
-          <button className='btn mode-btn btn-lg'
-          onTouchStart={()=>{onTouchStart('mode3')}}
-          onTouchEnd={()=>{onTouchEnd()}}>mode 3</button>
-        </div>
+          <div className='d-flex justify-content-around mt-4'>
+            <button className='btn mode-btn btn-lg'>mode 1</button>
+            <button className='btn mode-btn btn-lg'>mode 2</button>
+            <button className='btn mode-btn btn-lg'>mode 3</button>
+          </div>
 
+        </div>
       </div>
-      </div>
-    </div>
+    // </div>
   );
 }
 
