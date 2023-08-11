@@ -5,6 +5,7 @@ import HubMemberPage from '../pages/hub/HubMemberPage.jsx';
 import AddHubPage from '../pages/hub/AddHubPage.jsx';
 import AddRemote from '../pages/hub/AddRemote.jsx';
 
+import RemoteDetail from '../pages/hub/RemoteDetail.jsx';
 import RmtTvUi from '../rmtUi/RmtTvUi.jsx';
 import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
 import RmtCustom from '../rmtUi/RmtCustom.jsx';
@@ -56,6 +57,10 @@ const routes = [
   {
     path:'/hubs/board',
     element: <BoardPage />
+  },
+  {
+    path:'/hubs/rmtdetail',
+    element: <RemoteDetail />
   },
   {
     path:'/hubs/rmttv',
