@@ -165,7 +165,7 @@ const steps = [
                   ))}
                 {/* </Stepper> */}
               </div>
-              <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"90px"}} >
+              <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"100px"}} >
                 
                 <Button
                   color="inherit"

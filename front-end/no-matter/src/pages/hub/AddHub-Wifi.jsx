@@ -152,6 +152,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axiosInstance from '../../config/axios'
 import { useSelector, useDispatch } from 'react-redux'
+import RssFeedIcon from '@mui/icons-material/RssFeed';
 
 const style = {
   position: 'absolute',
@@ -282,14 +283,21 @@ export default function NestedModal({onWifi, characteristic}) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Wifi 정보 입력하기</Button>
+      <div className='flex-column centered mb-4'>
+        <h3 style={{marginLeft:"10px", fontWeight:"500"}}>Wi-Fi 정보 입력</h3>
+        <br />
+        <span style={{marginLeft:"10px", fontWeight:"500"}}>허브에 연결할 Wi-Fi 정보를 입력하세요.</span>
+      </div>
+      <div className='centered'>
+        <Button variant="contained" onClick={handleOpen} style={{backgroundColor: "#0097B2"}}><RssFeedIcon className='me-2'/>Wi-Fi</Button>
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 300, position:"relative" }}>
+        <Box sx={{ ...style, width: 300, position:"relative" }} style={{borderRadius: "10px"}}>
           <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
           <br />
           <div className='d-flex align-items-center'>
