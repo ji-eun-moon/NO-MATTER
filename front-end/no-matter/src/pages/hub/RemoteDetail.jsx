@@ -15,6 +15,8 @@ function RemoteDetail() {
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
   console.log(isCreate)
+
+  
   const [msg, setMsg] = useState(<em>...</em>);
 
   useEffect(() => {
