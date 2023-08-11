@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import Button from '@mui/material/Button';
 import BluetoothRoundedIcon from '@mui/icons-material/BluetoothRounded';
 
-function AddHub_Bluetooth({ onBluetooth }) {
+function AddHub_Bluetooth({onBluetooth, onGattServer}) {
   const [characteristicValue, setCharacteristicValue] = useState('');
   const [characteristic, setCharacteristic] = useState(null);
   const [isConnected, setIsConnected] = useState(false) // 블루투스 연결 여부
   const [isConnecting, setIsConnecting] = useState(false)
+  // const [gattServer, setGattServer] = useState(null);
 
   useEffect(() => {
     console.log('자식의 char', characteristic)
@@ -17,6 +18,10 @@ function AddHub_Bluetooth({ onBluetooth }) {
     console.log(characteristic)
   }, [characteristic, characteristicValue])
 
+  // const onGattServer = () => {
+  //   setGattServer(server)
+  // }
+
   const handleConnect = (event) => {
     event.stopPropagation()
     if ('bluetooth' in navigator) {
@@ -26,41 +31,43 @@ function AddHub_Bluetooth({ onBluetooth }) {
         optionalServices: ['00000001-1d10-4282-b68c-e17c508b94f4']
         //filters: [{ services: ['00000001-1d10-4282-b68c-e17c508b94f4'] }],
       })
-        .then((device) => {
-          setIsConnecting(true)
-          console.log('BLE device:', device);
-          return device.gatt.connect(
-            { security: 'encrypt' }
-          );
-        })
-        .then((server) => {
-          return server.getPrimaryService('00000001-1d10-4282-b68c-e17c508b94f4');
-        })
-        .then((service) => {
-          return service.getCharacteristic('00000002-1d10-4282-b68c-e17c508b94f4');
-        })
-        .then((characteristic) => {
-          setCharacteristic(characteristic);
-
-          console.log('Chr: ', characteristic)
-          console.log(characteristic.properties.read)
-          // onBluetooth(characteristic, characteristicValue)
-          alert('블루투스 연결 성공')
-          setIsConnected(true);
-          setIsConnecting(false);
-          // return characteristic.readValue();
-        })
-        // .then((value) => {
-        //   // setCharacteristicValue(new TextDecoder().decode(value));
-        //   let decValue = new TextDecoder().decode(value);
-        //   setCharacteristicValue(decValue);
-        //   onBluetooth(characteristic, characteristicValue)
-        // })
-        .catch((error) => {
-          console.error('Error accessing BLE device:', error);
-          alert('블루투스 연결 실패')
-          setIsConnecting(false);
-        });
+      .then((device) => {
+        setIsConnecting(true)
+        console.log('BLE device:', device);
+        return device.gatt.connect(
+          {security: 'encrypt'}
+        );
+      })
+      .then((server) => {
+        // setGattServer(server)
+        onGattServer(server)
+        return server.getPrimaryService('00000001-1d10-4282-b68c-e17c508b94f4');
+      })
+      .then((service) => {
+        return service.getCharacteristic('00000002-1d10-4282-b68c-e17c508b94f4');
+      })
+      .then((characteristic) => {
+        setCharacteristic(characteristic);
+        
+        console.log('Chr: ', characteristic)
+        console.log(characteristic.properties.read)
+        // onBluetooth(characteristic, characteristicValue)
+        alert('블루투스 연결 성공')
+        setIsConnected(true);
+        setIsConnecting(false);         
+        // return characteristic.readValue();
+      })
+      // .then((value) => {
+      //   // setCharacteristicValue(new TextDecoder().decode(value));
+      //   let decValue = new TextDecoder().decode(value);
+      //   setCharacteristicValue(decValue);
+      //   onBluetooth(characteristic, characteristicValue)
+      // })
+      .catch((error) => {
+        console.error('Error accessing BLE device:', error);
+        alert('블루투스 연결 실패')
+        setIsConnecting(false);  
+      });
     } else {
       console.log('Web Bluetooth API is not supported in this browser.');
     }
