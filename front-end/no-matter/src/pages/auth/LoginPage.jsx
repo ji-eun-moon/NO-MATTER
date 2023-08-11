@@ -160,7 +160,7 @@ function LoginPage() {
               </Grid>
             </form>
             <hr />
-              <Button
+              {/* <Button
                 type="submit"
                 fullWidth
                 size="large"
@@ -195,7 +195,7 @@ function LoginPage() {
                 className="button"
                 style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Kakao
-              </Button>
+              </Button> */}
           </div>
       </Container>
     </div>

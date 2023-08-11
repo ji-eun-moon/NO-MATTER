@@ -319,12 +319,12 @@ function RemotePage() {
   }
 
   const goMember = () => {
-    if(hub.userHubAuth === 'admin'){
+    // if(hub.userHubAuth === 'admin'){
       navigate(`/hubs/${id}/member`, { state: userId })
-    }
-    else{
-      alert('권한이 없습니다')
-    }
+    // }
+    // else{
+    //   alert('권한이 없습니다')
+    // }
   }
   
   const hubDelete = () => {
@@ -428,11 +428,18 @@ function RemotePage() {
               </div>
           }
         </div>
-        <div className='d-flex' onClick={goMember}>
+        {/* <div className='d-flex' onClick={goMember}>
           <div className="main-backgroud-color px-2 rounded centered">
             <i className="bi bi-people-fill fs-2 text-white"></i>
           </div>
-        </div>
+        </div> */}
+        { hub.userHubAuth === 'admin' && 
+          <div className='d-flex' onClick={goMember}>
+            <div className="main-backgroud-color px-2 rounded centered">
+              <i className="bi bi-people-fill fs-2 text-white"></i>
+            </div>
+          </div>
+        }
       </div>
       <hr />
       {renderRemoteList()}
