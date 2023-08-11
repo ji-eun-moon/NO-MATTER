@@ -235,9 +235,9 @@ function HubMemberPage() {
 
     return users.map((user, index) => {
       return (
-        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
           {/* <div className='card-body' style={{position:'relative', padding:'0', width:"100%", zIndex:"1"}}> */}
-            <SwipeCard>
+            <SwipeCard >
               <div className='d-flex align-items-center justify-content-between' 
                 style={{width:"100%"}}>
                 <div className='centered' >
