@@ -151,7 +151,7 @@ function MainPage() {
           })
         }
       </Swiper> */}
-      <div className='container' style={{ backgroundColor: '#E2EAE9', padding: "20px", borderRadius: "15px", height: "80vh" }}>
+      <div className='container' style={{ background: 'linear-gradient(to bottom, #BECED2, #E2EAE9)', padding: "20px", borderRadius: "15px", height: "80vh" }}>
         <div className='d-flex mb-3 justify-content-between align-items-center'>
           <h1 className="font-700 ms-2" style={{ marginBottom: "0px" }}>연결된 기기</h1>
           <Fab color="action" aria-label="add" onClick={handleMenuOpen}>
@@ -191,7 +191,7 @@ function MainPage() {
               {hubs.map((hub) => (
                 <SwiperSlide key={hub.hubId}>
 
-                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"55vh" }}>
+                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"100%"}}>
                     <div className="card-text centered" style={{ paddingTop: '15px', fontSize: '25px' }}>
                       {hub.userHubName}
                     </div>

@@ -22,7 +22,7 @@ function AddRemotePage() {
       <hr />
 
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => {navigate('/hubs/rmttv/1', {state:hub})}} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">TV</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -30,7 +30,7 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => {navigate('/hubs/rmtac', {state:hub})}} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">에어컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -38,7 +38,7 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => {navigate('/hubs/rmtfan/1', {state:hub})}} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">선풍기</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -46,7 +46,7 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => {navigate('/hubs/rmtcustom/1', {state:hub})}} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">커스텀 리모컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>

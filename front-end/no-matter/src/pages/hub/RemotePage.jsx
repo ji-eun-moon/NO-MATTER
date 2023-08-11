@@ -230,6 +230,7 @@ import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 function RemotePage() {
   const { id } = useParams()  // 허브 id
@@ -271,11 +272,11 @@ function RemotePage() {
       url: `/remote/list/${id}`,
       headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
     })
-      .then((response) => {
-        // console.log(response.data)
-        setRemotes(response.data) // 리모컨 리스트
-        setLoading(false);
-      })
+    .then((response) => {
+      setRemotes(response.data) // 리모컨 리스트
+      setLoading(false);
+    })
+
   }
 
 
@@ -301,13 +302,18 @@ function RemotePage() {
 
     return remotes.map(remote => {
       return (
-        <Card key={remote.remoteId}>
-          <div className='d-flex align-items-center justify-content-between'
-            style={{ width: "100%" }}>
-            <div className='card-text'>{remote.controllerName}</div>
-            <div><i className="bi bi-chevron-right"></i></div>
-          </div>
-        </Card>
+        <div>
+          <Card key={remote.remoteId}>
+            <div className='d-flex align-items-center row'
+                style={{width:"100%"}}>
+              <div className='card-text col-11' 
+              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>{remote.controllerName}</div>
+              <div className='col-1 align-items-end' onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true]})}>
+                <SettingsOutlinedIcon/>
+              </div>
+            </div>
+          </Card>
+        </div>
       )
     })
   }

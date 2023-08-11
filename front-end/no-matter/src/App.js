@@ -3,6 +3,9 @@ import React from 'react';
 import './App.scss';
 import { isMobile } from 'react-device-detect';
 
+// firebase
+import './firebase-messaging-sw.js'
+
 // routes
 import routes from './data/routes';
 import {
@@ -23,6 +26,8 @@ import LandingPage from './landings/LandingPage';
 //pages/auth
 import LoginPage from './pages/auth/LoginPage.jsx'
 import Signup from './pages/auth/Signup'
+
+
 
 function App() {
   return (
