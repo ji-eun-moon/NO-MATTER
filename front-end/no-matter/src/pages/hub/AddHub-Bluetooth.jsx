@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react'
 import Button from '@mui/material/Button';
 import BluetoothRoundedIcon from '@mui/icons-material/BluetoothRounded';
 
-function AddHub_Bluetooth({onBluetooth}) {
+function AddHub_Bluetooth({onBluetooth, onGattServer}) {
   const [characteristicValue, setCharacteristicValue] = useState('');
   const [characteristic, setCharacteristic] = useState(null);
-  const [isConnected, setIsConnected] = useState(true) // 블루투스 연결 여부
+  const [isConnected, setIsConnected] = useState(false) // 블루투스 연결 여부
   const [isConnecting, setIsConnecting] = useState(false)
+  // const [gattServer, setGattServer] = useState(null);
 
   useEffect(() => {
     console.log('자식의 char', characteristic)
@@ -16,6 +17,10 @@ function AddHub_Bluetooth({onBluetooth}) {
     onBluetooth(characteristic, characteristicValue)
     console.log(characteristic)
   }, [characteristic, characteristicValue])
+
+  // const onGattServer = () => {
+  //   setGattServer(server)
+  // }
 
   const handleConnect = (event) => {
     event.stopPropagation()
@@ -34,6 +39,8 @@ function AddHub_Bluetooth({onBluetooth}) {
         );
       })
       .then((server) => {
+        // setGattServer(server)
+        onGattServer(server)
         return server.getPrimaryService('00000001-1d10-4282-b68c-e17c508b94f4');
       })
       .then((service) => {
