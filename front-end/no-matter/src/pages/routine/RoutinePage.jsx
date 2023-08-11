@@ -4,6 +4,7 @@ import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function RoutinePage() {
   const navigate = useNavigate();
@@ -40,15 +41,16 @@ function RoutinePage() {
         <div className='centered' style={{width :"100%"}}>
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
-              <h5 style={{marginBottom:"0px"}}>{routine.condition}</h5>
+              <p style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition}</p>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              {/* <i className="bi bi-chevron-right"></i> */}
+              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -62,28 +64,29 @@ function RoutinePage() {
               <div className='d-flex'>
                {
                 routine.condition.day.length === 7
-                  ? <h5 className="me-1" style={{ marginBottom: "0px" }}>매일</h5>
+                  ? <p className="me-1" style={{ marginBottom: "0px", fontSize:"18px" }}>매일</p>
                   : <div className='d-flex me-1'>{routine.condition.day.map((day, index) => (
                       <React.Fragment key={index}>
-                        <h5 style={{ marginBottom: "0px" }}>{day}</h5>
+                        <p style={{ marginBottom: "0px", fontSize:"18px", fontSize:"18px" }}>{day}</p>
                         {index !== routine.condition.day.length - 1 && <span>,&nbsp;</span>}
                       </React.Fragment>
                     ))}
-                    {/* <h5 style={{marginBottom:"0px"}} className='me-1'>요일</h5> */}
+                    {/* <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>요일</p> */}
                     </div>
                }
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.ampm === 'am' ? '오전' : '오후'}</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.hour}시</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.minute}분</h5>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.ampm === 'am' ? '오전' : '오후'}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.hour}시</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.minute}분</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              {/* <i className="bi bi-chevron-right"></i> */}
+              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -95,17 +98,18 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 className="me-1" style={{marginBottom:"0px"}}>{routine.condition.temperature} °C</h5>
-                <h5 className="me-2" style={{marginBottom:"0px"}}>{routine.condition.updown === 'up' ? '초과' : '미만'}</h5>
+                <p className="me-1" style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.temperature} °C</p>
+                <p className="me-2" style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.updown === 'up' ? '초과' : '미만'}</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              {/* <i className="bi bi-chevron-right"></i> */}
+              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -118,17 +122,18 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 style={{marginBottom:"0px"}}>{routine.condition.label}</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-2'>할 때</h5>
+                <p style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.label}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-2'>할 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              {/* <i className="bi bi-chevron-right"></i> */}
+              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -141,17 +146,18 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 className='me-1' style={{marginBottom:"0px"}}>{routine.condition.label}</h5>
-                <h5 style={{marginBottom:"0px"}}>일 때</h5>
+                <p className='me-1' style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.label}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}}>일 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              {/* <i className="bi bi-chevron-right"></i> */}
+              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>

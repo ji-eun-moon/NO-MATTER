@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import axiosInstance from '../../config/axios'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import Swal from 'sweetalert2'
+import GoBack from '../../components/GoBack.jsx'
 
 function UserEditPage() {
   const navigate = useNavigate()
@@ -142,8 +143,12 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
   return (
     <div className="page-container container">
       <div className='d-flex justify-content-between mt-5'>
-        <h1 className="font-700">회원 정보 수정</h1>
+        <div className='d-flex'>
+          <GoBack />
+          <h1 className="font-700">회원 정보 수정</h1>
+        </div>
       </div>
+      <hr />
 
       <div style={{marginTop:"20px"}}>
         <div style={{marginBottom:"20px"}}>
