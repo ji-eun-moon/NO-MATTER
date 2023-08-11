@@ -15,6 +15,7 @@ import GoBack from '../../components/GoBack.jsx'
 
 export default function HorizontalNonLinearStepper() {
 
+const [hubUuId, setHubUuId] = useState('');
 const [characteristicValue, setCharacteristicValue] = useState('');
 const [characteristic, setCharacteristic] = useState(null);
 const [ hubUuId, setUuId ] = useState('')
@@ -157,7 +158,7 @@ const steps = [
         </div>
       </div>
       <hr />
-      <Box sx={{ width: '100%', marginTop:"50px"}}>
+      <Box sx={{ width: '100%' }}>
         <Stepper nonLinear activeStep={activeStep} className='my-4'>
           {steps.map((step, index) => (
             <Step key={step.label} completed={completed[index]}>

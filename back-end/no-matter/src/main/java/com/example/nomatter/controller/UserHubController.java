@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -75,7 +76,11 @@ public class UserHubController {
     }
 
     @PostMapping("/modifygrade")
-    public ResponseEntity<?> modifyGrade(@RequestBody Long userHubId, @RequestBody Long changeUserHubId, @RequestBody String grade){
+    public ResponseEntity<?> modifyGrade(@RequestBody Map<String, String > map, Authentication authentication){
+
+        Long userHubId = Long.parseLong(map.get("userHubId"));
+        Long changeUserHubId = Long.parseLong(map.get("changeUserHubId"));
+        String grade = map.get("grade");
 
         userHubService.modifyGrade(userHubId, changeUserHubId, grade);
 
@@ -88,6 +93,18 @@ public class UserHubController {
         userHubService.deleteUserHub(hubId, userService.findByUserId(authentication.getName()).get().getMemberId());
 
         return ResponseEntity.ok().body("허브 삭제 완료");
+    }
+
+    @PostMapping("/outUserHubId")
+    public ResponseEntity<?> outUserHubId(@RequestBody Map<String, String> map, Authentication authentication){
+
+        Long userHubId = Long.parseLong(map.get("userHubId"));
+        Long changeUserHubId = Long.parseLong(map.get("changeUserHubId"));
+
+        userHubService.outUserHubId(userHubId, changeUserHubId);
+
+        return ResponseEntity.ok().body("삭제 완료");
+
     }
 
 }
