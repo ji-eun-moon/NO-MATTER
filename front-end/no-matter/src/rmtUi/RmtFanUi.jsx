@@ -4,8 +4,9 @@ import GoBack from '../components/GoBack.jsx'
 import { Box, Modal, Button } from "@mui/material";
 
   
-function RmtFanUi() {
+function RmtFanUi(props) {
   const navigate = useNavigate();
+  const isCreate = props.isCreate
 
   const [open, setOpen] = React.useState(false);
 
@@ -15,8 +16,8 @@ function RmtFanUi() {
   const [btnData, setBtnData] = useState({asdf:'adsf'})
   const [isModify, setIsModify] = useState(false)
   const [isNew, setIsNew] = useState(0)
+  const [notSave, setNotSave] = useState(false)
 
-  const [justBack, setJustBack] = useState(false)
 
   const getBtnData = () => {
     // axios 추가 필요
@@ -27,70 +28,22 @@ function RmtFanUi() {
     getBtnData()
   }, [])
 
-  const remoteShare = () => {
-    console.log('share')
-  }
-
   const remoteSave = () => {
     console.log('Save')
   }
-
-  const remoteModify = () => {
-    console.log('modify')
-  }
-  // 공유, 저장, 수정 버튼 끝
-
-  // 버튼 꾹 누르면 설정
-  const [isSelect, setIsSelect] = useState(false)
-  const [btnName, setBtnName] = useState('')
-
-  const onTouchStart = (btnname) => {
-    setIsSelect(true)
-    setBtnName(btnname)
-  }
-
-  const onTouchEnd = () => {
-    setIsSelect(false)
-    setBtnName('')
-  }
-
-  let intervalId
-  useEffect(() => {
-    if (isSelect) {
-      intervalId = setInterval(() => {
-        if (isAdd === false) {
-          setIsAdd(true)
-        }
-        setOpen(!open);
-      }, 2000)
-    } else {
-      clearInterval(intervalId)
-    }
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [isSelect])
-
-  useEffect(() => {
-    if (open) {
-      console.log(open)
-      btnSetting(btnName)
-      setIsModify(true)
-    }
-  }, [open])
-
-  const btnSetting = (btnname) => {
-    console.log('mod', btnname)
-  }
-  // 버튼 꾹 누르면 설정 끝
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleClick = (e) => {
-    console.log(e)
-    // 신호를 입출력할 함수 필요
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+    } else {
+      console.log(e)
+      // 신호를 입출력할 함수 필요
+    }
   }
 
   const modalStyle = {
@@ -124,13 +77,14 @@ function RmtFanUi() {
   ));
 
   return (
-    <div className='page-container container'>
+    // <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
+
         <div className='d-flex justify-content-between'>
           <div className='d-flex'>
             {
-              isModify ? 
-              <div onClick={() => setJustBack(true)}>
+              isModify === true ?
+              <div onClick={() => setNotSave(true)}>
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
             }
@@ -138,51 +92,39 @@ function RmtFanUi() {
           </div>
           <div>
             {
-              isNew === 0 ? 
+              isCreate === true ? 
               <button 
                 className='btn'
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
                 onClick={remoteSave}
                 >저장하기
               </button> : 
-              (
-                isModify === true ? 
-                <button 
-                  className='btn'
-                  style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-                  onClick={remoteModify}
-                  >저장하기
-                </button> : 
-                <button 
-                  className='btn'
-                  style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
-                  onClick={remoteShare}
-                  >공유하기
-                </button>
-              )
+              null
             }
           </div>
         </div>
-        <hr />
-        <Modal
-          open={justBack}
-          onClose={() => setJustBack(false)}
+      <hr />
+        { isCreate === true ?
+          <Modal
+          open={notSave}
+          onClose={() => setNotSave(false)}
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
           >
-          <Box sx={{ ...modalStyle, width: 300 }}>
-            <h2 id="child-modal-title">리모컨 선택화면으로 돌아갑니다</h2>
-            <p id="child-modal-description">
-              변경사항이 저장되지 않을수도 있습니다
-            </p>
-            <div style={{display: 'flex', justifyContent:'flex-end'}}>
-              <Button onClick={() => (navigate(-1))}>확인</Button>
-              <Button onClick={() => setJustBack(false)}>취소</Button>
-            </div>
-          </Box>
-        </Modal>
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨 선택화면으로 돌아갑니다</h2>
+              <p id="child-modal-description">
+                변경사항이 저장되지 않을수도 있습니다
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={() => (navigate(-1))}>확인</Button>
+                <Button onClick={() => setNotSave(false)}>취소</Button>
+              </div>
+            </Box>
+          </Modal> : null
+        }
         {
-          isAdd ? <Modal
+          isCreate ? <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="child-modal-title"
@@ -202,48 +144,36 @@ function RmtFanUi() {
         <div style={{borderWidth:'1px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC', padding:'30px'}}>
           <div className='mt-3 mb-5 d-flex justify-content-between'>
             {isOn ? (
-              <div onClick={handleTurnOff} className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('turnoff')}}
-              onTouchEnd={()=>{onTouchEnd()}}>
+              <div onClick={handleTurnOff} className='flex-column centered'>
                 <img src='/images/turnon.png' style={{width:"80px"}}/>
               </div>
               ) : (
-              <div onClick={handleTurnOn} className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('turnon')}}
-              onTouchEnd={()=>{onTouchEnd()}}>
+              <div onClick={handleTurnOn} className='flex-column centered'>
                 <img src='/images/turnoff.png' style={{width:"80px"}}/>
               </div>
             )}
             <div className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('windspeed')}}
-              onTouchEnd={()=>{onTouchEnd()}}
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
               <img src='/images/fan.png' style={{ width: '80%', marginBottom:'8px' }}/>
             </div>
           </div>
           <div className='d-flex justify-content-between'>
             <div className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('timer')}}
-              onTouchEnd={()=>{onTouchEnd()}}
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
               <img src='/images/timers.png' style={{ width: '80%', marginRight: '8px' }}/>
             </div>
             <div className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('mode')}}
-              onTouchEnd={()=>{onTouchEnd()}}
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
               <img src='/images/shuffle-arrows.png' style={{ width: '80%' }}/>
             </div>
             <div className='flex-column centered'
-              onTouchStart={()=>{onTouchStart('rotatefan')}}
-              onTouchEnd={()=>{onTouchEnd()}}
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
               <img src='/images/rotatefan.png' style={{ width: '80%' }}/>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   )
 }
 
