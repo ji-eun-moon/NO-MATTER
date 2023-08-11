@@ -1,11 +1,18 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input'; 
 
 
 const ariaLabel = { 'aria-label': 'description' };
 
-export default function Inputs() {
+export default function Inputs({onHubName}) {
+  const [ hubName, setHubName ] = useState('')
+  const HubNameHandler = (e) => {
+    console.log(e.target.value)
+    setHubName(e.target.value)
+  }
+  console.log('hubName : ', hubName)
+  onHubName(hubName)
   return (   
     <div>
       <div className='centered'>

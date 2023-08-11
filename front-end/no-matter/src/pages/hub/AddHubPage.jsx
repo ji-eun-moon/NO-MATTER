@@ -13,33 +13,24 @@ import Loading from '../../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom';
 import GoBack from '../../components/GoBack.jsx'
 
-
-const AddHub = () => {
-  const navigate = useNavigate();
-  axiosInstance({
-    method:'Post',
-    url: '/userhub/register'
-  })
-  .then((response) => {
-    console.log(response)
-    navigate('/hubs');    
-  })
-  .catch((error) => {
-    console.log(error)
-  })  
-return(
-  <div>
-    <Loading/>
-    <p style={{marginTop:"15px"}}>연결중</p>      
-  </div>
-)}
-
-
 export default function HorizontalNonLinearStepper() {
 
 const [hubUuId, setHubUuId] = useState('');
 const [characteristicValue, setCharacteristicValue] = useState('');
 const [characteristic, setCharacteristic] = useState(null);
+const [ hubUuId, setUuId ] = useState('')
+const [ hubName, setHubName ] = useState('')
+const [gattServer, setGattServer] = useState(null);
+
+const onHubUuId = (uuid) => {
+  setUuId(uuid)
+  console.log('uuid :',uuid)
+  console.log('hubuuid : ',hubUuId)
+} 
+
+const onHubName = (name) => {
+  setHubName(name)
+}
 
 const onBluetooth = (newcharacteristic, newcharacteristicValue)=>{
   setCharacteristic(newcharacteristic)
@@ -56,21 +47,25 @@ const onWifi = (newcharacteristicValue)=>{
   setCharacteristicValue(newcharacteristicValue)
 }
 
+const onGattServer = (server) => {
+  setGattServer(server)
+}
+
 const steps = [
   {
     label: 'Bluetooth',
     label2: '연결',
-    component: <Bluetooth onBluetooth={onBluetooth}/>,
+    component: <Bluetooth onBluetooth={onBluetooth} onGattServer={onGattServer}/>,
   },
   {
     label: 'wifi',
     label2: '연결',
-    component: <Wifi onWifi={onWifi} characteristic={characteristic}/>,
+    component: <Wifi onWifi={onWifi} characteristic={characteristic} onHubUuId={onHubUuId} gattServer={gattServer}/>,
   },
   {
     label: '허브',
     label2: '등록',
-    component: <Complete />,
+    component: <Complete onHubName={onHubName}/>,
   },
 ];
 
@@ -124,6 +119,35 @@ const steps = [
     setActiveStep(0);
     setCompleted({});
   };
+
+  const AddHub = () => {
+    const navigate = useNavigate();
+    axiosInstance({
+      method:'Post',
+      url: '/userhub/register',
+      data: {
+        "hubUuid" : hubUuId,
+        "weatherKey" : "weatherKey",
+        "location" : "location",
+        "userHubAuth" : "admin",
+        "userHubName" : hubName
+      }
+    })
+    .then((response) => {
+      console.log(response)
+      console.log('성공')
+      navigate('/hubs');    
+    })
+    .catch((error) => {
+      console.log(error)
+    })  
+  return(
+    <div>
+      <Loading/>
+      <p style={{marginTop:"15px"}}>연결중</p>      
+    </div>
+  )}
+  
 
   return (
     <div className='page-container container'>
