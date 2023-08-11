@@ -269,6 +269,7 @@ function Signup() {
     const [userId, setUserId] = useState("")
     const [idCheck, setIdCheck] = useState(false)
     const [idMsg, setIdMsg] = useState("")
+    const [idFocus, setIdFocus ] = useState(false)
 
     const [userPassword, setUserPassword] = useState("")
     const [userConfirmPassword, setUserConfirmPassword] = useState("")
@@ -276,18 +277,23 @@ function Signup() {
     const [pwdMsg, setPwdMsg] = useState("")
     const [confirmPwdCheck, setConfirmPwdCheck] = useState(false)
     const [confirmPwdMsg, setConfirmPwdMsg] = useState("")
+    const [pwdFocus, setPwdFocus ] = useState(false)
+    const [confirmPwdFocus, setConfirmPwdFocus ] = useState(false)
 
     const [userName, setUserName] = useState("")
     const [nameCheck, setNameCheck] = useState(false)
     const [nameMsg, setNameMsg] = useState("")
+    const [nameFocus, setNameFocus ] = useState(false)
 
     const [userEmail, setUserEmail] = useState("")
     const [emailCheck, setEmailCheck] = useState(false)
     const [emailMsg, setEmailMsg] = useState("")
+    const [emailFocus, setEmailFocus ] = useState(false)
 
     const [userNumber, setUserNumber] = useState("")
     const [numberCheck, setNumberdCheck] = useState(false)
     const [numberMsg, setNumberMsg] = useState("")
+    const [numberFocus, setNumberFocus ] = useState(false)
 
 
     
@@ -322,7 +328,9 @@ function Signup() {
             setIdCheck(false)
           })
     }
-
+    const onIdFocusHandler = () => {
+        setIdFocus(true)
+    }
 
 
     const onPasswordHandler = useCallback((event) => {
@@ -339,6 +347,9 @@ function Signup() {
             setPwdCheck(true)
         }        
     },[])
+    const onPwdFocusHandler = () => {
+        setPwdFocus(true)
+    }
 
     const onconfirmPasswordHandler = useCallback((event) => {
         setUserConfirmPassword(event.currentTarget.value)
@@ -352,6 +363,10 @@ function Signup() {
             setConfirmPwdCheck(false)
         }        
     },[userPassword])
+    const onConfirmPwdFocusHandler = () => {
+        setConfirmPwdFocus(true)
+    }
+
 
 
 
@@ -368,6 +383,10 @@ function Signup() {
             setNameCheck(true)
         }        
     },[])
+    const onNameFocusHandler = () => {
+        setNameFocus(true)
+    }
+
 
 
 
@@ -385,6 +404,10 @@ function Signup() {
             setEmailCheck(true)
         }
     },[])
+    const onEmailFocusHandler = () => {
+        setEmailFocus(true)
+    }
+
 
 
     const onNumberHandler = useCallback((event) => {
@@ -400,6 +423,10 @@ function Signup() {
             setNumberdCheck(true)
         }
     },[])
+    const onNumberFocusHandler = () => {
+        setNumberFocus(true)
+    }
+
 
 
 
@@ -454,8 +481,8 @@ function Signup() {
                                     fullWidth
                                     id="userId"
                                     label="아이디"
-                                    autoFocus
-                                    error={!idCheck}
+                                    onFocus={onIdFocusHandler}
+                                    error={idFocus && !idCheck}
                                     // helperText={idCheck?null:'5글자 이상 입력해주세요'}
                                 />
                                 <Button                    
@@ -485,8 +512,9 @@ function Signup() {
                             type="password"
                             id="userPassword"
                             autoComplete="current-password"
-                            error={!pwdCheck}
-                        />
+                            onFocus={onPwdFocusHandler}
+                            error={pwdFocus && !pwdCheck}
+                />
                         {userPassword.length > 0 && <span className={`message ${pwdCheck ? 'success' : 'error'}`}>{pwdMsg}</span>}              
                     </Grid>
                     <Grid item xs={12}>
@@ -505,8 +533,9 @@ function Signup() {
                             type="password"
                             id="userConfirmPassword"
                             autoComplete="current-password"
-                            error={!confirmPwdCheck}
-                        />
+                            onFocus={onConfirmPwdFocusHandler}
+                            error={confirmPwdFocus && !confirmPwdCheck}
+                />
                         {userConfirmPassword.length > 0 && <span className={`message ${confirmPwdCheck ? 'success' : 'error'}`}>{confirmPwdMsg}</span>}              
                     </Grid>
                     <Grid item xs={12}>
@@ -520,8 +549,9 @@ function Signup() {
                             fullWidth
                             id="userName"
                             label="이름"
-                            error={!nameCheck}
-                        />
+                            onFocus={onNameFocusHandler}
+                            error={nameFocus && !nameCheck}
+                />
                         {userName.length > 0 && <span className={`message ${nameCheck ? 'success' : 'error'}`}>{nameMsg}</span>}              
                     </Grid>
                     <Grid item xs={12}>
@@ -535,8 +565,9 @@ function Signup() {
                             label="이메일"
                             name="email"
                             autoComplete="email"
-                            error={!emailCheck}
-                        />
+                            onFocus={onEmailFocusHandler}
+                            error={emailFocus && !emailCheck}
+                />
                         {userEmail.length > 0 && <span className={`message ${emailCheck ? 'success' : 'error'}`}>{emailMsg}</span>}              
                     </Grid>
                     <Grid item xs={12}>
@@ -550,8 +581,9 @@ function Signup() {
                             label="전화번호"
                             name="phone"
                             autoComplete="phone"
-                            error={!numberCheck}
-                        />
+                            onFocus={onNumberFocusHandler}
+                            error={numberFocus && !numberCheck}
+                />
                         {userNumber.length > 0 && <span className={`message ${numberCheck ? 'success' : 'error'}`}>{numberMsg}</span>}              
                     </Grid>
 
