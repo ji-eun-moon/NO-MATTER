@@ -1,9 +1,9 @@
-FROM node:14 as builder
+FROM node:16 as builder
 
 RUN mkdir ./app
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install --force
 RUN npm run build
 
 
