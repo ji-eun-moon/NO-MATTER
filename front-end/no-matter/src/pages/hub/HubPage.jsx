@@ -56,7 +56,9 @@ function HubPage() {
   }
 
   const onHubName = (event) => {
-    setHubName(event.currentTarget.value)
+    if(event.target.value.length <= 5){
+      setHubName(event.currentTarget.value)
+    }
   }
 
   const check = async () => {

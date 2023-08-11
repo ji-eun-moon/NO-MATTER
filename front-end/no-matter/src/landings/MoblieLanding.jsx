@@ -48,7 +48,7 @@ function MoblieLanding() {
         </div>
       </div>
       <div className='intro-image'>
-        <img src="images/main.png" alt="main background" style={{width:"100%"}}/>
+        <img src="/images/main.png" alt="main background" style={{width:"100%"}}/>
         <div className='intro-text'>
           <Fade direction="up">
             <h2 className='font-700'>누구나 쉽게,</h2>
@@ -69,7 +69,7 @@ function MoblieLanding() {
       <div className='container intro-1-mobile'>
         <div style={{position:"relative", width:"100%"}}>
           <Fade>
-            <img src='images/intro/1.png' style={{height:"250px"}}/>
+            <img src='/images/intro/1.png' style={{height:"250px"}}/>
           </Fade>
             <div style={{position:"absolute", top:"30px", right:"0"}}>
               <Fade direction="right">
@@ -104,14 +104,14 @@ function MoblieLanding() {
           </div>
         </Fade>
         <Fade>
-          <img src='images/intro/2.png' style={{height:"250px"}}/>
+          <img src='/images/intro/2.png' style={{height:"250px"}}/>
         </Fade>
       </div>
 
       <div className='container d-flex justify-content-around intro-1-mobile'>
         <div>
           <Fade>
-            <img src='images/intro/5.png' style={{width:"120px", height:"150px"}}/>
+            <img src='/images/intro/5.png' style={{width:"120px", height:"150px"}}/>
           </Fade>
         </div>
         <Fade direction='right'>
@@ -130,7 +130,7 @@ function MoblieLanding() {
       </div>
 
       <div className='intro-image'>
-        <img src="images/intro/4.png" alt="main background" style={{width:"100%"}}/>
+        <img src="/images/intro/4.png" alt="main background" style={{width:"100%"}}/>
           <div className='intro-text' style={{width:"100%"}}>
             <Fade direction='up'>
               <h4 className='font-700'>어디에나 자연스럽게</h4>
@@ -143,7 +143,7 @@ function MoblieLanding() {
 
       <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/phone.png' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>편리함을 공유하기</h2>
@@ -155,7 +155,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/phone.png' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>DIY 맞춤 리모컨</h2>
@@ -167,7 +167,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-            <img src='images/phone.png' style={{width:"250px"}}/>
+            <img src='/images/phone.png' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>나만의 루틴</h2>
