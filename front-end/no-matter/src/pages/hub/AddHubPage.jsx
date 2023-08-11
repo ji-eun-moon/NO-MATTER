@@ -15,7 +15,6 @@ import GoBack from '../../components/GoBack.jsx'
 
 export default function HorizontalNonLinearStepper() {
 
-const [hubUuId, setHubUuId] = useState('');
 const [characteristicValue, setCharacteristicValue] = useState('');
 const [characteristic, setCharacteristic] = useState(null);
 const [ hubUuId, setUuId ] = useState('')
