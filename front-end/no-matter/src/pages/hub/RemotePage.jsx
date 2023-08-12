@@ -1,226 +1,3 @@
-// import React from 'react'
-// import { useParams } from 'react-router-dom'
-// import { useState, useEffect } from 'react'
-// import axiosInstance from '../../config/axios'
-// import Card from '../../components/Card.jsx';
-// import GoBack from '../../components/GoBack.jsx'
-// import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-// import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Modal from '@mui/material/Modal';
-// import CopyToClipboard from 'react-copy-to-clipboard';
-// import { toast } from 'react-toastify';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 400,
-//   bgcolor: 'background.paper',
-//   border: '2px solid #000',
-//   boxShadow: 24,
-//   p: 4,
-// };
-
-// function RemotePage() {
-//   const { id } = useParams()  // 허브 id
-//   const [ hub, setHub ] = useState([]);
-//   const [ remotes, setRemotes ] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [ inviteCode, setInviteCode ] = useState(null);
-//   const [ date, setDate ] = useState(null);
-//   const [ codeStatus, setCodeStatus ] = useState(false)
-//   const [ open, setOpen ] = React.useState(false);
-//   const navigate = useNavigate();
-
-//   const handleOpen = () => {
-//     setOpen(true);
-//   };
-//   const handleClose = () => {
-//     setOpen(false);
-//     setCodeStatus(false)
-//   };
-//   // 특정 허브 정보 저장
-//   const hubInfo = (id) => {
-//     axiosInstance({
-//       method : 'Get',
-//       url : 'http://localhost:8080/api/v1/userhub/list',
-//       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-//     })
-//     .then((response) => {
-//       const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
-//       setHub(specificHub);
-//     });
-//   }
-
-//   const getCode = (event) => {
-//     console.log(id)
-//     const hubId = id
-//     event.preventDefault()
-//     axiosInstance({
-//         method : 'Get',
-//         url : `http://localhost:8080/api/v1/hub/inviteCode/${hubId}`,
-//         headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-//     })
-//     .then((response) => {
-//         console.log('초대 코드 생성 성공', response.data)
-//         const res = response.data.split(' ')
-//         const code = res[0]
-//         const date = res[1].substring(0, 16).replace('T', ' ')
-//         setInviteCode(code)
-//         setDate(date)
-//         setCodeStatus(true)
-//     })
-//     .catch((err) => {
-//         console.log('초대 코드 생성 실패', err)
-//         setCodeStatus(false)
-//       })        
-// }
-
-//   const getRemote = (id) => {
-
-
-//     // json-server 테스트용
-//     // axios.get(`http://localhost:3001/hubs/${id}`)
-//     // .then((response) => {
-//     //   setHub(response.data)  // 허브 정보
-//     //   setRemotes(response.data.remotes) // 리모컨 리스트
-//     // })
-
-//     axiosInstance({
-//       method : 'Get',
-//       url : `http://localhost:8080/api/v1/remote/list/${id}`,
-//       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-//     })
-//     .then((response) => {
-//       // console.log(response.data)
-//       setRemotes(response.data) // 리모컨 리스트
-//       setLoading(false);
-//     })
-
-//   }
-
-//   useEffect(() => {
-//     hubInfo(id)
-//     getRemote(id)
-//   }, [id])
-
-//   const renderRemoteList = () => {
-//     if (loading) {
-//       return (
-//         <LoadingSpinner/>
-//       )
-//     }
-
-//     if (remotes.length === 0) {
-//       return (
-//         <div className='centered m-5'>
-//           아직 등록된 리모컨이 없습니다.
-//         </div>
-//       )}
-
-//     return remotes.map(remote => {
-//       return (
-//         <Card key={remote.remoteId}>
-//           <div className='d-flex align-items-center justify-content-between'
-//                style={{width:"100%"}}>
-//             <div className='card-text'>{remote.controllerName}</div>
-//             <div><i className="bi bi-chevron-right"></i></div>
-//           </div>
-//         </Card>
-//       )
-//     })
-//   }
-
-//   const hubDelete = () => {
-//     axiosInstance({
-//       method : 'Post',
-//       url : `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
-//       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-//     })
-//     .then((response) => {
-//       console.log(response.data)
-//       navigate('/hubs')
-//     })
-//   }
-//   return (
-//     <div className="container page-container">
-//       <div className='d-flex justify-content-between mt-5'>
-//         <div className='d-flex'>
-//           <GoBack />
-//           <h1 className="font-700">{hub.userHubName}</h1>
-//           <div className='d-flex justify-content-center align-items-center ms-2' 
-//                 style={{backgroundColor:"#fdd969", borderRadius:"10px", padding:"5px 10px 5px"}}>
-//             <img src="/images/crown.png" alt="crown" style={{width: "20px", height:"30px"}}/>
-//             {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
-//           </div>
-//         </div>
-//         <div className='d-flex' onClick={handleOpen}>
-//           <div className="main-backgroud-color px-2 rounded centered">
-//             <i className="bi bi-people-fill fs-2 text-white"></i>
-//           </div>
-//         </div>
-//           <Modal
-//             open={open}
-//             onClose={handleClose}
-//             aria-labelledby="modal-modal-title"
-//             aria-describedby="modal-modal-description"
-//           >
-//             <Box sx={{ ...style, width: 300, position:"relative" }}>
-//               <div>
-//                 <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-//                 <b>초대코드</b>
-//                 <br />
-//                 {!codeStatus? 
-//                     <Button onClick={getCode} style={{padding:'10px 0px 0px 0px'}}>초대 코드 생성하기</Button>
-//                     : <CopyToClipboard
-//                         text={inviteCode}
-//                         onCopy={() => toast.success(`초대 링크가 복사되었습니다.`)}
-//                       >
-//                         <div>
-//                           <p style={{padding:'10px 0px 0px 0px'}}>{inviteCode}</p>
-//                           <p style={{padding:'10px 0px 0px 0px', fontSize:'10px'}}>※ 위 코드는 {date}까지만 사용 가능합니다</p>
-
-//                           <Button className='justify-content-start' style={{padding:'10px 0px 0px 0px', margin:'0px'}}>복사</Button>
-//                         </div>
-//                       </CopyToClipboard>
-//                 }
-//               </div>
-//             </Box>
-//           </Modal>
-//       </div>
-//       <hr />
-//       {renderRemoteList()}
-//       <Card>
-//         <div className="centered" style={{width:"100%"}}>
-//           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
-//           <div className="text-secondary">리모컨 추가하기</div>
-//         </div>
-//       </Card>
-
-//       <div className='centered' style={{color:"crimson", textDecoration:"underline"}} onClick={hubDelete}>
-//         허브 나가기
-//       </div>
-//     </div> 
-//   )
-// }
-
-// export default RemotePage
-
-
-
-
-
-
-
-
-
-
-
-
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
@@ -250,21 +27,10 @@ function RemotePage() {
       .then((response) => {
         const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
         setHub(specificHub);
-        console.log(specificHub)
         setUserId(specificHub.usersHubsId)
-        console.log('hello', specificHub.usersHubsId)
-        console.log('specific', specificHub)
       });
   }
   console.log(hub)
-
-
-  // json-server 테스트용
-  // axios.get(`http://localhost:3001/hubs/${id}`)
-  // .then((response) => {
-  //   setHub(response.data)  // 허브 정보
-  //   setRemotes(response.data.remotes) // 리모컨 리스트
-  // })
 
   const getRemote = (id) => { 
     axiosInstance({
@@ -307,8 +73,8 @@ function RemotePage() {
             <div className='d-flex align-items-center row'
                 style={{width:"100%"}}>
               <div className='card-text col-11' 
-              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>{remote.controllerName}</div>
-              <div className='col-1 align-items-end' onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true]})}>
+              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, id]})}>{remote.controllerName}</div>
+              <div className='col-1 align-items-end' onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true, remote.controllerName, id]})}>
                 <SettingsOutlinedIcon/>
               </div>
             </div>
@@ -444,7 +210,7 @@ function RemotePage() {
       <hr />
       {renderRemoteList()}
       <Card>
-        <div className="centered" style={{ width: "100%" }} onClick={() => navigate('/hubs/addrmt', { state: hub })}>
+        <div className="centered" style={{ width: "100%" }} onClick={() => navigate('/hubs/addrmt', { state: [hub, id] })}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
           <div className="text-secondary">리모컨 추가하기</div>
         </div>
