@@ -6,7 +6,7 @@ import RmtCustom from '../../rmtUi/RmtCustom.jsx';
 import RmtAc from '../../rmtUi/RmtAc.jsx';
 
 import io from 'socket.io-client'
-const BrokerAddress = 'http://i9c105.p.ssafy.io:3001'
+const BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
 
 
 function RemoteDetail() {
@@ -16,7 +16,7 @@ function RemoteDetail() {
 
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
-  // console.log(isCreate)
+  const hubId = remoteType.state[3]
 
   useEffect(() => {
     const newSocket = io(BrokerAddress, {
@@ -66,15 +66,15 @@ function RemoteDetail() {
   return (
       <div className="container page-container">
         {
-          remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} 
+          remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
           publishMessage={publishMessage}/> :
           (
-            remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate}
+            remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
             publishMessage={publishMessage}/> :
             (
-              remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate}
+              remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
               publishMessage={publishMessage}/> : 
-              <RmtCustom isCreate={isCreate}
+              <RmtCustom isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
               publishMessage={publishMessage}/>
             )
           )
