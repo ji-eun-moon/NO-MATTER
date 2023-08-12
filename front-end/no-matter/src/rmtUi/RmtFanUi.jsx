@@ -90,21 +90,29 @@ function RmtFanUi(props) {
   };
 
   const handleTurnOn = () => {
-    // 선풍기 켜는 API
-    setIsOn(true);
-    console.log('on');
-    props.publishMessage('TurnOn')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+    } else {
+      setIsOn(true);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+    }
   };
 
   const handleTurnOff = () => {
-    // 선풍기 끄는 API
-    console.log('off');
-    setIsOn(false);
-    props.publishMessage('TurnOff')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+    } else {
+      setIsOn(false);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+    }
   };
 
   const filledFanImages = Array.from(() => (
-    <img src='/images/fan-filled.png' style={{ width: '30px' }} className='fan-image me-1' />
+    <img src='/images/fan-filled.png' alt='' style={{ width: '30px' }} className='fan-image me-1' />
   ));
 
   return (

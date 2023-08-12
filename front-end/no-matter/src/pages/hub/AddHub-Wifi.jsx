@@ -234,7 +234,7 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
               }
             })
             .catch((error) => {
-              console.log('Error writing data:', error);zz
+              console.log('Error writing data:', error);
             });
         }, 50000);
 
