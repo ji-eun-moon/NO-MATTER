@@ -5,53 +5,77 @@ import RmtFanUi from '../../rmtUi/RmtFanUi.jsx';
 import RmtCustom from '../../rmtUi/RmtCustom.jsx';
 import RmtAc from '../../rmtUi/RmtAc.jsx';
 
-import mqtt from 'mqtt'
+import io from 'socket.io-client'
+const BrokerAddress = 'http://i9c105.p.ssafy.io:3001'
 
-// mosquitto_pub -h i9c105.p.ssafy.io -p 1883 -t {허브고유id(uuid)}/{유저id}
-//  -m "{동작}/{리모컨이름}/{버튼이름}"
 
 function RemoteDetail() {
-  
+  const topic = 'ssafy' 
+  const [message, setMessage] = useState('')
+  const [socket, setSocket] = useState(null)
+
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
-  console.log(isCreate)
-
-  
-  const [msg, setMsg] = useState(<em>...</em>);
+  // console.log(isCreate)
 
   useEffect(() => {
-    const client = mqtt.connect(
-      "mqtt://i9c105.p.ssafy.io:1883"
-    );
+    const newSocket = io(BrokerAddress, {
+      cors: { origin: '*' }
+    });
 
-    client.subscribe("publishtopic");
-    console.log("Client subscribed ");
+    setSocket(newSocket);
 
-    const handleMessage = (topic, message) => {
-      const note = message.toString();
-      setMsg(note);
-      console.log(note);
-      client.end();
-    };
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
 
-    client.on("message", handleMessage);
+    setTimeout(() => {
+      if (socket && topic) {
+        socket.emit('subscribe', topic);
+        console.log(`Subscribed to topic: ${topic}`);
+      }
+    }, 500)
+
+    // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
+    newSocket.on('message', (receivedMessage) => {
+      console.log(`Received message: ${receivedMessage}`);
+    });
+
 
     return () => {
-      client.removeListener("message", handleMessage);
+      newSocket.disconnect();
     };
   }, []);
 
+  // const subscribeToTopic = () => {
+  //   if (socket && topic) {
+  //     socket.emit('subscribe', topic);
+  //     console.log(`Subscribed to topic: ${topic}`);
+  //   }
+  // };
+
+  const publishMessage = (message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+      setMessage('');
+    }
+  };
+  
 
   return (
       <div className="container page-container">
-        <div>{msg}</div>
         {
-          remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate}/> :
+          remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} 
+          publishMessage={publishMessage}/> :
           (
-            remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate}/> :
+            remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate}
+            publishMessage={publishMessage}/> :
             (
-              remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate}/> : 
-              <RmtCustom isCreate={isCreate}/>
+              remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate}
+              publishMessage={publishMessage}/> : 
+              <RmtCustom isCreate={isCreate}
+              publishMessage={publishMessage}/>
             )
           )
         }
