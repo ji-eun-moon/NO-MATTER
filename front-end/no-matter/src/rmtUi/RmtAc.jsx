@@ -100,38 +100,70 @@ function RmtAc(props) {
   };
 
   const increaseTemperature = () => {
-    setTemperature((prevTemperature) => prevTemperature + 1);
-    props.publishMessage('increaseTemperature')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/increaseTemperature`)
+    } else {
+      setTemperature((prevTemperature) => prevTemperature + 1);
+      props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+    }
   };
 
   const decreaseTemperature = () => {
-    setTemperature((prevTemperature) => prevTemperature - 1);
-    props.publishMessage('decreaseTemperature')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/decreaseTemperature`)
+    } else {
+      setTemperature((prevTemperature) => prevTemperature - 1);
+      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+    }
   };
 
   const increaseWindSpeed = () => {
-    setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
-    props.publishMessage('increaseWindSpeed')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/increaseWindSpeed`)
+    } else {
+      setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
+      props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+    }
   };
   
 
   const decreaseWindSpeed = () => {
-    setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
-    props.publishMessage('decreaseWindSpeed')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/decreaseWindSpeed`)
+    } else {
+      setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
+      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+    }
   };
 
   const handleTurnOn = () => {
-    // 에어컨 켜는 API
-    setIsOn(true);
-    console.log('에어컨을 켭니다.');
-    props.publishMessage('TurnOn')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+    } else {
+      setIsOn(true);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+    }
   };
 
   const handleTurnOff = () => {
-    // 에어컨 끄는 API
-    console.log('에어컨을 끕니다.');
-    setIsOn(false);
-    props.publishMessage('TurnOff')
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+    } else {
+      setIsOn(false);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+    }
   };
 
   const filledFanImages = Array.from({ length: windSpeed }, (_, index) => (
