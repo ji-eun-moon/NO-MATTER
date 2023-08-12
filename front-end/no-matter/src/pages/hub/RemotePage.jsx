@@ -322,7 +322,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {
@@ -345,7 +345,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {
@@ -367,7 +367,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {

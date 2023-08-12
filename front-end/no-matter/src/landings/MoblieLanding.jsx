@@ -19,7 +19,7 @@ function MoblieLanding() {
   const automaticLogin = () => {
     const isValidRefresh = !!localStorage.getItem('refreshToken')
     if (isValidRefresh === true) {
-      axios.post('http://172.18.0.3:5000/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+      axios.post('https://i9c105.p.ssafy.io/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
           sessionStorage.setItem('authToken', response.data[0]);
           localStorage.setItem('refreshToken', response.data[1]);
