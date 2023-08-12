@@ -166,7 +166,7 @@ function RoutineResult() {
   // 루틴 등록
   const routineSubmit = () => {
     // json-server test
-    axios.post('http://docker_test_back:3001/routines', {
+    axios.post('http://172.18.0.3:3001/routines', {
       kind: kind,
       condition: condition,
       selectedHub: selectedHub,

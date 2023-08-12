@@ -322,7 +322,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://docker_test_back:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {
@@ -345,7 +345,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://docker_test_back:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {
@@ -367,7 +367,7 @@ function RemotePage() {
         if (willDelete) {
           axiosInstance({
             method : 'Post',
-            url : `http://docker_test_back:8080/api/v1/userhub/deleteUserHub/${id}`,
+            url : `http://172.18.0.3:8080/api/v1/userhub/deleteUserHub/${id}`,
             headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
           })
           .then((response) => {

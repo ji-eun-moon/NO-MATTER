@@ -16,7 +16,7 @@ function RoutinePage() {
 
     axiosInstance({
       method: 'get',
-      url: 'http://docker_test_back:3001/routines/'
+      url: 'http://172.18.0.3:3001/routines/'
     })
     .then((response) => {
       // console.log(response.data)

@@ -42,7 +42,7 @@ export const signup = (userId, userPassword, userName, userEmail, userNumber) =>
   {
     axios({
       method: 'POST',
-      url: 'http://docker_test_back:5000/api/v1/user/join',
+      url: 'http://172.18.0.3:5000/api/v1/user/join',
 
       //찬석
       data: {userId:userId, userPassword:userPassword, userName:userName, userEmail:userEmail, userNumber:userNumber}

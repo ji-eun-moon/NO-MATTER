@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import GoBack from '../../components/GoBack.jsx'
 
 function LoginPage() {
-  const URL = "http://docker_test_back:5000/api/v1/user/login"
+  const URL = "http://172.18.0.3:5000/api/v1/user/login"
   
   let [userID, setUserID] = useState("")
   let [userPassword, setUserPassword] = useState("")
@@ -79,7 +79,7 @@ function LoginPage() {
 
   const goGoogle = (e) => {
 
-    const url = "http://docker_test_back:8080/oauth2/authorization/google"
+    const url = "http://172.18.0.3:8080/oauth2/authorization/google"
 
     console.log(url);
 
