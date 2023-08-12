@@ -19,6 +19,7 @@ import Button from '@mui/material/Button';
 function RmtTvUi(props) {
   const navigate = useNavigate();
   const isCreate = props.isCreate
+  // console.log(props)
 
   const [open, setOpen] = React.useState(false);
 
@@ -51,8 +52,7 @@ function RmtTvUi(props) {
       setOpen(true)
       setIsModify(true)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(e)
     }
   }
 

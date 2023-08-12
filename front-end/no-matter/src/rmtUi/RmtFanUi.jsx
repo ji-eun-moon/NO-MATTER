@@ -41,8 +41,7 @@ function RmtFanUi(props) {
       setOpen(true)
       setIsModify(true)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(e)
     }
   }
 
@@ -64,12 +63,14 @@ function RmtFanUi(props) {
     // 선풍기 켜는 API
     setIsOn(true);
     console.log('on');
+    props.publishMessage('TurnOn')
   };
 
   const handleTurnOff = () => {
     // 선풍기 끄는 API
     console.log('off');
     setIsOn(false);
+    props.publishMessage('TurnOff')
   };
 
   const filledFanImages = Array.from(() => (
@@ -153,21 +154,25 @@ function RmtFanUi(props) {
               </div>
             )}
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('WindSpeed')}}>
               <img src='/images/fan.png' style={{ width: '80%', marginBottom:'8px' }}/>
             </div>
           </div>
           <div className='d-flex justify-content-between'>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('Timer')}}>
               <img src='/images/timers.png' style={{ width: '80%', marginRight: '8px' }}/>
             </div>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('Mode')}}>
               <img src='/images/shuffle-arrows.png' style={{ width: '80%' }}/>
             </div>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('RotateFan')}}>
               <img src='/images/rotatefan.png' style={{ width: '80%' }}/>
             </div>
           </div>

@@ -48,8 +48,7 @@ function RmtAc(props) {
       setOpen(true)
       setIsModify(true)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(e)
     }
   }
 
@@ -69,31 +68,37 @@ function RmtAc(props) {
 
   const increaseTemperature = () => {
     setTemperature((prevTemperature) => prevTemperature + 1);
+    props.publishMessage('increaseTemperature')
   };
 
   const decreaseTemperature = () => {
     setTemperature((prevTemperature) => prevTemperature - 1);
+    props.publishMessage('decreaseTemperature')
   };
 
   const increaseWindSpeed = () => {
     setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
+    props.publishMessage('increaseWindSpeed')
   };
   
 
   const decreaseWindSpeed = () => {
     setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
+    props.publishMessage('decreaseWindSpeed')
   };
 
   const handleTurnOn = () => {
     // 에어컨 켜는 API
     setIsOn(true);
     console.log('에어컨을 켭니다.');
+    props.publishMessage('TurnOn')
   };
 
   const handleTurnOff = () => {
     // 에어컨 끄는 API
     console.log('에어컨을 끕니다.');
     setIsOn(false);
+    props.publishMessage('TurnOff')
   };
 
   const filledFanImages = Array.from({ length: windSpeed }, (_, index) => (
@@ -205,30 +210,33 @@ function RmtAc(props) {
           
           <div className='d-flex justify-content-around'>
             <div className='d-flex flex-column centered'>
-                <div onClick={increaseTemperature} className='control-button-up centered'>
+                <div onClick={() => {increaseTemperature()}} className='control-button-up centered'>
                   <i className="bi bi-chevron-up fs-1"></i>
                 </div>
               <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>온도</p>
-                <div onClick={decreaseTemperature} className='control-button-down centered'>
+                <div onClick={() => {decreaseTemperature()}} className='control-button-down centered'>
                   <i className="bi bi-chevron-down fs-1"></i>
                 </div>
             </div>
 
             <div className='d-flex flex-column centered'>
-              <div onClick={increaseWindSpeed} className='control-button-up centered'>
+              <div onClick={() => {increaseWindSpeed()}} className='control-button-up centered'>
                 <i className="bi bi-chevron-up fs-1"></i>
               </div>
                 <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>바람</p>
-              <div onClick={decreaseWindSpeed} className='control-button-down centered'>
+              <div onClick={() => {decreaseWindSpeed()}} className='control-button-down centered'>
                 <i className="bi bi-chevron-down fs-1"></i>
               </div>
             </div>
           </div>
 
           <div className='d-flex justify-content-around mt-4'>
-            <button className='btn mode-btn btn-lg'>mode 1</button>
-            <button className='btn mode-btn btn-lg'>mode 2</button>
-            <button className='btn mode-btn btn-lg'>mode 3</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode1')}}>mode 1</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode2')}}>mode 2</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode3')}}>mode 3</button>
           </div>
 
         </div>
