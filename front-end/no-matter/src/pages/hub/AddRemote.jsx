@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -9,9 +8,7 @@ import { useLocation } from 'react-router-dom'; // 이 부분을 추가하세요
 function AddRemotePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state)
   const hub = location.state;
-  console.log('fhub', hub)
 
   return (
     <div className='container'>
@@ -20,9 +17,9 @@ function AddRemotePage() {
         <h1 className="font-700">리모컨 추가</h1>
       </div>
       <hr />
-
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true]})} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" 
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true, '', hub[1]]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">TV</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -30,7 +27,8 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true]})} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" 
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true, '', hub[1]]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">에어컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -38,7 +36,8 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true]})} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" 
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true, '', hub[1]]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">선풍기</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -46,17 +45,14 @@ function AddRemotePage() {
         </div>
       </Card>
       <Card>
-        <div className="d-flex align-items-center justify-content-between" onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true]})} style={{width:"100%"}}>
+        <div className="d-flex align-items-center justify-content-between" 
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true, '', hub[1]]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">커스텀 리모컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
           </div>
         </div>
       </Card>
-
-
-      
-
     </div>
   )
 }
