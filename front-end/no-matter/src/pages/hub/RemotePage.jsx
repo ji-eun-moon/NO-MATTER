@@ -75,7 +75,7 @@ function RemotePage() {
             <div className='d-flex align-items-center row'
                 style={{width:"100%"}}>
               <div className='card-text col-11' 
-              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>{remote.controllerName}</div>
+              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, id]})}>{remote.controllerName}</div>
             </div>
           </SwipeCard>
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
