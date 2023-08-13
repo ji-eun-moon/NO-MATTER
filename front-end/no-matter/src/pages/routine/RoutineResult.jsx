@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from '../../components/GoBack.jsx'
 import SelectResult from './SelectResult.jsx';
-import axios from 'axios'
 import axiosInstance from '../../config/axios'
 import './Routine.scss'
-
 import Form from 'react-bootstrap/Form';
+
+import io from 'socket.io-client'
+const BrokerAddress = 'i9c105.p.ssafy.io:3002'
 
 const conditionStyle = {
   border: "2px solid #0097B2",
@@ -44,6 +45,46 @@ function RoutineResult() {
   const [selectedRemote, setSelectedRemote] = useState(null);
   const [selectedRemoteAction, setSelectedRemoteAction] = useState(null);
   const [active, setActive] = useState(false)
+
+  const [topic, setTopic] = useState('ssafy');
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(BrokerAddress, {
+      cors: {origin: '*'}
+    });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
+   
+    // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
+    newSocket.on('message', (receivedMessage) => {
+      console.log(`Received message: ${receivedMessage}`);
+    });
+    
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+
+  const subscribeToTopic = () => {
+    if (socket && topic) {
+      socket.emit('subscribe', topic);
+      console.log(`Subscribed to topic: ${topic}`);
+    }
+  };
+
+  const publishMessage = (message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+    }
+  };
+
 
   const handleSelection = (hub, remote, action) => {
     setSelectedHub(hub);
@@ -199,6 +240,7 @@ function RoutineResult() {
     if (editing) {
       // 루틴 수정 API
     } else {
+      // 루틴 등록
       axiosInstance({
         method: 'POST',
         url: '/routine/update',
@@ -206,10 +248,20 @@ function RoutineResult() {
           hubId : selectedHub.hubId, 
           attributes : JSON.stringify(routineData)
         }
-      }).then (
-        navigate('/routine')
-      )
-      
+      })
+      .then (() => {
+        // 등록 이후 루틴 전체 리스트 불러오기
+        axiosInstance({
+          method :'GET',
+          url: `/routine/list/${selectedHub.hubId}`,
+        }).then((response) => {
+          console.log('등록 후 루틴', response.data)
+          const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
+          publishMessage(`ROUTINE/${result}`)
+          // console.log(result)
+          navigate('/routine')
+        })
+      })
     }
   }
 
