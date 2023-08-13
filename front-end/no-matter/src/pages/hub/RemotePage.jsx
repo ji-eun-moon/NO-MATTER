@@ -155,20 +155,20 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-        .then((willDelete) => {
-          if (willDelete) {
-            axiosInstance({
-              method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${hubId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
-            })
-              .then((response) => {
-                console.log(response.data)
-                navigate('/hubs')
-              })
-          }
-        });
-
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
+  
     }
     else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
       swal({
@@ -178,19 +178,19 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-        .then((willDelete) => {
-          if (willDelete) {
-            axiosInstance({
-              method: 'Post',
-              url: `http://localhost:8080/api/v1/userhub/deleteUserHub/${hubId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
-            })
-              .then((response) => {
-                console.log(response.data)
-                navigate('/hubs')
-              })
-          }
-        });
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
 
     }
     else {
@@ -200,19 +200,19 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-        .then((willDelete) => {
-          if (willDelete) {
-            axiosInstance({
-              method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${usersHubsId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
-            })
-              .then((response) => {
-                console.log(response.data)
-                navigate('/hubs')
-              })
-          }
-        });
+      .then((willDelete) => {
+        if (willDelete) {
+          axiosInstance({
+            method : 'Post',
+            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
+            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+          })
+          .then((response) => {
+            console.log(response.data)
+            navigate('/hubs')
+          })
+        }
+      });
 
 
     }

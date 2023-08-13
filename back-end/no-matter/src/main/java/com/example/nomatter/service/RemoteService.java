@@ -24,4 +24,12 @@ public class RemoteService {
         return remoteRepository.findRecentlyRemoteId();
 
     }
+
+    public void delete(Long remoteId){
+
+        Remote remote = remoteRepository.findByRemoteId(remoteId).get();
+
+        remoteRepository.delete(remote);
+
+    }
 }
