@@ -75,7 +75,6 @@ function RemotePage() {
             <div className='d-flex align-items-center row'
                 style={{width:"100%"}}>
               <div className='card-text col-11' 
-<<<<<<< front-end/no-matter/src/pages/hub/RemotePage.jsx
               onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>{remote.controllerName}</div>
             </div>
           </SwipeCard>
@@ -90,11 +89,6 @@ function RemotePage() {
             <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
               <div className="card-body centered">
                 <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
-=======
-              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, id]})}>{remote.controllerName}</div>
-              <div className='col-1 align-items-end' onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true, remote.controllerName, id]})}>
-                <SettingsOutlinedIcon/>
->>>>>>> front-end/no-matter/src/pages/hub/RemotePage.jsx
               </div>
             </div>
           </div>
