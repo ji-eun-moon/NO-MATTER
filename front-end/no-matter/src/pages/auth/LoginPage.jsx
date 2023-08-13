@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import GoBack from '../../components/GoBack.jsx'
 
 function LoginPage() {
-  const URL = "http://localhost:5000/api/v1/user/login"
+  const URL = "https://i9c105.p.ssafy.io/api/v1/user/login"
   
   let [userID, setUserID] = useState("")
   let [userPassword, setUserPassword] = useState("")
@@ -79,7 +79,7 @@ function LoginPage() {
 
   const goGoogle = (e) => {
 
-    const url = "http://localhost:8080/oauth2/authorization/google"
+    const url = "https://i9c105.p.ssafy.io/oauth2/authorization/google"
 
     console.log(url);
 

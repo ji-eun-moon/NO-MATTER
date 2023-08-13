@@ -17,7 +17,7 @@ function SelectResult({setShowModal, handleSelection}) {
 
     axios({
       method : 'Get',
-      url : 'http://localhost:5000/api/v1/userhub/list',
+      url : 'https://i9c105.p.ssafy.io/api/v1/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {  
@@ -29,7 +29,7 @@ function SelectResult({setShowModal, handleSelection}) {
     
     axios({
       method : 'Get',
-      url : `http://localhost:5000/api/v1/remote/list/${id}`,
+      url : `https://i9c105.p.ssafy.io/api/v1/remote/list/${id}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {

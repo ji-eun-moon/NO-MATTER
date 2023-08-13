@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 // 인스턴스 생성
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
+  baseURL: 'https://i9c105.p.ssafy.io/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
 });
 
 // 요청 인터셉터 추가
@@ -36,7 +36,7 @@ instance.interceptors.response.use(
       console.log(error)
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행
-      return axios.post('http://localhost:5000/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+      return axios.post('https://i9c105.p.ssafy.io/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
           const newAuthToken = response.data[0];
           sessionStorage.setItem('authToken', response.data[0]);
