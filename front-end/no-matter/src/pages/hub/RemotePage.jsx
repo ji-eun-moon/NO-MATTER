@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams,  } from 'react-router-dom'
+import { useParams, } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
@@ -11,11 +11,12 @@ import swal from 'sweetalert';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 
 function RemotePage() {
   const { hubId } = useParams()  // 허브 id
-  const [ usersHubsId, setUsersHubsId ] = useState(null) // 허브 id
+  const [usersHubsId, setUsersHubsId] = useState(null) // 허브 id
   const [userId, setUserId] = useState(''); // 유저 id
   const [hub, setHub] = useState([]);
   const [remotes, setRemotes] = useState([]);
@@ -27,7 +28,7 @@ function RemotePage() {
 
   // 특정 허브 정보 저장
   const hubInfo = (hubId) => {
-    console.log('제발:',hubId)
+    console.log('제발:', hubId)
     axiosInstance({
       method: 'Get',
       url: '/userhub/list',
@@ -37,7 +38,7 @@ function RemotePage() {
         console.log('response', response)
         const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
         setHub(specificHub);
-        console.log('specificHub: ',specificHub)
+        console.log('specificHub: ', specificHub)
         setUserId(specificHub.userId)
         setUsersHubsId(specificHub.usersHubsId)
       });
@@ -58,8 +59,8 @@ function RemotePage() {
   //    // S O S    //
   ////////////////////
 
-    // 나 좀 살 려 줘
-    // H E L P M E 
+  // 나 좀 살 려 줘
+  // H E L P M E 
 
   const getRemote = (hubId) => {
     axiosInstance({
@@ -79,7 +80,7 @@ function RemotePage() {
     hubInfo(hubId)
     getRemote(hubId)
   }, [hubId])
-  
+
 
 
   const renderRemoteList = () => {
@@ -99,25 +100,25 @@ function RemotePage() {
 
     return remotes.map(remote => {
       return (
-        <div key={remote.remoteId}  className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+        <div key={remote.remoteId} className='card mb-3' style={{ height: '80px', padding: '0', border: '0px', overflow: 'hidden' }}>
           <SwipeCard>
             <div className='d-flex align-items-center row'
-                style={{width:"100%"}}>
-              <div className='card-text col-11' 
-              onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, id]})}>{remote.controllerName}</div>
+              style={{ width: "100%" }}>
+              <div className='card-text col-11'
+                onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, false, remote.controllerName, hubId] })}>{remote.controllerName}</div>
             </div>
           </SwipeCard>
-          <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
+          <div className='card-body mb-3 d-flex justify-content-between' style={{ position: 'absolute', padding: '0', width: '100%' }}>
             {/* 리모컨 수정 */}
-            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}}>
+            <div className="card mb-3 bg-primary" style={{ height: '79px', width: '79px', marginLeft: '1px' }}>
               <div className="card-body centered">
-                <SettingsOutlinedIcon fontSize='large' style={{color:'white'}} onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true, remote.controllerName, id]})} />
+                <SettingsOutlinedIcon fontSize='large' style={{ color: 'white' }} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, true, remote.controllerName, hubId] })} />
               </div>
             </div>
             {/* 리모컨 삭제 */}
-            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
+            <div className="card mb-3 bg-danger" style={{ height: '79px', width: '79px', marginRight: '1px' }}>
               <div className="card-body centered">
-                <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
+                <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{ color: 'white' }} />
               </div>
             </div>
           </div>
@@ -235,30 +236,30 @@ function RemotePage() {
 
   return (
     <>
-    {
-      isAdd ?
-        <div className="container page-container">
-          <div className='d-flex flex-column justify-content-center align-items-center'>
-            <div style={{ 
-                      width: "500px", 
-                      height: "500px", 
-                      backgroundImage: `url("/images/logoGif.gif")`, 
-                      backgroundSize: "cover", 
-                      display: "flex", 
-                      justifyContent: "center", 
-                      alignItems: "flex-end", 
-                      color: "black", // 텍스트 색상 설정,
-                      fontSize: "30px",
-                      fontWeight: "bold"
-                    }}>
-                      30초 정도 소요됩니다...
+      {
+        isAdd ?
+          (<div className="container page-container">
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+              <div style={{
+                width: "500px",
+                height: "500px",
+                backgroundImage: `url("/images/logoGif.gif")`,
+                backgroundSize: "cover",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-end",
+                color: "black", // 텍스트 색상 설정,
+                fontSize: "30px",
+                fontWeight: "bold"
+              }}>
+                30초 정도 소요됩니다...
+              </div>
+              <Box sx={{ width: '100%' }}>
+                <LinearProgress variant="determinate" value={progress} />
+              </Box>
             </div>
-            <Box sx={{ width: '100%' }}>
-              <LinearProgress variant="determinate" value={progress} />
-            </Box>
-          </div>
-        </div>
-      :
+          </div>)
+          :
         <div className="container page-container">
           <div className='d-flex justify-content-between mt-5'>
             <div className='d-flex'>
@@ -287,12 +288,7 @@ function RemotePage() {
                   </div>))
               }
             </div>
-            {/* <div className='d-flex' onClick={goMember}>
-                  <div className="main-backgroud-color px-2 rounded centered">
-                    <i className="bi bi-people-fill fs-2 text-white"></i>
-                  </div>
-                </div> */}
-            {hub.userHubAuth === 'admin' &&
+           {hub.userHubAuth === 'admin' &&
               <div className='d-flex' onClick={goMember}>
                 <div className="main-backgroud-color px-2 rounded centered">
                   <i className="bi bi-people-fill fs-2 text-white"></i>
@@ -312,18 +308,10 @@ function RemotePage() {
           <div className='centered' style={{ color: "crimson", textDecoration: "underline" }} onClick={hubDelete}>
             { }
             허브 나가기
-          </div>
-        }
-      </div>
-      <hr />
-      {renderRemoteList()}
-      <Card>
-        <div className="centered" style={{ width: "100%" }} onClick={() => navigate('/hubs/addrmt', { state: [hub, id] })}>
-          <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
-          <div className="text-secondary">리모컨 추가하기</div>
-        </div>
-    }</>      
+          </div>   
+        </div>   
+      }
+    </>
   )
 }
-
 export default RemotePage
