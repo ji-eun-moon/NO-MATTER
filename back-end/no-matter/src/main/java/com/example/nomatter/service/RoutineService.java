@@ -31,4 +31,18 @@ public class RoutineService {
 
     }
 
+    public void delete(Long routineId){
+
+        Routine routine = routineRepository.findByRoutineId(routineId).get();
+
+        routineRepository.delete(routine);
+
+    }
+
+    public Routine findByRoutineId(Long routineId){
+
+        return routineRepository.findByRoutineId(routineId).get();
+
+    }
+
 }
