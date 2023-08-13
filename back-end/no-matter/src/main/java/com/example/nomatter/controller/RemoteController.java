@@ -43,4 +43,12 @@ public class RemoteController {
 
         return ResponseEntity.ok().body("리모컨 등록 완료");
     }
+
+    @DeleteMapping("/delete/{remoteId}")
+    public ResponseEntity<?> delete(@PathVariable Long remoteId, Authentication authentication){
+
+        remoteService.delete(remoteId);
+
+        return ResponseEntity.ok().body("리모컨 삭제 완료");
+    }
 }
