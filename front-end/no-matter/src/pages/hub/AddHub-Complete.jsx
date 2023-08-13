@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input'; 
+// import Input from '@mui/material/Input'; 
+import TextField from '@mui/material/TextField';
 
 
 const ariaLabel = { 'aria-label': 'description' };
 
 export default function Inputs({onHubName}) {
   const [ hubName, setHubName ] = useState('')
-  const HubNameHandler = (e) => {
-    console.log(e.target.value)
-    setHubName(e.target.value)
+  const HubNameHandler = (event) => {
+    if(event.target.value.length <= 5){
+      console.log(event.target.value)
+      setHubName(event.target.value)
+    }
   }
   console.log('hubName : ', hubName)
   onHubName(hubName)
@@ -30,7 +33,9 @@ export default function Inputs({onHubName}) {
         style={{margin:"40px 20px 20px 5px"}}
         className='centered'
       >
-        <Input  placeholder="허브 이름(5자 이내)" inputProps={{ ...ariaLabel, maxLength: 5 }} />
+      <TextField id="standard-basic" label="허브 이름(5자 이내)" variant="standard" value={hubName} onChange={HubNameHandler} />
+
+        {/* <Input  placeholder="허브 이름(5자 이내)" inputProps={{ ...ariaLabel, maxLength: 5 }} /> */}
       </Box>
 
     </div> 
