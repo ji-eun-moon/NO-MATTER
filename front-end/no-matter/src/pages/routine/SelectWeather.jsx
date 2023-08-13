@@ -43,7 +43,7 @@ function SelectWeather() {
   const onSubmit = () => {
     const selectedCondition = weathers.find((item) => item.condition === selectedWeather)
     console.log(selectedCondition)
-    navigate('/routine/result', { state: { kind: 'weather', condition: selectedCondition} });
+    navigate('/routine/result', { state: { kind: 'weather', condition: selectedCondition, editing: false} });
   };
 
   return (

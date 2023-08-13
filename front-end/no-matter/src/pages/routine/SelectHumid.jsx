@@ -41,7 +41,7 @@ function SelectHumid() {
 
   const onSubmit = () => {
     const selectedCondition = humidity.find((item) => item.condition === selectedHumidity)
-    navigate('/routine/result', { state: { kind: 'humidity', condition: selectedCondition  } });
+    navigate('/routine/result', { state: { kind: 'humidity', condition: selectedCondition, editing: false  } });
   };
 
   return (

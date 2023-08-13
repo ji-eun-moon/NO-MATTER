@@ -10,7 +10,7 @@ function VoicePage() {
 
   const onSubmit = () => {
     if (command.trim() !== '') {
-      navigate('/routine/result', { state: { kind: "voice", condition: command } });
+      navigate('/routine/result', { state: { kind: "voice", condition: command, editing: false} });
     } else {
       window.alert('등록할 명령어를 입력하세요.');
     }

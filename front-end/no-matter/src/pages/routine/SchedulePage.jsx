@@ -54,7 +54,7 @@ export default function VerticalTabs() {
 
   const onSubmit = () => {
     // if (command.trim() !== '') {
-      navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm} } });
+      navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm}, editing: false } });
     // } else {
     //   window.alert('등록할 스케줄을 입력하세요.');
     // }
