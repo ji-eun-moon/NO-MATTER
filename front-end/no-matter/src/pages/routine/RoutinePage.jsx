@@ -88,6 +88,12 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
+            </div>
           </div>
         </div>
       )
@@ -120,6 +126,12 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
+            </div>
           </div>
         </div>
       )
@@ -138,6 +150,12 @@ function RoutinePage() {
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
+            </div>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -159,6 +177,12 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
+            </div>
           </div>
         </div>
       )
@@ -178,6 +202,12 @@ function RoutinePage() {
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
+            </div>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
