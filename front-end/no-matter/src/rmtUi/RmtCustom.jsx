@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GoBack from '../components/GoBack.jsx'
+import axiosInstance from '../config/axios'
 
 import { ButtonBase, Fab, Box, Modal, Button, InputLabel, MenuItem,
-        FormControl, Select } from "@mui/material";
+        FormControl, Select, TextField } from "@mui/material";
 import { cyan } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add'; // +
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
@@ -12,23 +13,41 @@ import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
 const RmtCustom = (props) => {
   const navigate = useNavigate();
   const isCreate = props.isCreate
-  const [btnData, setBtnData] = useState({asdf:'adsf'})
   const [isModify, setIsModify] = useState(false)
-  const [isNew, setIsNew] = useState(0)
   const [notSave, setNotSave] = useState(false)
+  const [rmtName, setRmtName] = useState(props.remoteName)
+  const [saveRmtName, setSaveRmtName] = useState('')
+  const [isNameSet, setIsNameSet] = useState(false)
 
-  // const getBtnData = () => {
-  //   // axios 추가 필요
-  //   setIsNew(Object.keys(btnData).length)
-  // }
+  useEffect(() => {
+    if (props.remoteName === '') {
+      setIsNameSet(true)
+    } else (
+      setSaveRmtName(props.remoteName)
+    )
+  }, [])
 
-  // useEffect(() => {
-  //   getBtnData()
-  // }, [])
+  const hubId = props.hubId
 
   const remoteSave = () => {
-    console.log('Save')
     setNotSave(false)
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "TV",
+          "remoteCode" : "A1B2C3D4"
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      navigate(-2)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   const handleClose = () => {
@@ -38,15 +57,22 @@ const RmtCustom = (props) => {
   const handleClick = (e) => {
     if (isCreate) {
       setOpen(true)
-      if (isModify===false) {
-        setIsModify(true)
-      }
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/${e}`)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
     }
   }
 
+  const onNameChange = useCallback((event) => {
+    setRmtName(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
+  const settingRmtName = () => {
+    setSaveRmtName(rmtName)
+    setIsNameSet(false)
+  }
 
   const [active, setActive] = useState(false);
   const [currentX, setCurrentX] = useState(0);
@@ -199,7 +225,7 @@ const RmtCustom = (props) => {
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
             }
-            <h1 className="font-700">커스텀</h1>
+            <h1 className="font-700">{saveRmtName}</h1>
           </div>
           <div>
             {
@@ -237,6 +263,31 @@ const RmtCustom = (props) => {
               <div style={{display: 'flex', justifyContent:'flex-end'}}>
                 <Button onClick={() => (navigate(-1))}>확인</Button>
                 <Button onClick={() => setNotSave(false)}>취소</Button>
+              </div>
+            </Box>
+          </Modal> : null
+        }
+        { isCreate === true ?
+          <Modal
+          open={isNameSet}
+          onClose={() => setIsNameSet(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <TextField
+                id="filled-basic"
+                label="리모컨 이름"
+                variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                value={rmtName}
+                onChange={onNameChange}
+                required
+                autoFocus
+              />
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={() => settingRmtName()}>확인</Button>
+                <Button onClick={() => navigate(-1)}>취소</Button>
               </div>
             </Box>
           </Modal> : null
@@ -283,7 +334,6 @@ const RmtCustom = (props) => {
           </Fab>
           : null
         } */}
-
         { cusBtnmapping.map((item) => (
             <div className="custom-button" key={item.name}>
               <div
@@ -306,7 +356,6 @@ const RmtCustom = (props) => {
                   <ButtonBase
                     key={item.name}
                     component={Fab}
-                    color="primary"
                     style={{ borderRadius: "50%" }}
                     onClick={() => {handleClick(item.name)}}
                   >
