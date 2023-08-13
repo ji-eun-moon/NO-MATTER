@@ -159,8 +159,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${hubId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+              url: `/userhub/deleteUserHub/${hubId}`,
             })
               .then((response) => {
                 console.log(response.data)
@@ -182,8 +181,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:8080/api/v1/userhub/deleteUserHub/${hubId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+              url: `/userhub/deleteUserHub/${hubId}`,
             })
               .then((response) => {
                 console.log(response.data)
@@ -204,8 +202,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${usersHubsId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+              url: `/userhub/deleteUserHub/${usersHubsId}`,
             })
               .then((response) => {
                 console.log(response.data)

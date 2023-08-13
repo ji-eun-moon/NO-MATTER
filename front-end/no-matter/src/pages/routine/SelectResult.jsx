@@ -1,7 +1,7 @@
 import React from 'react'
 import './Routine.scss'
 import { useState, useEffect  } from 'react'
-import axios from 'axios'
+import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
 
 function SelectResult({setShowModal, handleSelection}) {
@@ -11,14 +11,12 @@ function SelectResult({setShowModal, handleSelection}) {
   const [selectedHub, setSelectedHub] = useState(null); // 선택한 허브
   const [selectedRemote, setSelectedRemote] = useState(null);  // 선택한 리모컨
   const [selectedRemoteAction, setSelectedRemoteAction] = useState('ON');  // 선택한 리모컨 동작 - 임시로 ON 넣어놨음
-  const token = sessionStorage.getItem('authToken')
 
   const getHubs = () => {
 
-    axios({
+    axiosInstance({
       method : 'Get',
-      url : 'http://localhost:5000/api/v1/userhub/list',
-      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+      url : '/userhub/list',
     })
     .then((response) => {  
       setHubs(response.data)
@@ -26,11 +24,10 @@ function SelectResult({setShowModal, handleSelection}) {
   }
 
   const getRemote = (id) => {
-    
-    axios({
+
+    axiosInstance({
       method : 'Get',
-      url : `http://localhost:5000/api/v1/remote/list/${id}`,
-      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+      url : `/remote/list/${id}`,
     })
     .then((response) => {
       // console.log(response.data)

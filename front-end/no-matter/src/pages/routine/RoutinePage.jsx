@@ -16,7 +16,7 @@ function RoutinePage() {
   const getRoutinesForHub = (hubId) => {
     return axiosInstance({
       method: 'get',
-      url: `http://localhost:5000/api/v1/routine/list/${hubId}`,
+      url: `/routine/list/${hubId}`,
     })
     .then((response) => {
       return response.data;
@@ -191,12 +191,16 @@ function RoutinePage() {
         <h1 className="font-700">My Routine</h1>
       </div>
       <hr />
-      {routines.map((routineInfo, index) => (
+      { routines.length === 0 ?
+      <div className='m-5 centered'>
+        등록된 루틴이 없습니다.
+      </div>
+      : 
+      routines.map((routineInfo, index) => (
         <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
           <SwipeCard>
             {renderRoutine(routineInfo)}
           </SwipeCard>
-
          
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
             {/* 루틴 수정 */}

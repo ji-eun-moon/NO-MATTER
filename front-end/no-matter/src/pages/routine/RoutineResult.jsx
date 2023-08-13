@@ -8,6 +8,27 @@ import './Routine.scss'
 
 import Form from 'react-bootstrap/Form';
 
+const conditionStyle = {
+  border: "2px solid #0097B2",
+  borderRadius: "10px",
+  padding: "20px"
+}
+
+const resultStyle = {
+  border: "2px solid #CCD1D1",
+  borderRadius: "10px",
+  padding: "20px",
+  marginTop: "10px",
+  height: "250px"
+}
+
+const activeStyle = {
+  border: "2px solid #CCD1D1",
+  borderRadius: "10px",
+  padding: "20px",
+  marginTop: "10px",
+}
+
 function RoutineResult() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,27 +50,6 @@ function RoutineResult() {
     setSelectedRemote(remote);
     setSelectedRemoteAction(action);
   };
-
-  const conditionStyle = {
-    border: "2px solid #0097B2",
-    borderRadius: "10px",
-    padding: "20px"
-  }
-
-  const resultStyle = {
-    border: "2px solid #CCD1D1",
-    borderRadius: "10px",
-    padding: "20px",
-    marginTop: "10px",
-    height: "250px"
-  }
-
-  const activeStyle = {
-    border: "2px solid #CCD1D1",
-    borderRadius: "10px",
-    padding: "20px",
-    marginTop: "10px",
-  }
   
   useEffect(() => {
     setKind(location.state.kind)
@@ -178,7 +178,6 @@ function RoutineResult() {
 
   // 루틴 등록
   const routineSubmit = () => {
-    const URL = "http://localhost:5000/api/v1/routine/update"
     // json-server test
     // axios.post('http://localhost:3001/routines', {
     //   kind: kind,
@@ -198,11 +197,11 @@ function RoutineResult() {
       active: active
     };
     if (editing) {
-
+      // 루틴 수정 API
     } else {
       axiosInstance({
         method: 'POST',
-        url: URL,
+        url: '/routine/update',
         data: { 
           hubId : selectedHub.hubId, 
           attributes : JSON.stringify(routineData)
