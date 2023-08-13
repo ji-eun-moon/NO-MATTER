@@ -25,7 +25,7 @@ function SelectTemp() {
   };
 
   const onSubmit = () => {
-    navigate('/routine/result', { state: { kind: "temp", condition: { temperature : temperature, updown: condition } } });
+    navigate('/routine/result', { state: { kind: "temp", condition: { temperature : temperature, updown: condition }, editing: false } });
   }
 
   return (

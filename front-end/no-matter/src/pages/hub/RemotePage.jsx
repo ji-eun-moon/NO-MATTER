@@ -155,20 +155,19 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          axiosInstance({
-            method : 'Post',
-            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
-            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-          })
-          .then((response) => {
-            console.log(response.data)
-            navigate('/hubs')
-          })
-        }
-      });
-  
+        .then((willDelete) => {
+          if (willDelete) {
+            axiosInstance({
+              method: 'Post',
+              url: `/userhub/deleteUserHub/${hubId}`,
+            })
+              .then((response) => {
+                console.log(response.data)
+                navigate('/hubs')
+              })
+          }
+        });
+
     }
     else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
       swal({
@@ -178,19 +177,18 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          axiosInstance({
-            method : 'Post',
-            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
-            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-          })
-          .then((response) => {
-            console.log(response.data)
-            navigate('/hubs')
-          })
-        }
-      });
+        .then((willDelete) => {
+          if (willDelete) {
+            axiosInstance({
+              method: 'Post',
+              url: `/userhub/deleteUserHub/${hubId}`,
+            })
+              .then((response) => {
+                console.log(response.data)
+                navigate('/hubs')
+              })
+          }
+        });
 
     }
     else {
@@ -200,19 +198,18 @@ function RemotePage() {
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          axiosInstance({
-            method : 'Post',
-            url : `https://i9c105.p.ssafy.io/api/v1/userhub/deleteUserHub/${id}`,
-            headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-          })
-          .then((response) => {
-            console.log(response.data)
-            navigate('/hubs')
-          })
-        }
-      });
+        .then((willDelete) => {
+          if (willDelete) {
+            axiosInstance({
+              method: 'Post',
+              url: `/userhub/deleteUserHub/${usersHubsId}`,
+            })
+              .then((response) => {
+                console.log(response.data)
+                navigate('/hubs')
+              })
+          }
+        });
 
 
     }

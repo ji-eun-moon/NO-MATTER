@@ -53,7 +53,7 @@ function SwipeCard({ children }) {
         ref={containerRef}
         className="card"
         style={{
-          height: '100px',
+          height: '80px',
           transition: 'transform 0.3s ease',
           transform: `translateX(${endX}px)`, position:'relative', padding:'0', width:"100%", zIndex:"1"
         }}
