@@ -184,7 +184,7 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
     // }
   };
 
-  function BasicTextFields() {
+  // function BasicTextFields() {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [characteristicValue, setCharacteristicValue] = useState('');
@@ -219,9 +219,9 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
               onWifi(characteristicValue)
               if (decodedValue !== 'fail') {
                 onHubUuId(decodedValue)
-                setSuccess(true)
                 setIsConnecting(false)
                 setIsConnected(true)
+                setSuccess(true)
 
                 // handleClose()
                 console.log(characteristic)
@@ -237,7 +237,6 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
               console.log('Error writing data:', error);
             });
         }, 50000);
-
       }
     }, [characteristic, characteristicValue]);
 
@@ -249,8 +248,8 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
         characteristic.writeValue(data)
           .catch(() => {
             console.log("끝내자")
-            setIsConnecting(false)
-            setIsConnected(false)
+            setIsConnecting(true)
+            setIsConnected(true)
           })
         setTimeout(function () {
           disconnectFromDevice()
@@ -306,36 +305,36 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
         })
     }
 
-    return (
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="filled-basic"
-          label="Wifi 이름"
-          variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
-          value={name}
-          onChange={onNameChange}
-          required
-          autoFocus
-        />
-        <TextField
-          id="filled-basic"
-          label="Wifi 비밀번호"
-          variant="filled"
-          value={password}
-          onChange={onPwdChange}
-          required
-        />
-        <Button onClick={send}>SEND</Button>
-      </Box>
-    );
-  }
+    // return (
+    //   <Box
+    //     component="form"
+    //     sx={{
+    //       '& > :not(style)': { m: 1, width: '25ch' },
+    //     }}
+    //     noValidate
+    //     autoComplete="off"
+    //   >
+    //     <TextField
+    //       id="filled-basic"
+    //       label="Wifi 이름"
+    //       variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+    //       value={name}
+    //       onChange={onNameChange}
+    //       required
+    //       autoFocus
+    //     />
+    //     <TextField
+    //       id="filled-basic"
+    //       label="Wifi 비밀번호"
+    //       variant="filled"
+    //       value={password}
+    //       onChange={onPwdChange}
+    //       required
+    //     />
+    //     <Button onClick={send}>SEND</Button>
+    //   </Box>
+    // );
+  // }
 
 
   return (
@@ -369,7 +368,35 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
                 </div>
               </div>
               <br />
-              <BasicTextFields />
+              {/* <BasicTextFields /> */}
+              <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="filled-basic"
+          label="Wifi 이름"
+          variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+          value={name}
+          onChange={onNameChange}
+          required
+          autoFocus
+        />
+        <TextField
+          id="filled-basic"
+          label="Wifi 비밀번호"
+          variant="filled"
+          value={password}
+          onChange={onPwdChange}
+          required
+        />
+        <Button onClick={send}>SEND</Button>
+      </Box>
+
             </Box>
           </Modal>    
         </div>
@@ -385,7 +412,6 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
           </div>
 
           :
-          ((!isConnecting && isConnected) ?
             // 연결완료
             <div className='centered'>
               <div className='d-flex flex-column justify-content-center align-items-center'>
@@ -393,9 +419,6 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
                 <span style={{fontWeight:"bold", fontSize:"30px"}}>연결 완료</span>
               </div>
             </div>
-            :
-            <div></div>
-          )
         )
       }
   </div> 
