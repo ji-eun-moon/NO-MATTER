@@ -20,9 +20,8 @@ public class RoutineController {
     @GetMapping("/list/{hubId}")
     public ResponseEntity<?> list(@PathVariable Long hubId, Authentication authentication){
 
-        Routine routine = routineService.findByHubId(hubId).get();
 
-        return ResponseEntity.ok().body(routine);
+        return ResponseEntity.ok().body(routineService.findAllByHubId(hubId));
     }
 
     @PostMapping("/update")

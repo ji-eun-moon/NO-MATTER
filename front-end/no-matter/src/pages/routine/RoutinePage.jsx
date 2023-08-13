@@ -1,41 +1,92 @@
 import React from 'react'
-import axios from 'axios'
 import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete';
+import SwipeLeft from '../../components/SwipeLeft.jsx';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 function RoutinePage() {
   const navigate = useNavigate();
-  const [routines, setRoutines] = useState([]);
-  // const token = sessionStorage.getItem('authToken')
+  const [routines, setRoutines] = useState([])
+  const [hubs, setHubs] = useState([])
 
-  const getRoutines = () => {
 
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    axiosInstance({
+  const getRoutinesForHub = (hubId) => {
+    return axiosInstance({
       method: 'get',
-      url: 'http://localhost:3001/routines/'
+      url: `http://localhost:5000/api/v1/routine/list/${hubId}`,
     })
     .then((response) => {
-      // console.log(response.data)
-      setRoutines(response.data)
-    })
+      return response.data;
+    });
+  };
 
-    // axios.get('http://localhost:8080/api/v1/userhub/list')
-    // .then((response) => {  
-    //   console.log(response.data)
-    //   setHubs(response.data)
-    // })
-  }
+  const getHubs = () => {
+    axiosInstance({
+      method: 'Get',
+      url: '/userhub/list',
+      headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` },
+    })
+    .then((response) => {  
+      setHubs(response.data);
+    });
+  };
 
   useEffect(() => {
-    getRoutines()
-  }, [])
+    getHubs();
+  }, []);
 
-  const renderRoutine = (routine) => {
+  useEffect(() => {
+    // Fetch routines for all hubs
+    const fetchRoutinesForAllHubs = async () => {
+      const routinesForHubs = await Promise.all(
+        hubs.map(async (hub) => {
+          return getRoutinesForHub(hub.hubId);
+        })
+      );
+      const combinedRoutines = routinesForHubs.flat();
+      setRoutines(combinedRoutines);
+      console.log('Combined routines:', combinedRoutines);
+    };
+
+    if (hubs.length > 0) {
+      fetchRoutinesForAllHubs();
+    }
+  }, [hubs]);
+
+
+  // const getRoutines = () => {
+
+  //   // json-server test
+  //   // axiosInstance({
+  //   //   method: 'get',
+  //   //   url: 'http://localhost:3001/routines/'
+  //   // })
+  //   // .then((response) => {
+  //   //   // console.log(response.data)
+  //   //   setRoutines(response.data)
+  //   // })
+
+  //   axiosInstance({
+  //     method : 'Get',
+  //     url : '/userhub/list',
+  //     headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
+  //   })
+  //   .then((response) => {  
+  //     // console.log(response.data)
+  //     setHubs(response.data)
+  //   })
+
+  // }
+
+  // useEffect(() => {
+  //   getRoutines()
+  // }, [])
+
+  const renderRoutine = (routineInfo) => {
+    const routine = JSON.parse(routineInfo.attributes)
     if (routine.kind === 'voice') {
       return (
         <div className='centered' style={{width :"100%"}}>
@@ -47,10 +98,6 @@ function RoutinePage() {
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
-            </div>
-            <div className='centered'>
-              {/* <i className="bi bi-chevron-right"></i> */}
-              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -84,10 +131,6 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div className='centered'>
-              {/* <i className="bi bi-chevron-right"></i> */}
-              <DeleteIcon style={{color:"crimson"}}/>
-            </div>
           </div>
         </div>
       )
@@ -106,10 +149,6 @@ function RoutinePage() {
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
-            </div>
-            <div className='centered'>
-              {/* <i className="bi bi-chevron-right"></i> */}
-              <DeleteIcon style={{color:"crimson"}}/>
             </div>
           </div>
         </div>
@@ -131,10 +170,6 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div className='centered'>
-              {/* <i className="bi bi-chevron-right"></i> */}
-              <DeleteIcon style={{color:"crimson"}}/>
-            </div>
           </div>
         </div>
       )
@@ -155,10 +190,6 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
               </div>
             </div>
-            <div className='centered'>
-              {/* <i className="bi bi-chevron-right"></i> */}
-              <DeleteIcon style={{color:"crimson"}}/>
-            </div>
           </div>
         </div>
       )
@@ -171,29 +202,23 @@ function RoutinePage() {
         <h1 className="font-700">My Routine</h1>
       </div>
       <hr />
-      {/* {routines.map(routine => {
-        return (
-          // <Card key={routine.routineId}>
-          <Card key={routine.id}>
-              <div className='d-flex align-items-center justify-content-between' 
-                    onClick={() => navigate(`/routines/${routine.id}`)}
-                    style={{width:"100%"}}>
-                <div className='card-text'>
-                  {routine.kind === "voice"? routine.result : routine.condition+' / '+routine.result}
-                  {routine.userRoutineName} 
+      {routines.map((routineInfo, index) => (
+        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+          <SwipeLeft>
+            {renderRoutine(routineInfo)}
+          </SwipeLeft>
+
+          {/* 루틴 삭제 */}
+          <div className='card-body mb-3 d-flex justify-content-end' style={{position:'absolute', padding:'0', width:'100%'}}>
+            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
+                <div className="card-body centered">
+                  <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
                 </div>
-                <div>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
-              </div>
-          </Card>
-        )
-      })} */}
-      {routines.map(routine => (
-        <Card key={routine.id}>
-          {renderRoutine(routine)}
-        </Card>
+            </div>
+          </div>
+        </div>
       ))}
+
       <Card>
         <div className="centered" style={{width:"100%"}}
             onClick={() => navigate('/routine/addroutine')}>

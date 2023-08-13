@@ -6,7 +6,7 @@ import RmtCustom from '../../rmtUi/RmtCustom.jsx';
 import RmtAc from '../../rmtUi/RmtAc.jsx';
 
 import io from 'socket.io-client'
-const BrokerAddress = 'http://i9c105.p.ssafy.io:3001'
+const BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
 
 
 function RemoteDetail() {
