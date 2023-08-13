@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import axiosInstance from '../../config/axios'
+import axiosInstance from '../../config/axios.jsx'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
@@ -119,7 +119,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${id}`,
+              url: `/userhub/deleteUserHub/${id}`,
               headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
@@ -142,7 +142,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:8080/api/v1/userhub/deleteUserHub/${id}`,
+              url: `/userhub/deleteUserHub/${id}`,
               headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
@@ -164,7 +164,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${id}`,
+              url: `/userhub/deleteUserHub/${id}`,
               headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
