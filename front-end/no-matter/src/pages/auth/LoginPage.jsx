@@ -182,10 +182,9 @@ function LoginPage() {
                 className="button"
                 style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Naver
-              </Button>
-              </a>
-              <p></p>
-              <Button
+              </Button> 
+              </a>*/}
+              {/* <Button
                 type="submit"
                 fullWidth
                 size="large"
@@ -195,7 +194,10 @@ function LoginPage() {
                 className="button"
                 style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
                 Kakao
-              </Button> */}
+              </Button> */}              
+              <p></p>
+              <Button type="submit" onClick = { goKakao }><img src="/images/kakao_login.png" alt="" /></Button>
+
           </div>
       </Container>
     </div>

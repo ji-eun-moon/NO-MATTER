@@ -38,7 +38,8 @@ const style = {
 
 
 function HubMemberPage() {
-  const { id } = useParams()  // 허브 id
+  const { hubId } = useParams()  // 유저의 허브 id
+  const [ usersHubsId, setUsersHubsId ] = useState(null)
   const [ hub, setHub ] = useState([]);
   const [ users, setUsers ] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ function HubMemberPage() {
 
     const location = useLocation();
     console.log('location',location.state)
-    const userHubId = location.state;
+    const userId = location.state;
     // const adminHubsId = location.state;
     // console.log('adminHubsId', adminHubsId)
   
@@ -96,7 +97,7 @@ function HubMemberPage() {
       url : '/userhub/modifygrade',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
       data: {
-        'userHubId' : userHubId,
+        'userHubId' : usersHubsId,
         'changeUserHubId' : changeUserHubId,
         'grade' : 'manager'
       }
@@ -115,7 +116,7 @@ function HubMemberPage() {
       url : '/userhub/modifygrade',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
       data: {
-        'userHubId' : userHubId,
+        'userHubId' : usersHubsId,
         'changeUserHubId' : changeUserHubId,
         'grade' : 'user'
       }
@@ -127,19 +128,20 @@ function HubMemberPage() {
     })
   }
   // 특정 허브 정보 저장
-  const hubInfo = (id) => {
+  const hubInfo = (hubId) => {
     axiosInstance({
       method : 'Get',
       url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-      const specificHub = response.data.find(hub => hub.hubId === parseInt(id));
+      const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
       setHub(specificHub);
+      setUsersHubsId(specificHub.usersHubsId)
     });
   }
 
-  const getUser = (id) => {   
+  const getUser = (hubId) => {   
     // json-server 테스트용
     // axios.get(`http://localhost:3001/hubs/${id}`)
     // .then((response) => {
@@ -149,7 +151,7 @@ function HubMemberPage() {
 
     axiosInstance({
       method : 'Get',
-      url : `/hub/members/${id}`,
+      url : `/hub/members/${hubId}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
@@ -165,13 +167,12 @@ function HubMemberPage() {
   }
 
   useEffect(() => {
-    hubInfo(id)
-    getUser(id)
-  }, [id])
+    hubInfo(hubId)
+    getUser(hubId)
+  }, [hubId])
 
   const getCode = (event) => {
-    console.log(id)
-    const hubId = id
+    // const hubId = id
     event.preventDefault()
     axiosInstance({
         method : 'Get',
@@ -200,7 +201,7 @@ function HubMemberPage() {
       url : 'userhub/outUserHubId',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
       data: {
-        'userHubId' : userHubId,
+        'userHubId' : usersHubsId,
         'changeUserHubId' : changeUserHubId,
         'grade' : 'manager'
       }

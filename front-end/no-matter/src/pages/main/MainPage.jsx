@@ -105,18 +105,18 @@ function MainPage() {
   };
 
   return (
-    <div className='container'>
+    <div className='container' style={{position:"relative"}}>
       <div className='centered mt-5 mb-4' >
         <h1 className='welcome'>{userName}'s Home</h1>
       </div>
       {/* <div className='d-flex justify-content-center p-3'>
-        <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
-      </div> */}
-      {/* <div className="card mb-2" style={{backgroundColor:'#E6F4F1'}}>
-        <div className="card-body d-flex">
-          <div className="card-text" style={{marginBottom:'15px', marginTop:'15px', marginLeft:'10px'}}>
-            <h1 className="font-700" style={{marginBottom:'20px'}}>반갑습니다.</h1>
-            <h1 className="font-700">한석현 님</h1>
+          <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
+        </div> */}
+        {/* <div className="card mb-2" style={{backgroundColor:'#E6F4F1'}}>
+          <div className="card-body d-flex">
+            <div className="card-text" style={{marginBottom:'15px', marginTop:'15px', marginLeft:'10px'}}>
+              <h1 className="font-700" style={{marginBottom:'20px'}}>반갑습니다.</h1>
+              <h1 className="font-700">한석현 님</h1>
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@ function MainPage() {
         <div className='remote-card-list-container'>
           {hubs.length === 0 ?
             <div className='centered' style={{ height: "60vh" }}>
-              <h3>등록된 기기가 없습니다.</h3>
+              <h5 style={{ position:"absolute", top:"40%" }}>등록된 기기가 없습니다.</h5>
             </div>
             :
             <Swiper spaceBetween={50} slidesPerView={1}
@@ -197,7 +197,7 @@ function MainPage() {
                     </div>
                     {remotes.length === 0 ? 
                       <div className='centered' style={{ height: "60vh" }}>
-                        <h5>등록된 리모컨이 없습니다.</h5>
+                        <h5 style={{ position:"absolute", top:"40%" }}>등록된 리모컨이 없습니다.</h5>
                       </div>
                     :
                       <div className="card-body">
