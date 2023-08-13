@@ -71,8 +71,10 @@ function RmtFanUi(props) {
   }, [])
 
   const settingRmtName = () => {
-    setSaveRmtName(rmtName)
-    setIsNameSet(false)
+    if (rmtName !== '') {
+      setSaveRmtName(rmtName)
+      setIsNameSet(false)
+    }
   }
 
   const modalStyle = {
@@ -171,19 +173,38 @@ function RmtFanUi(props) {
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
               <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
-              <TextField
-                id="filled-basic"
-                label="리모컨 이름"
-                variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
-                value={rmtName}
-                onChange={onNameChange}
-                required
-                autoFocus
-              />
-              <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                <Button onClick={() => settingRmtName()}>확인</Button>
-                <Button onClick={() => navigate(-1)}>취소</Button>
+              {
+                rmtName.length <= 5 ? 
+                <div>
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => settingRmtName()}>확인</Button>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
+              </div> : 
+              <div>
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  error={true}
+                  helperText={'5글자 이하로 적어주세요'}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
               </div>
+              }
             </Box>
           </Modal> : null
         }

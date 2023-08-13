@@ -13,11 +13,11 @@ import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
 const RmtCustom = (props) => {
   const navigate = useNavigate();
   const isCreate = props.isCreate
-  const [isModify, setIsModify] = useState(false)
   const [notSave, setNotSave] = useState(false)
   const [rmtName, setRmtName] = useState(props.remoteName)
   const [saveRmtName, setSaveRmtName] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
+  const [customButtonName, setCustomButtonName] = useState('')
 
   useEffect(() => {
     if (props.remoteName === '') {
@@ -56,8 +56,6 @@ const RmtCustom = (props) => {
 
   const handleClick = (e) => {
     if (isCreate) {
-      setOpen(true)
-      setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/${e}`)
     } else {
       props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
@@ -70,8 +68,10 @@ const RmtCustom = (props) => {
   }, [])
 
   const settingRmtName = () => {
-    setSaveRmtName(rmtName)
-    setIsNameSet(false)
+    if (rmtName !== '') {
+      setSaveRmtName(rmtName)
+      setIsNameSet(false)
+    }
   }
 
   const [active, setActive] = useState(false);
@@ -81,8 +81,8 @@ const RmtCustom = (props) => {
   const [initialY, setInitialY] = useState(0);
   
   const [customButton, setCustomButton] = useState({
-    cusBtn1:[{active:false, currentX:0, currentY:150, icon:'AddIcon'}],
-    cusBtn2:[{active:false, currentX:50, currentY:150, icon:'HorizontalRuleIcon'}]
+    cusBtn1:[{active:false, currentX:0, currentY:150, icon:'AddIcon', name:'더하기'}],
+    cusBtn2:[{active:false, currentX:50, currentY:150, icon:'HorizontalRuleIcon', name:'빼기'}]
   })
   
   const [open, setOpen] = useState(false);
@@ -91,7 +91,7 @@ const RmtCustom = (props) => {
   
   const addButton = (e) => {
     let cntBtn = Object.keys(customButton).length
-    const baseData = [{active:false, currentX:50, currentY:150, icon:e}]
+    const baseData = [{active:false, currentX:50, currentY:150, icon:e, name:customButtonName}]
     let copy = {...customButton}
     copy[`cusBtn${cntBtn+1}`] = baseData
     setCustomButton(copy)
@@ -175,6 +175,11 @@ const RmtCustom = (props) => {
     px: 4,
     pb: 3,
   };
+
+  const handleCustomButtonName = useCallback((e) => {
+    setCustomButtonName(e.currentTarget.value)
+    console.log(e)
+  })
   
   const selectButton = () => {
     setOpen(true);
@@ -220,7 +225,7 @@ const RmtCustom = (props) => {
         <div className='d-flex justify-content-between'>
           <div className='d-flex'>
             {
-              isModify === true ?
+              isCreate === true ?
               <div onClick={() => setNotSave(true)}>
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
@@ -230,7 +235,8 @@ const RmtCustom = (props) => {
           <div>
             {
               isCreate === true ? 
-              <Fab size='small' color={cyan[700]} aria-label="add" onClick={() => {handleAddClick()}}>
+              <Fab size='small' color={cyan[700]} aria-label="add" 
+              onClick={() => {handleAddClick()}}>
                 <AddIcon />
               </Fab>
               : null
@@ -276,19 +282,38 @@ const RmtCustom = (props) => {
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
               <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
-              <TextField
-                id="filled-basic"
-                label="리모컨 이름"
-                variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
-                value={rmtName}
-                onChange={onNameChange}
-                required
-                autoFocus
-              />
-              <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                <Button onClick={() => settingRmtName()}>확인</Button>
-                <Button onClick={() => navigate(-1)}>취소</Button>
+              {
+                rmtName.length <= 5 ? 
+                <div>
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => settingRmtName()}>확인</Button>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
+              </div> : 
+              <div>
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  error={true}
+                  helperText={'5글자 이하로 적어주세요'}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
               </div>
+              }
             </Box>
           </Modal> : null
         }
@@ -305,6 +330,16 @@ const RmtCustom = (props) => {
                 허브를 향해<br/>리모컨 버튼을 눌러주세요
               </p>
               <Box sx={{ minWidth: 120 }}>
+                <TextField
+                  id="filled-basic"
+                  label="버튼 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={customButtonName}
+                  onChange={handleCustomButtonName}
+                  // helperText={'5글자 이하로 적어주세요'}
+                  autoFocus
+                />
+                <div style={{marginTop:'30px'}}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">아이콘</InputLabel>
                   <Select
@@ -318,6 +353,7 @@ const RmtCustom = (props) => {
                     <MenuItem value={'HorizontalRuleIcon'}>-</MenuItem>
                   </Select>
                 </FormControl>
+                </div>
               </Box>
               <div style={{display: 'flex', justifyContent:'flex-end'}}>
                 <Button onClick={handleAddClose}>확인</Button>
@@ -350,17 +386,17 @@ const RmtCustom = (props) => {
                     top: `${item.position[0].currentY}px`,
                   }}
                 >
-                  {/* <Fab color="primary" aria-label="add">
-                    <AddIcon />
-                  </Fab> */}
-                  <ButtonBase
-                    key={item.name}
-                    component={Fab}
-                    style={{ borderRadius: "50%" }}
-                    onClick={() => {handleClick(item.name)}}
-                  >
-                    {getIcon(item.position[0].icon)}
-                  </ButtonBase>
+                    {/* <Fab color="primary" aria-label="add">
+                      <AddIcon />
+                    </Fab> */}
+                    <ButtonBase
+                      key={item.name}
+                      component={Fab}
+                      style={{ borderRadius: "50%" }}
+                      onClick={() => {handleClick(item.name)}}
+                    >
+                      {getIcon(item.position[0].icon)}
+                    </ButtonBase>
                 </div>
               </div>
             </div>
