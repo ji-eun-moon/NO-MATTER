@@ -62,7 +62,6 @@ function RemoteDetail() {
     }
   };
   
-
   return (
       <div className="container page-container">
         {
