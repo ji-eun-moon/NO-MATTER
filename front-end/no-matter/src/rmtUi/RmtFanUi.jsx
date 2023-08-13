@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import { useNavigate } from 'react-router-dom';
 import GoBack from '../components/GoBack.jsx'
-import { Box, Modal, Button } from "@mui/material";
+import axiosInstance from '../config/axios'
+import { Box, Modal, Button, TextField } from "@mui/material";
 
   
 function RmtFanUi(props) {
@@ -10,26 +11,44 @@ function RmtFanUi(props) {
 
   const [open, setOpen] = React.useState(false);
 
-  const [isAdd, setIsAdd] = useState(false)
   const [isOn, setIsOn] = useState(false);
   // 공유, 저장, 수정 버튼
-  const [btnData, setBtnData] = useState({asdf:'adsf'})
   const [isModify, setIsModify] = useState(false)
-  const [isNew, setIsNew] = useState(0)
   const [notSave, setNotSave] = useState(false)
-
-
-  const getBtnData = () => {
-    // axios 추가 필요
-    setIsNew(Object.keys(btnData).length)
-  }
+  const [rmtName, setRmtName] = useState('')
+  const [saveRmtName, setSaveRmtName] = useState('')
+  const [isNameSet, setIsNameSet] = useState(false)
 
   useEffect(() => {
-    getBtnData()
+    if (props.remoteName === '') {
+      setIsNameSet(true)
+    } else (
+      setSaveRmtName(props.remoteName)
+    )
   }, [])
+
+  const hubId = props.hubId
 
   const remoteSave = () => {
     console.log('Save')
+    setNotSave(false)
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "Fan",
+          "remoteCode" : "A1B2C3D4"
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      navigate(-2)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   const handleClose = () => {
@@ -40,10 +59,20 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/${e}`)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
     }
+  }
+
+  const onNameChange = useCallback((event) => {
+    setRmtName(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
+  const settingRmtName = () => {
+    setSaveRmtName(rmtName)
+    setIsNameSet(false)
   }
 
   const modalStyle = {
@@ -61,19 +90,29 @@ function RmtFanUi(props) {
   };
 
   const handleTurnOn = () => {
-    // 선풍기 켜는 API
-    setIsOn(true);
-    console.log('on');
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+    } else {
+      setIsOn(true);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+    }
   };
 
   const handleTurnOff = () => {
-    // 선풍기 끄는 API
-    console.log('off');
-    setIsOn(false);
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+    } else {
+      setIsOn(false);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+    }
   };
 
   const filledFanImages = Array.from(() => (
-    <img src='/images/fan-filled.png' style={{ width: '30px' }} className='fan-image me-1' />
+    <img src='/images/fan-filled.png' alt='' style={{ width: '30px' }} className='fan-image me-1' />
   ));
 
   return (
@@ -88,7 +127,7 @@ function RmtFanUi(props) {
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
             }
-            <h1 className="font-700">선풍기</h1>
+            <h1 className="font-700">{saveRmtName}</h1>
           </div>
           <div>
             {
@@ -123,6 +162,31 @@ function RmtFanUi(props) {
             </Box>
           </Modal> : null
         }
+        { isCreate === true ?
+          <Modal
+          open={isNameSet}
+          onClose={() => setIsNameSet(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <TextField
+                id="filled-basic"
+                label="리모컨 이름"
+                variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                value={rmtName}
+                onChange={onNameChange}
+                required
+                autoFocus
+              />
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={() => settingRmtName()}>확인</Button>
+                <Button onClick={() => navigate(-1)}>취소</Button>
+              </div>
+            </Box>
+          </Modal> : null
+        }
         {
           isCreate ? <Modal
           open={open}
@@ -153,21 +217,25 @@ function RmtFanUi(props) {
               </div>
             )}
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('WindSpeed')}}>
               <img src='/images/fan.png' style={{ width: '80%', marginBottom:'8px' }}/>
             </div>
           </div>
           <div className='d-flex justify-content-between'>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('Timer')}}>
               <img src='/images/timers.png' style={{ width: '80%', marginRight: '8px' }}/>
             </div>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('Mode')}}>
               <img src='/images/shuffle-arrows.png' style={{ width: '80%' }}/>
             </div>
             <div className='flex-column centered'
-              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}>
+              style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
+              onClick={() => {handleClick('RotateFan')}}>
               <img src='/images/rotatefan.png' style={{ width: '80%' }}/>
             </div>
           </div>

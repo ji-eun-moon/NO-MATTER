@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RmtAc.scss'
+import axiosInstance from '../config/axios'
+
 import GoBack from '../components/GoBack.jsx'
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 
 function RmtAc(props) {
@@ -18,25 +21,44 @@ function RmtAc(props) {
   const [windSpeed, setWindSpeed] = useState(1);
 
   // 공유, 저장, 수정 버튼
-  const [btnData, setBtnData] = useState({asdf:'adsf'})
   const [isModify, setIsModify] = useState(false)
-  const [isNew, setIsNew] = useState(0)
   const [notSave, setNotSave] = useState(false)
 
+  const [rmtName, setRmtName] = useState('')
+  const [saveRmtName, setSaveRmtName] = useState('')
+  const [isNameSet, setIsNameSet] = useState(false)
 
-  const getBtnData = () => {
-    // axios 추가 필요
-    setIsNew(Object.keys(btnData).length)
-  }
 
   useEffect(() => {
-    getBtnData()
+    if (props.remoteName === '') {
+      setIsNameSet(true)
+    } else (
+      setSaveRmtName(props.remoteName)
+    )
   }, [])
+
+  const hubId = props.hubId
 
   const remoteSave = () => {
     console.log('Save')
     setNotSave(false)
-
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "AC",
+          "remoteCode" : "A1B2C3D4"
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      navigate(-2)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   const handleClose = () => {
@@ -47,10 +69,20 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/${e}`)
     } else {
-      console.log(e)
-      // 신호를 입출력할 함수 필요
+      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
     }
+  }
+
+  const onNameChange = useCallback((event) => {
+    setRmtName(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
+  const settingRmtName = () => {
+    setSaveRmtName(rmtName)
+    setIsNameSet(false)
   }
 
   const modalStyle = {
@@ -68,32 +100,70 @@ function RmtAc(props) {
   };
 
   const increaseTemperature = () => {
-    setTemperature((prevTemperature) => prevTemperature + 1);
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/increaseTemperature`)
+    } else {
+      setTemperature((prevTemperature) => prevTemperature + 1);
+      props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+    }
   };
 
   const decreaseTemperature = () => {
-    setTemperature((prevTemperature) => prevTemperature - 1);
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/decreaseTemperature`)
+    } else {
+      setTemperature((prevTemperature) => prevTemperature - 1);
+      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+    }
   };
 
   const increaseWindSpeed = () => {
-    setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/increaseWindSpeed`)
+    } else {
+      setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
+      props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+    }
   };
   
 
   const decreaseWindSpeed = () => {
-    setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/decreaseWindSpeed`)
+    } else {
+      setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
+      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+    }
   };
 
   const handleTurnOn = () => {
-    // 에어컨 켜는 API
-    setIsOn(true);
-    console.log('에어컨을 켭니다.');
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+    } else {
+      setIsOn(true);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+    }
   };
 
   const handleTurnOff = () => {
-    // 에어컨 끄는 API
-    console.log('에어컨을 끕니다.');
-    setIsOn(false);
+    if (isCreate) {
+      setOpen(true)
+      setIsModify(true)
+      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+    } else {
+      setIsOn(false);
+      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+    }
   };
 
   const filledFanImages = Array.from({ length: windSpeed }, (_, index) => (
@@ -116,7 +186,7 @@ function RmtAc(props) {
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div> : <GoBack/>
             }
-            <h1 className="font-700">에어컨</h1>
+            <h1 className="font-700">{saveRmtName}</h1>
           </div>
           <div>
             {
@@ -147,6 +217,31 @@ function RmtAc(props) {
               <div style={{display: 'flex', justifyContent:'flex-end'}}>
                 <Button onClick={() => (navigate(-1))}>확인</Button>
                 <Button onClick={() => setNotSave(false)}>취소</Button>
+              </div>
+            </Box>
+          </Modal> : null
+        }
+        { isCreate === true ?
+          <Modal
+          open={isNameSet}
+          onClose={() => setIsNameSet(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <TextField
+                id="filled-basic"
+                label="리모컨 이름"
+                variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                value={rmtName}
+                onChange={onNameChange}
+                required
+                autoFocus
+              />
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={() => settingRmtName()}>확인</Button>
+                <Button onClick={() => navigate(-1)}>취소</Button>
               </div>
             </Box>
           </Modal> : null
@@ -205,30 +300,33 @@ function RmtAc(props) {
           
           <div className='d-flex justify-content-around'>
             <div className='d-flex flex-column centered'>
-                <div onClick={increaseTemperature} className='control-button-up centered'>
+                <div onClick={() => {increaseTemperature()}} className='control-button-up centered'>
                   <i className="bi bi-chevron-up fs-1"></i>
                 </div>
               <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>온도</p>
-                <div onClick={decreaseTemperature} className='control-button-down centered'>
+                <div onClick={() => {decreaseTemperature()}} className='control-button-down centered'>
                   <i className="bi bi-chevron-down fs-1"></i>
                 </div>
             </div>
 
             <div className='d-flex flex-column centered'>
-              <div onClick={increaseWindSpeed} className='control-button-up centered'>
+              <div onClick={() => {increaseWindSpeed()}} className='control-button-up centered'>
                 <i className="bi bi-chevron-up fs-1"></i>
               </div>
                 <p style={{fontSize:"25px", fontWeight:"700", margin:"16px 0px"}}>바람</p>
-              <div onClick={decreaseWindSpeed} className='control-button-down centered'>
+              <div onClick={() => {decreaseWindSpeed()}} className='control-button-down centered'>
                 <i className="bi bi-chevron-down fs-1"></i>
               </div>
             </div>
           </div>
 
           <div className='d-flex justify-content-around mt-4'>
-            <button className='btn mode-btn btn-lg'>mode 1</button>
-            <button className='btn mode-btn btn-lg'>mode 2</button>
-            <button className='btn mode-btn btn-lg'>mode 3</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode1')}}>mode 1</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode2')}}>mode 2</button>
+            <button className='btn mode-btn btn-lg'
+            onClick={() => {handleClick('mode3')}}>mode 3</button>
           </div>
 
         </div>
