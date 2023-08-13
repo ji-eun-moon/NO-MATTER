@@ -598,7 +598,7 @@ function Signup() {
                     >
                     회원가입
                     </Button>
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                         <Grid item style={{margin:"10px 0px"}}>
                             <Link href="/login" variant="body2" >
                                 이미 가입하셨다면, <b style={{fontWeight:"1000"}}>로그인</b>해 주세요!

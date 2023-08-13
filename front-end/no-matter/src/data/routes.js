@@ -39,11 +39,11 @@ const routes = [
     element: <HubPage />
   },
   {
-    path:'/hubs/:id',
+    path:'/hubs/:hubId',
     element: <RemotePage />
   },
   {
-    path:'/hubs/:id/member',
+    path:'/hubs/members/:hubId',
     element: <HubMemberPage />
   },
   {
