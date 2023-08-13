@@ -1,13 +1,26 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input'; 
+// import Input from '@mui/material/Input'; 
+import TextField from '@mui/material/TextField';
+
 
 const ariaLabel = { 'aria-label': 'description' };
 
-export default function Inputs() {
+export default function Inputs({onHubName}) {
+  const [ hubName, setHubName ] = useState('')
+  const HubNameHandler = (event) => {
+    if(event.target.value.length <= 5){
+      console.log(event.target.value)
+      setHubName(event.target.value)
+    }
+  }
+  console.log('hubName : ', hubName)
+  onHubName(hubName)
   return (   
     <div>
-      <span style={{marginLeft:"10px"}}>허브의 이름을 설정해주세요</span>
+      <div className='centered'>
+        <h2 className='font-700'>허브의 이름을 설정해주세요.</h2>
+      </div>
       <br />
 
       <Box
@@ -18,8 +31,11 @@ export default function Inputs() {
         noValidate
         autoComplete="off"
         style={{margin:"40px 20px 20px 5px"}}
+        className='centered'
       >
-        <Input placeholder="허브 이름" inputProps={ariaLabel} />
+      <TextField id="standard-basic" label="허브 이름(5자 이내)" variant="standard" value={hubName} onChange={HubNameHandler} />
+
+        {/* <Input  placeholder="허브 이름(5자 이내)" inputProps={{ ...ariaLabel, maxLength: 5 }} /> */}
       </Box>
 
     </div> 

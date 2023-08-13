@@ -23,19 +23,16 @@ public class RemoteController {
     private final RemoteRepository remoteRepository;
     private final UserHubService userHubService;
 
-    @GetMapping("/list/{usersHubsId}")
-    public ResponseEntity<?> list(@PathVariable Long usersHubsId, Authentication authentication){
+    @GetMapping("/list/{hubId}")
+    public ResponseEntity<?> list(@PathVariable Long hubId, Authentication authentication){
 
-        Long hubId = userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
+//        Long hubId = userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
 
         log.info(String.valueOf(hubId));
 
-        List<Remote> list = remoteService.findAllByHubId(hubId);
-
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(remoteService.findAllByHubId(hubId));
 
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Remote remote, Authentication authentication){
 

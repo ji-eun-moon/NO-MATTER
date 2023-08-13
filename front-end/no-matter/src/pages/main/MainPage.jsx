@@ -12,10 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 
 function MainPage() {
   const navigate = useNavigate();
-  
+
   // const hublist = ['1번']
-  const [ hubs, setHubs ] = useState([]);
-  const [ remotes, setRemotes ] = useState([]);
+  const [hubs, setHubs] = useState([]);
+  const [remotes, setRemotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [initialHubId, setInitialHubId] = useState(null);
@@ -73,10 +73,10 @@ function MainPage() {
     if (hubs.length > 0 && initialHubId === null) {
       setInitialHubId(hubs[0].hubId);
     }
-  }, [ ])
+  }, [])
 
   const getRemote = (id) => {
-    setLoading(true); 
+    setLoading(true);
     axiosInstance({
       method : 'Get',
       url : `/remote/list/${id}`,
@@ -87,7 +87,6 @@ function MainPage() {
       setRemotes(response.data) // 리모컨 리스트
       setLoading(false);
     })
-
   }
 
   useEffect(() => {
@@ -106,23 +105,23 @@ function MainPage() {
   };
 
   return (
-    <div className='container'>
+    <div className='container' style={{position:"relative"}}>
       <div className='centered mt-5 mb-4' >
         <h1 className='welcome'>{userName}'s Home</h1>
       </div>
       {/* <div className='d-flex justify-content-center p-3'>
-        <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
-      </div> */}
-      {/* <div className="card mb-2" style={{backgroundColor:'#E6F4F1'}}>
-        <div className="card-body d-flex">
-          <div className="card-text" style={{marginBottom:'15px', marginTop:'15px', marginLeft:'10px'}}>
-            <h1 className="font-700" style={{marginBottom:'20px'}}>반갑습니다.</h1>
-            <h1 className="font-700">한석현 님</h1>
+          <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
+        </div> */}
+        {/* <div className="card mb-2" style={{backgroundColor:'#E6F4F1'}}>
+          <div className="card-body d-flex">
+            <div className="card-text" style={{marginBottom:'15px', marginTop:'15px', marginLeft:'10px'}}>
+              <h1 className="font-700" style={{marginBottom:'20px'}}>반갑습니다.</h1>
+              <h1 className="font-700">한석현 님</h1>
           </div>
         </div>
       </div>
        */}
-      
+
       {/* <Swiper
         spaceBetween={50}
         slidesPerView={1}
@@ -152,69 +151,86 @@ function MainPage() {
           })
         }
       </Swiper> */}
-      <div className='container' style={{backgroundColor: '#E2EAE9', padding:"20px", borderRadius:"15px", height:"680px"}}>
-        <div className='d-flex justify-content-between align-items-center mb-3' >
-          <h1 className="font-700 ms-2" >연결된 기기</h1>
+      <div className='container' style={{ background: 'linear-gradient(to bottom, #BECED2, #E2EAE9)', padding: "20px", borderRadius: "15px", height: "80vh" }}>
+        <div className='d-flex mb-3 justify-content-between align-items-center'>
+          <h1 className="font-700 ms-2" style={{ marginBottom: "0px" }}>연결된 기기</h1>
           <Fab color="action" aria-label="add" onClick={handleMenuOpen}>
             <AddIcon />
           </Fab>
-          <Menu
-          anchorEl={menuAnchorEl}
-          open={Boolean(menuAnchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={() => {
-            navigate('/hubs/addhub');
-            handleMenuClose();
-          }} style={{ fontWeight: "900", fontSize: "20px" }}>
-            허브 추가
-          </MenuItem>
-          <MenuItem onClick={() => {
-            navigate('/routine/addroutine')
-            handleMenuClose();
-          }} style={{ fontWeight: "900", fontSize: "20px" }}>
-            루틴 추가
-          </MenuItem>
-        </Menu>
         </div>
-        <div className='remote-card-list-container'>
+        <div>
+          <Menu
+            anchorEl={menuAnchorEl}
+            open={Boolean(menuAnchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={() => {
+              navigate('/hubs/addhub');
+              handleMenuClose();
+            }} style={{ fontWeight: "900", fontSize: "20px" }}>
+              허브 추가
+            </MenuItem>
+            <MenuItem onClick={() => {
+              navigate('/routine/addroutine')
+              handleMenuClose();
+            }} style={{ fontWeight: "900", fontSize: "20px" }}>
+              루틴 추가
+            </MenuItem>
+          </Menu>
+        </div>
 
-        
-        <Swiper spaceBetween={50} slidesPerView={1}
-                onSlideChange={handleSlideChange} 
-                onSwiper={(swiper) => handleSlideChange(swiper)}>
-          {hubs.map((hub) => (
-            <SwiperSlide key={hub.hubId}>
-              
-              <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius:"15px"}}>
-                  <div className="card-text centered" style={{ paddingTop: '15px', fontSize:'25px'}}>
-                    {hub.userHubName}
-                  </div>
-                  <div className="card-body d-flex row justify-content-start align-items-baseline">
-                        {remotes.map((remote) =>{
+        <div className='remote-card-list-container'>
+          {hubs.length === 0 ?
+            <div className='centered' style={{ height: "60vh" }}>
+              <h5 style={{ position:"absolute", top:"40%" }}>등록된 기기가 없습니다.</h5>
+            </div>
+            :
+            <Swiper spaceBetween={50} slidesPerView={1}
+              onSlideChange={handleSlideChange}
+              onSwiper={(swiper) => handleSlideChange(swiper)}>
+              {hubs.map((hub) => (
+                <SwiperSlide key={hub.hubId}>
+
+                  <div className="card mb-3 d-flex" style={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: "15px", height:"100%"}}>
+                    <div className="card-text centered" style={{ paddingTop: '15px', fontSize: '25px' }}>
+                      {hub.userHubName}
+                    </div>
+                    {remotes.length === 0 ? 
+                      <div className='centered' style={{ height: "60vh" }}>
+                        <h5 style={{ position:"absolute", top:"40%" }}>등록된 리모컨이 없습니다.</h5>
+                      </div>
+                    :
+                      <div className="card-body">
+                        <div className='d-flex row justify-content-start align-items-baseline'>
+                        {remotes.map((remote) => {
                           return (
-                          <div className="col-6" key={remote.remoteId}>
-                            <Card>
-                              <div className='centered' style={{width:"100%"}}>
-                                <span style={{fontWeight:"700", marginBottom:"0px", fontSize:"18px"}}>{remote.controllerName}</span>
-                              </div>
-                            </Card>
-                          </div>
+                            <div className="col-6" key={remote.remoteId} onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>
+                              <Card>
+                                <div className='centered' style={{ width: "100%" }}>
+                                  <span style={{ fontWeight: "700", marginBottom: "0px", fontSize: "18px" }}>{remote.controllerName}</span>
+                                </div>
+                              </Card>
+                            </div>
                           )
                         })}
-                    </div>
-                </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-      <div className="pagination-dots-container">
-          {hubs.map((_, index) => (
-            <div key={index} className={`pagination-dot ${activeSlide === index ? 'active' : ''}`} />
-          ))}
-      </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>}
+        </div>
+        <div className='centered'>
+          <div className="pagination-dots-container" style={{ position: "absolute", bottom: "90px" }}>
+            {hubs.map((_, index) => (
+              <div key={index} className={`pagination-dot ${activeSlide === index ? 'active' : ''}`} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
+
   )
 }
 

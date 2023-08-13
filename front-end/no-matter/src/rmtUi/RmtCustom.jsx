@@ -1,14 +1,79 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import GoBack from '../components/GoBack.jsx'
+import axiosInstance from '../config/axios'
 
 import { ButtonBase, Fab, Box, Modal, Button, InputLabel, MenuItem,
-        FormControl, Select } from "@mui/material";
-
+        FormControl, Select, TextField } from "@mui/material";
+import { cyan } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add'; // +
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
 
-const RmtCustom = () => {
+const RmtCustom = (props) => {
+  const navigate = useNavigate();
+  const isCreate = props.isCreate
+  const [notSave, setNotSave] = useState(false)
+  const [rmtName, setRmtName] = useState(props.remoteName)
+  const [saveRmtName, setSaveRmtName] = useState('')
+  const [isNameSet, setIsNameSet] = useState(false)
+  const [customButtonName, setCustomButtonName] = useState('')
+
+  useEffect(() => {
+    if (props.remoteName === '') {
+      setIsNameSet(true)
+    } else (
+      setSaveRmtName(props.remoteName)
+    )
+  }, [])
+
+  const hubId = props.hubId
+
+  const remoteSave = () => {
+    setNotSave(false)
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "TV",
+          "remoteCode" : "A1B2C3D4"
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      navigate(-2)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClick = (e) => {
+    if (isCreate) {
+      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+    } else {
+      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+    }
+  }
+
+  const onNameChange = useCallback((event) => {
+    setRmtName(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
+  const settingRmtName = () => {
+    if (rmtName !== '') {
+      setSaveRmtName(rmtName)
+      setIsNameSet(false)
+    }
+  }
+
   const [active, setActive] = useState(false);
   const [currentX, setCurrentX] = useState(0);
   const [currentY, setCurrentY] = useState(0);
@@ -16,18 +81,17 @@ const RmtCustom = () => {
   const [initialY, setInitialY] = useState(0);
   
   const [customButton, setCustomButton] = useState({
-    cusBtn1:[{active:false, currentX:0, currentY:150, icon:'AddIcon'}],
-    cusBtn2:[{active:false, currentX:50, currentY:150, icon:'HorizontalRuleIcon'}]
+    cusBtn1:[{active:false, currentX:0, currentY:150, icon:'AddIcon', name:'더하기'}],
+    cusBtn2:[{active:false, currentX:50, currentY:150, icon:'HorizontalRuleIcon', name:'빼기'}]
   })
   
   const [open, setOpen] = useState(false);
-  const [isAdd, setIsAdd] = useState(false)
   
   const [icon, setIcon] = useState('');
   
   const addButton = (e) => {
     let cntBtn = Object.keys(customButton).length
-    const baseData = [{active:false, currentX:50, currentY:150, icon:e}]
+    const baseData = [{active:false, currentX:50, currentY:150, icon:e, name:customButtonName}]
     let copy = {...customButton}
     copy[`cusBtn${cntBtn+1}`] = baseData
     setCustomButton(copy)
@@ -45,7 +109,7 @@ const RmtCustom = () => {
   };
 
   const dragEnd = (name, btnIcon) => {
-    if (isAdd === true) {
+    if (isCreate === true) {
       setInitialX(currentX);
       setInitialY(currentY);
       setActive(false);
@@ -69,7 +133,7 @@ const RmtCustom = () => {
 
   /* 버튼 클릭시 실행 */
   const onTouchStart = (e, positionData, name) => {
-    if (isAdd === true) {
+    if (isCreate === true) {
       updateBtn(name, positionData)
       selectBtn(e, positionData[0])
       dragStart(e, name, positionData[0])
@@ -78,7 +142,7 @@ const RmtCustom = () => {
 
   /* 버튼 클릭시 실행되며 object에 저장된 x, y좌표값 state에 저장 */
   const selectBtn = (e, positionData) => {
-    if (isAdd === true) {
+    if (isCreate === true) {
       setActive(positionData.active)
       setCurrentX(positionData.currentX)
       setCurrentY(positionData.currentY)
@@ -111,11 +175,11 @@ const RmtCustom = () => {
     px: 4,
     pb: 3,
   };
-  
-  useEffect(() => {
-    const lastCharacter = location.pathname.slice(-1);
-    setIsAdd(lastCharacter === "1");
-  }, [location.pathname]);
+
+  const handleCustomButtonName = useCallback((e) => {
+    setCustomButtonName(e.currentTarget.value)
+    console.log(e)
+  })
   
   const selectButton = () => {
     setOpen(true);
@@ -126,20 +190,9 @@ const RmtCustom = () => {
     addButton(icon)
   };
   
-  /* 리모컨 추가페이지 일때 모달 취소 버튼 함수 */
-  const handleClose = () => {
-    setOpen(false);
-  };
-  
   /* 리모컨 버튼 추가 버튼 클릭 */
-  const handleAddClick = (name) => (e) => {
+  const handleAddClick = () => {
     selectButton()
-    // 신호를 입출력할 함수 필요
-  }
-
-  /* 리모컨 버튼 클릭 */
-  const handleClick = (name) => (e) => {
-    console.log(name)
     // 신호를 입출력할 함수 필요
   }
   
@@ -168,82 +221,188 @@ const RmtCustom = () => {
         
   return (
     <div id="outerContainer">
-      {
-        isAdd ? <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-        >
-          <Box sx={{ ...modalStyle, width: 300 }}>
-            <h2 id="child-modal-title">버튼을 추가합니다</h2>
-            <p id="child-modal-description">
-              허브를 향해<br/>리모컨 버튼을 눌러주세요
-            </p>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">아이콘</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={icon}
-                  label="Icon"
-                  onChange={handleChange}
-                  >
-                  <MenuItem value={'AddIcon'}>+</MenuItem>
-                  <MenuItem value={'HorizontalRuleIcon'}>-</MenuItem>
-                </Select>
-              </FormControl>
+      <div className='d-flex flex-column mt-5'>
+        <div className='d-flex justify-content-between'>
+          <div className='d-flex'>
+            {
+              isCreate === true ?
+              <div onClick={() => setNotSave(true)}>
+                <i className="bi bi-chevron-left fs-2 me-3"></i>
+              </div> : <GoBack/>
+            }
+            <h1 className="font-700">{saveRmtName}</h1>
+          </div>
+          <div>
+            {
+              isCreate === true ? 
+              <Fab size='small' color={cyan[700]} aria-label="add" 
+              onClick={() => {handleAddClick()}}>
+                <AddIcon />
+              </Fab>
+              : null
+            }
+            {
+              isCreate === true ? 
+              <button 
+                className='btn'
+                style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
+                onClick={remoteSave}
+                >저장하기
+              </button> : 
+              null
+            }
+          </div>
+        </div>
+        <hr />
+        { isCreate === true ?
+          <Modal
+          open={notSave}
+          onClose={() => setNotSave(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨 선택화면으로 돌아갑니다</h2>
+              <p id="child-modal-description">
+                변경사항이 저장되지 않을수도 있습니다
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={() => (navigate(-1))}>확인</Button>
+                <Button onClick={() => setNotSave(false)}>취소</Button>
+              </div>
             </Box>
-            <div style={{display: 'flex', justifyContent:'flex-end'}}>
-              <Button onClick={handleAddClose}>확인</Button>
-              <Button onClick={handleClose}>취소</Button>
-            </div>
-          </Box>
-        </Modal> 
-        : null
-      }
-      {
-        isAdd ? 
-        <Fab color="secondary" aria-label="add" onClick={handleAddClick()}>
-          <AddIcon />
-        </Fab>
-        : null
-      }
-
-      { cusBtnmapping.map((item) => (
-          <div className="custom-button" key={item.name}>
-            <div
-              id="container"
-              onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
-              onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
-              onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
-            >
+          </Modal> : null
+        }
+        { isCreate === true ?
+          <Modal
+          open={isNameSet}
+          onClose={() => setIsNameSet(false)}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              {
+                rmtName.length <= 5 ? 
+                <div>
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => settingRmtName()}>확인</Button>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
+              </div> : 
+              <div>
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtName}
+                  onChange={onNameChange}
+                  error={true}
+                  helperText={'5글자 이하로 적어주세요'}
+                  autoFocus
+                />
+                <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                  <Button onClick={() => navigate(-1)}>취소</Button>
+                </div>
+              </div>
+              }
+            </Box>
+          </Modal> : null
+        }
+        {
+          isCreate === true ? <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">버튼을 추가합니다</h2>
+              <p id="child-modal-description">
+                허브를 향해<br/>리모컨 버튼을 눌러주세요
+              </p>
+              <Box sx={{ minWidth: 120 }}>
+                <TextField
+                  id="filled-basic"
+                  label="버튼 이름"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={customButtonName}
+                  onChange={handleCustomButtonName}
+                  // helperText={'5글자 이하로 적어주세요'}
+                  autoFocus
+                />
+                <div style={{marginTop:'30px'}}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">아이콘</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={icon}
+                    label="Icon"
+                    onChange={handleChange}
+                    >
+                    <MenuItem value={'AddIcon'}>+</MenuItem>
+                    <MenuItem value={'HorizontalRuleIcon'}>-</MenuItem>
+                  </Select>
+                </FormControl>
+                </div>
+              </Box>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={handleAddClose}>확인</Button>
+                <Button onClick={handleClose}>취소</Button>
+              </div>
+            </Box>
+          </Modal> 
+          : null
+        }
+        {/* {
+          isCreate === true ? 
+          <Fab color="secondary" aria-label="add" onClick={handleAddClick()}>
+            <AddIcon />
+          </Fab>
+          : null
+        } */}
+        { cusBtnmapping.map((item) => (
+            <div className="custom-button" key={item.name}>
               <div
-                id="item"
-                style={{
-                  position: 'absolute',
-                  left: `${item.position[0].currentX}px`,
-                  top: `${item.position[0].currentY}px`,
-                }}
+                id="container"
+                onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
+                onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
+                onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
               >
-                {/* <Fab color="primary" aria-label="add">
-                  <AddIcon />
-                </Fab> */}
-                <ButtonBase
-                  key={item.name}
-                  component={Fab}
-                  color="primary"
-                  style={{ borderRadius: "50%" }}
-                  onClick={handleClick(item.name)}
+                <div
+                  id="item"
+                  style={{
+                    position: 'absolute',
+                    left: `${item.position[0].currentX}px`,
+                    top: `${item.position[0].currentY}px`,
+                  }}
                 >
-                  {getIcon(item.position[0].icon)}
-                </ButtonBase>
+                    {/* <Fab color="primary" aria-label="add">
+                      <AddIcon />
+                    </Fab> */}
+                    <ButtonBase
+                      key={item.name}
+                      component={Fab}
+                      style={{ borderRadius: "50%" }}
+                      onClick={() => {handleClick(item.name)}}
+                    >
+                      {getIcon(item.position[0].icon)}
+                    </ButtonBase>
+                </div>
               </div>
             </div>
-          </div>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
   );
 };

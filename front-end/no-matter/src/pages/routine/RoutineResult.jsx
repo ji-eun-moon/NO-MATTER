@@ -23,6 +23,7 @@ function RoutineResult() {
   const [selectedHub, setSelectedHub] = useState(null);
   const [selectedRemote, setSelectedRemote] = useState(null);
   const [selectedRemoteAction, setSelectedRemoteAction] = useState(null);
+  const [active, setActive] = useState('ON')
 
   const handleSelection = (hub, remote, action) => {
     setSelectedHub(hub);
@@ -165,16 +166,36 @@ function RoutineResult() {
 
   // 루틴 등록
   const routineSubmit = () => {
+    const URL = "http://localhost:5000/api/v1/routine/update"
     // json-server test
-    axios.post('http://172.18.0.3:3001/routines', {
+    // axios.post('http://localhost:3001/routines', {
+    //   kind: kind,
+    //   condition: condition,
+    //   selectedHub: selectedHub,
+    //   selectedRemote: selectedRemote,
+    //   selectedRemoteAction: selectedRemoteAction
+    // }).then (
+    //   navigate('/routine')
+    // )
+    const routineData = {
       kind: kind,
       condition: condition,
       selectedHub: selectedHub,
       selectedRemote: selectedRemote,
-      selectedRemoteAction: selectedRemoteAction
+      selectedRemoteAction: selectedRemoteAction,
+      active: active
+    };
+    axiosInstance({
+      method: 'POST',
+      url: URL,
+      data: { 
+        hubId : selectedHub.hubId, 
+        attributes : JSON.stringify(routineData)
+      }
     }).then (
       navigate('/routine')
     )
+    
   }
 
   return (
