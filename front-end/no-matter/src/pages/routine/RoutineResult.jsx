@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from '../../components/GoBack.jsx'
 import SelectResult from './SelectResult.jsx';
 import axios from 'axios'
 import axiosInstance from '../../config/axios'
 import './Routine.scss'
-import { useNavigate } from 'react-router-dom'
+
+import Form from 'react-bootstrap/Form';
 
 function RoutineResult() {
   const location = useLocation();
@@ -13,9 +14,7 @@ function RoutineResult() {
   // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
   // const condition = location.state.condition  // 루틴 조건
 
-  // console.log(location.state.kind)
-  // console.log(location.state.condition)
-
+  const editing = location.state.editing
   const [kind, setKind] = useState('')
   const [condition, setCondition] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -23,7 +22,7 @@ function RoutineResult() {
   const [selectedHub, setSelectedHub] = useState(null);
   const [selectedRemote, setSelectedRemote] = useState(null);
   const [selectedRemoteAction, setSelectedRemoteAction] = useState(null);
-  const [active, setActive] = useState('ON')
+  const [active, setActive] = useState(false)
 
   const handleSelection = (hub, remote, action) => {
     setSelectedHub(hub);
@@ -44,10 +43,23 @@ function RoutineResult() {
     marginTop: "10px",
     height: "250px"
   }
+
+  const activeStyle = {
+    border: "2px solid #CCD1D1",
+    borderRadius: "10px",
+    padding: "20px",
+    marginTop: "10px",
+  }
   
   useEffect(() => {
     setKind(location.state.kind)
     setCondition(location.state.condition)
+    if (editing) {
+      setSelectedHub(location.state.selectedHub)
+      setSelectedRemote(location.state.selectedRemote)
+      setSelectedRemoteAction(location.state.selectedRemoteAction)
+      setActive(location.state.active)
+    }
   }, [])
 
 
@@ -185,17 +197,21 @@ function RoutineResult() {
       selectedRemoteAction: selectedRemoteAction,
       active: active
     };
-    axiosInstance({
-      method: 'POST',
-      url: URL,
-      data: { 
-        hubId : selectedHub.hubId, 
-        attributes : JSON.stringify(routineData)
-      }
-    }).then (
-      navigate('/routine')
-    )
-    
+    if (editing) {
+
+    } else {
+      axiosInstance({
+        method: 'POST',
+        url: URL,
+        data: { 
+          hubId : selectedHub.hubId, 
+          attributes : JSON.stringify(routineData)
+        }
+      }).then (
+        navigate('/routine')
+      )
+      
+    }
   }
 
   return (
@@ -215,8 +231,23 @@ function RoutineResult() {
         </div>
         {renderSelectedInfo()}
       </div>
+      <div className='d-flex justify-content-between align-items-center' style={activeStyle}>
+        <div>
+          <h3 className='font-700'>루틴 활성화</h3>
+        </div>
+        <Form>
+          <Form.Check
+              type="switch"
+              id="custom-switch"
+              label={active ? 'ON' : 'OFF'}
+              checked={active}
+              style={{ fontSize: '1.2rem' }}
+              onChange={() => setActive(!active)}
+            />
+        </Form>
+      </div>
       <div className='centered'>
-        <button className='btn mt-3'
+        <button className='btn mt-2'
                 onClick={routineSubmit} 
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC", fontWeight:"700", width:"100%", height:"45px"}}>
           저장하기</button>

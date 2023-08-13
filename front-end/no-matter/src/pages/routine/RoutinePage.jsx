@@ -3,9 +3,9 @@ import axiosInstance from '../../config/axios'
 import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
-import DeleteIcon from '@mui/icons-material/Delete';
-import SwipeLeft from '../../components/SwipeLeft.jsx';
+import SwipeCard from '../../components/SwipeCard.jsx';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 function RoutinePage() {
   const navigate = useNavigate();
@@ -68,17 +68,6 @@ function RoutinePage() {
   //   //   // console.log(response.data)
   //   //   setRoutines(response.data)
   //   // })
-
-  //   axiosInstance({
-  //     method : 'Get',
-  //     url : '/userhub/list',
-  //     headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
-  //   })
-  //   .then((response) => {  
-  //     // console.log(response.data)
-  //     setHubs(response.data)
-  //   })
-
   // }
 
   // useEffect(() => {
@@ -204,12 +193,28 @@ function RoutinePage() {
       <hr />
       {routines.map((routineInfo, index) => (
         <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
-          <SwipeLeft>
+          <SwipeCard>
             {renderRoutine(routineInfo)}
-          </SwipeLeft>
+          </SwipeCard>
 
-          {/* 루틴 삭제 */}
-          <div className='card-body mb-3 d-flex justify-content-end' style={{position:'absolute', padding:'0', width:'100%'}}>
+         
+          <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
+            {/* 루틴 수정 */}
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}}>
+              <div className="card-body centered">
+                <SettingsOutlinedIcon fontSize='large' style={{color:'white'}} onClick={() => navigate('/routine/result', 
+                { state: { kind: JSON.parse(routineInfo.attributes).kind, 
+                          condition: JSON.parse(routineInfo.attributes).condition, 
+                          editing: true, 
+                          selectedHub:  JSON.parse(routineInfo.attributes).selectedHub,
+                          selectedRemote:  JSON.parse(routineInfo.attributes).selectedRemote,
+                          selectedRemoteAction:  JSON.parse(routineInfo.attributes).selectedRemoteAction,
+                          active: JSON.parse(routineInfo.attributes).active
+                          }})}/>
+              </div>
+            </div>
+
+             {/* 루틴 삭제 */}
             <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
                 <div className="card-body centered">
                   <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
