@@ -70,7 +70,9 @@ function RmtAc(props) {
       setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/${e}`)
     } else {
-      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+        if(isOn){
+          props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+        }
     }
   }
 
@@ -106,8 +108,10 @@ function RmtAc(props) {
       setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/increaseTemperature`)
     } else {
-      setTemperature((prevTemperature) => prevTemperature + 1);
-      props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+        if(isOn){
+          setTemperature((prevTemperature) => prevTemperature + 1);
+          props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+        }
     }
   };
 
@@ -117,8 +121,10 @@ function RmtAc(props) {
       setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/decreaseTemperature`)
     } else {
-      setTemperature((prevTemperature) => prevTemperature - 1);
-      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+        if(isOn){
+          setTemperature((prevTemperature) => prevTemperature - 1);
+          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+        }
     }
   };
 
@@ -128,8 +134,10 @@ function RmtAc(props) {
       setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/increaseWindSpeed`)
     } else {
-      setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
-      props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+        if(isOn){
+          setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
+          props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+        }
     }
   };
   
@@ -140,8 +148,10 @@ function RmtAc(props) {
       setIsModify(true)
       props.publishMessage(`ADD/${saveRmtName}/decreaseWindSpeed`)
     } else {
-      setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
-      props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+        if(isOn){
+          setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
+          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+        }
     }
   };
 

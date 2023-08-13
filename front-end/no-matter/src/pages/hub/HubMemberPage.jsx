@@ -208,6 +208,7 @@ function HubMemberPage() {
     })
     .then((response) => {  
       console.log('response',response.data)
+      window.location.reload()
       // setHubs(response.data)
       // setLoading(false);
     })
