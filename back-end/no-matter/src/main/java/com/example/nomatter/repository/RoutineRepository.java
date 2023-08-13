@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
-    Optional<Routine> findByHubId(Long hubId);
-
     List<Routine> findAllByHubId(Long hubId);
+
+    Optional<Routine> findByRoutineId(Long routineId);
 
 }
