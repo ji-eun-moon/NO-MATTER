@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RemoteRepository extends JpaRepository<Remote, Long> {
@@ -14,5 +15,7 @@ public interface RemoteRepository extends JpaRepository<Remote, Long> {
 
     @Query("SELECT MAX(remoteId) FROM Remote")
     Long findRecentlyRemoteId();
+
+    Optional<Remote> findByRemoteId(Long remoteId);
 
 }

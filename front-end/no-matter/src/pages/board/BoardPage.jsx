@@ -18,7 +18,7 @@ function BoardPage() {
     // json-server 테스트용
     axiosInstance({
       method: 'GET',
-      url: 'http://localhost:3001/boards'
+      url: 'http://172.18.0.3:3001/boards'
     })
       .then((response) => {
         // console.log(response.data);
