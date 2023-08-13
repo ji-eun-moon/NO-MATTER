@@ -5,9 +5,11 @@ import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
+import SwipeCard from '../../components/SwipeCard.jsx';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 function RemotePage() {
   const { id } = useParams()  // 허브 id
@@ -68,17 +70,28 @@ function RemotePage() {
 
     return remotes.map(remote => {
       return (
-        <div>
-          <Card key={remote.remoteId}>
+        <div key={remote.remoteId}  className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+          <SwipeCard>
             <div className='d-flex align-items-center row'
                 style={{width:"100%"}}>
               <div className='card-text col-11' 
               onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, id]})}>{remote.controllerName}</div>
-              <div className='col-1 align-items-end' onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true, remote.controllerName, id]})}>
-                <SettingsOutlinedIcon/>
+            </div>
+          </SwipeCard>
+          <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
+            {/* 리모컨 수정 */}
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}}>
+              <div className="card-body centered">
+                <SettingsOutlinedIcon fontSize='large' style={{color:'white'}} onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, true, remote.controllerName, id]})} />
               </div>
             </div>
-          </Card>
+            {/* 리모컨 삭제 */}
+            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}>
+              <div className="card-body centered">
+                <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
+              </div>
+            </div>
+          </div>
         </div>
       )
     })
