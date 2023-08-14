@@ -3,15 +3,19 @@ import './Routine.scss'
 import { useState, useEffect  } from 'react'
 import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
+import SelectButton from './SelectButton.jsx';
 
 function SelectResult({setShowModal, handleSelection}) {
 
   const [hubs, setHubs] = useState([]);  // 허브 리스트
   const [remotes, setRemotes] = useState([]);  // 리모컨 리스트
+  const [remoteType, setRemoteType] = useState(null);
   const [selectedHub, setSelectedHub] = useState(null); // 선택한 허브
   const [selectedRemote, setSelectedRemote] = useState(null);  // 선택한 리모컨
-  const [selectedRemoteAction, setSelectedRemoteAction] = useState('ON');  // 선택한 리모컨 동작 - 임시로 ON 넣어놨음
+  const [selectedRemoteAction, setSelectedRemoteAction] = useState(null); // 선택한 리모컨 버튼 - 통신용
+  const [selectedRemoteButton, setSelectedRemoteButton] = useState(null); // 선택한 리모컨 버튼 - 출력용
 
+  // 허브 리스트 
   const getHubs = () => {
 
     axiosInstance({
@@ -44,18 +48,26 @@ function SelectResult({setShowModal, handleSelection}) {
       setShowModal(false);
   };
 
-  const selectHub = (id) => {
-    const selectedHub = hubs.find((hub) => hub.hubId === id);
+  const selectHub = (hubId) => {
+    const selectedHub = hubs.find((hub) => hub.hubId === hubId);
     // console.log(selectedHub);
     setSelectedHub(selectedHub); // 허브 선택
-    getRemote(id)
+    getRemote(hubId)
     // console.log(remotes)
   }
 
-  const selectRemote = (id) => {
-    const selectedRemote = remotes.find((remote) => remote.remoteId === id)
+  const selectRemote = (remoteId) => {
+    const selectedRemote = remotes.find((remote) => remote.remoteId === remoteId)
+    const remoteType = selectedRemote.remoteType
     // console.log(selectedRemote)
     setSelectedRemote(selectedRemote) // 리모컨 선택
+    setRemoteType(remoteType)
+  }
+
+  // 리모컨 버튼 선택 -> props로 넘기기 
+  const selectRemoteButton = (buttonlabel, buttonName) => {
+    setSelectedRemoteButton(buttonlabel)  // 출력용
+    setSelectedRemoteAction(buttonName)  // 통신용
   }
   
   const goBackToHubSelection = () => {
@@ -68,7 +80,7 @@ function SelectResult({setShowModal, handleSelection}) {
 
   const handleSelectionComplete = () => {
     // 선택한 정보를 부모 컴포넌트로 전달하고 모달창 닫기
-    handleSelection(selectedHub, selectedRemote, selectedRemoteAction);
+    handleSelection(selectedHub, selectedRemote, selectedRemoteAction, selectedRemoteButton);
     closeModal()
   };
 
@@ -121,6 +133,7 @@ function SelectResult({setShowModal, handleSelection}) {
     })
   }
 
+  
 
 
   return (
@@ -146,8 +159,10 @@ function SelectResult({setShowModal, handleSelection}) {
               <div onClick={goBackToHubSelection}>
                 <i className="bi bi-chevron-left fs-2 me-3"></i>
               </div>
-              <h4 style={{fontWeight:"600", marginBottom:"0px", color:"#0097B2"}} className='me-2'>{selectedHub.userHubName}</h4>
-              <h5 style={{marginBottom:"0px"}} className='font-700'>리모컨을 선택하세요</h5>
+              <div className='flex-column d-flex'>
+                <h4 style={{fontWeight:"600", marginBottom:"0px", color:"#0097B2"}} className='me-2'>{selectedHub.userHubName}</h4>
+                <h5 style={{marginBottom:"0px"}} className='font-700'>리모컨을 선택하세요</h5>
+              </div>
             </div>
             {renderRemoteList()}
           </div>
@@ -164,10 +179,12 @@ function SelectResult({setShowModal, handleSelection}) {
                 <h4 style={{fontWeight:"600", marginBottom:"0px", color:"#0097B2"}} className='me-2'>
                   {selectedHub.userHubName} {selectedRemote.controllerName}</h4>
                 <h5 style={{ marginBottom: '0px' }} className='font-700'>
-                  리모컨 동작을 선택하세요
+                  리모컨 버튼을 선택하세요
                 </h5>
               </div>
             </div>
+            <SelectButton remoteType={remoteType} selectRemoteButton={selectRemoteButton}/>
+            
             <button className='btn mt-3'
                 onClick={handleSelectionComplete}
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC", fontWeight:"700", width:"100%", height:"40px"}}>
