@@ -117,8 +117,8 @@ function MoblieLanding() {
       <div className='container d-flex justify-content-around intro-1-mobile'>
         <div className='centered flex-column'>
           <div className='centered'>
-            <Fade>
-              {/* <img src='/images/intro/3.png' style={{width:"60%"}}/> */}
+            <Fade className='centered'>
+              <img src='/images/intro/3-3.png' style={{width:"90%", marginBottom:"30px"}}/>
             </Fade>
           </div>
           <Fade direction='right'>
