@@ -19,7 +19,8 @@ public enum Errorcode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, ""),
     USER_HUB_DUPLICATED(HttpStatus.CONFLICT, ""),
     ROUTINE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
-    REMOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "")
+    REMOTE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    ADMIN_CANNOT_DELETE(HttpStatus.BAD_REQUEST, " ")
     ;
 
     private HttpStatus httpStatus;

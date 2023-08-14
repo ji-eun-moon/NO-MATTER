@@ -115,4 +115,13 @@ public class HubController {
 
     }
 
+    @GetMapping("/view/{hubId}")
+    public ResponseEntity<?> findByHubId(Long hubId, Authentication authentication){
+
+        Hub hub = hubService.findByHubId(hubId).get();
+
+        return ResponseEntity.ok().body(hub);
+
+    }
+
 }

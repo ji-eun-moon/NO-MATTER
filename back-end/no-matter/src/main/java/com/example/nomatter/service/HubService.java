@@ -61,4 +61,10 @@ public class HubService {
 
     }
 
+    public void delete(Hub hub){
+
+        hubRepository.delete(hub);
+
+    }
+
 }
