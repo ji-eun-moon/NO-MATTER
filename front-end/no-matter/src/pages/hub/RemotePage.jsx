@@ -145,7 +145,7 @@ function RemotePage() {
 
   const goMember = () => {
     // if(hub.userHubAuth === 'admin'){
-    navigate(`/hubs/members/${hubId}`, { state: userId })
+    navigate(`/hubs/members/${hubId}`, { state: hub.userHubAuth })
     // }
     // else{
     //   alert('권한이 없습니다')
