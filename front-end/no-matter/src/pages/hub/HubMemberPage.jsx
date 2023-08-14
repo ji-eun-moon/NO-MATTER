@@ -55,7 +55,7 @@ function HubMemberPage() {
 
     const location = useLocation();
     // console.log('location',location.state)
-    const userId = location.state;
+    const userHubAuth = location.state;
     // const adminHubsId = location.state;
     // console.log('adminHubsId', adminHubsId)
   
@@ -142,6 +142,7 @@ function HubMemberPage() {
     })
     .then((response) => {
       const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
+      console.log('specificHub 확인: ', specificHub)
       setHub(specificHub);
       setUsersHubsId(specificHub.usersHubsId)
     });
@@ -251,6 +252,9 @@ function HubMemberPage() {
 
     return sortedUsers.map((user) => {
       return (
+        <>
+        {hub.userHubAuth === 'admin'?
+        
         <div key={user[0]} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
 
             <SwipeCard >
@@ -329,11 +333,26 @@ function HubMemberPage() {
                 </div>
               </Box>
             </Modal>
-        </div>
-      )
-    })
-  }
+        </div>        
+        :
+        <Card >
+          <div className='d-flex align-items-center justify-content-between' 
+            style={{width:"100%"}}>
+            <div className='centered' >
+              <AccountCircleOutlinedIcon fontSize='large' style={{marginRight:'10px'}}/>
+              <div className='card-text' style={{marginBottom:'0'}}>{user[1]}</div>
+            </div>
+            <div>
+              <div className='card-text' style={{marginBottom:'0'}}>{user[2]}</div>
+            </div>
+          </div>
+        </Card>
+        }
 
+      </>)
+    })
+    
+  }
   
   return (
     <div className="container page-container">
@@ -347,12 +366,14 @@ function HubMemberPage() {
       {renderUserList()}
 
       <ToastContainer />
-      <Card>
-        <div className="centered" style={{width:"100%"}} onClick={handleInviteOpen}>
-          <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
-          <div className="text-secondary">초대하기</div>
-        </div>
-      </Card>
+      {userHubAuth === 'admin' && 
+        <Card>
+          <div className="centered" style={{width:"100%"}} onClick={handleInviteOpen}>
+            <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
+            <div className="text-secondary">초대하기</div>
+          </div>
+        </Card>
+      }
       <Modal
         open={inviteOpen}
         onClose={handleInviteClose}
