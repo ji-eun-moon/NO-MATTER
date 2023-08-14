@@ -35,6 +35,8 @@ public class RemoteController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Remote remote, Authentication authentication){
 
+        remote.setIsBoard(-1L);
+
         remoteRepository.save(remote);
 
         return ResponseEntity.ok().body("리모컨 등록 완료");

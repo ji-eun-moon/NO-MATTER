@@ -12,12 +12,7 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 전체 목록
-    @Query("SELECT b.boardId, b.userId, b.download, r.remoteCode, b.createDate FROM Board b JOIN Remote r ON b.remoteId = r.remoteId")
-    List<Object> findBoardsWithControllerNames();
-
-    // 검색 목록
-    @Query("SELECT b.boardId, b.userId, b.download, r.remoteCode, b.createDate FROM Board b JOIN Remote r ON b.remoteId = r.remoteId WHERE r.remoteCode LIKE %:remoteCode%")
-    List<Object> findBoardsWithControllerNames(@Param("remoteCode") String remoteCode);
+    List<Board> findAll();
 
 
 }

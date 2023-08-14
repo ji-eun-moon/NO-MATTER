@@ -22,7 +22,7 @@ public class Remote {
     private Long hubId;
     private String controllerName;
     private String remoteType;
-    private LocalDateTime createDate;
     private String remoteCode;
+    private Long isBoard;
 
 }
