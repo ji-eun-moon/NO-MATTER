@@ -21,8 +21,6 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserService userService;
-    private final RemoteService remoteService;
 
 
     @GetMapping("/list")

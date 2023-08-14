@@ -13,9 +13,11 @@ public interface RemoteRepository extends JpaRepository<Remote, Long> {
 
     List<Remote> findAllByHubId(Long HubId);
 
-    @Query("SELECT MAX(remoteId) FROM Remote")
+    @Query("SELECT MAX(remoteId) FROM Remote ")
     Long findRecentlyRemoteId();
 
     Optional<Remote> findByRemoteId(Long remoteId);
+
+    Optional<Remote> findByHubIdAndIsBoard(Long hubId, Long isBoard);
 
 }
