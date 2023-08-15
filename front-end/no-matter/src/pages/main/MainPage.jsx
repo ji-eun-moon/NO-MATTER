@@ -16,7 +16,7 @@ function MainPage() {
   // const hublist = ['1번']
   const [hubs, setHubs] = useState([]);
   const [remotes, setRemotes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [initialHubId, setInitialHubId] = useState(null);
   const [userName, setUserName] = useState('')
@@ -38,7 +38,7 @@ function MainPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-      console.log(response.data.userName)
+      // console.log(response.data.userName)
       // const responseData = response.data;
       // const userDataString = responseData.substring(responseData.indexOf("User(") + 5, responseData.indexOf(")"));
       // const userDataPairs = userDataString.split(', ');
@@ -76,7 +76,7 @@ function MainPage() {
   }, [])
 
   const getRemote = (id) => {
-    setLoading(true);
+    // setLoading(true);
     axiosInstance({
       method : 'Get',
       url : `/remote/list/${id}`,
@@ -85,7 +85,7 @@ function MainPage() {
     .then((response) => {
       // console.log(response.data)
       setRemotes(response.data) // 리모컨 리스트
-      setLoading(false);
+      // setLoading(false);
     })
   }
 
@@ -204,7 +204,7 @@ function MainPage() {
                         <div className='d-flex row justify-content-start align-items-baseline'>
                         {remotes.map((remote) => {
                           return (
-                            <div className="col-6" key={remote.remoteId} onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false]})}>
+                            <div className="col-6" key={remote.remoteId} onClick={() => navigate('/hubs/rmtdetail', {state: [remote.remoteType, false, remote.controllerName, hub.hubId]})}>
                               <Card>
                                 <div className='centered' style={{ width: "100%" }}>
                                   <span style={{ fontWeight: "700", marginBottom: "0px", fontSize: "18px" }}>{remote.controllerName}</span>
