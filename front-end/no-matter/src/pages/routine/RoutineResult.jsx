@@ -7,7 +7,7 @@ import './Routine.scss'
 import Form from 'react-bootstrap/Form';
 
 import io from 'socket.io-client'
-const BrokerAddress = 'i9c105.p.ssafy.io:3002'
+const BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
 
 const conditionStyle = {
   border: "2px solid #0097B2",
@@ -48,7 +48,7 @@ function RoutineResult() {
   const [active, setActive] = useState(false)
   const [routineId, SetRoutineId] = useState(null);
 
-  const [topic, setTopic] = useState('ssafy');
+  const [topic, setTopic] = useState('');
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -233,6 +233,7 @@ function RoutineResult() {
     // }).then (
     //   navigate('/routine')
     // )
+    
     const routineData = {
       kind: kind,
       condition: condition,
@@ -242,6 +243,17 @@ function RoutineResult() {
       selectedRemoteButton: selectedRemoteButton,
       active: active
     };
+    
+    // 선택한 허브 정보 받아와서 topic 저장
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${selectedHub.hubId}`,
+    }).then((response) => {
+      // console.log(response.data)
+      const hubUuId = response.data.hubUuid
+      setTopic(hubUuId + '/ROUTINE')
+    })
+
     if (editing) {
       // 루틴 수정
       axiosInstance({
@@ -293,7 +305,7 @@ function RoutineResult() {
   }
 
   return (
-    <div className='container'>
+    <div className='container page-container'>
       <div className='d-flex mt-5 mb-3'>
         <GoBack />
         <h1 className="font-700">루틴 등록</h1>

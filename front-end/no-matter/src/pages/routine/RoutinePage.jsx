@@ -8,7 +8,7 @@ import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOut
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import io from 'socket.io-client'
-const BrokerAddress = 'i9c105.p.ssafy.io:3002'
+const BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
 
 function RoutinePage() {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function RoutinePage() {
       );
       const combinedRoutines = routinesForHubs.flat();
       setRoutines(combinedRoutines);
-      console.log('Combined routines:', combinedRoutines);
+      // console.log('Combined routines:', combinedRoutines);
     };
 
     if (hubs.length > 0) {
@@ -77,7 +77,7 @@ function RoutinePage() {
   //   getRoutines()
   // }, [])
 
-  const [topic, setTopic] = useState('ssafy');
+  const [topic, setTopic] = useState('');
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -114,6 +114,16 @@ function RoutinePage() {
       url : `routine/delete/${routineId}`,
     })
     .then (() => {
+      // 삭제한 루틴의 허브 정보 불러오기 - uuid 받기 위해서
+      axiosInstance({
+        method :'GET',
+        url: `/hub/view/${hubId}`,
+      }).then((response) => {
+        // console.log(response.data)
+        const hubUuId = response.data.hubUuid
+        setTopic(hubUuId + '/ROUTINE')
+      })
+    .then (() => {
       // 삭제 이후 루틴 전체 리스트 불러오기
       axiosInstance({
         method :'GET',
@@ -123,8 +133,9 @@ function RoutinePage() {
         window.location.reload()
         const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
         publishMessage(`ROUTINE/${result}`)
-        // console.log(result)
+        console.log(result)
       })
+    })
     })
   }
 
@@ -177,7 +188,7 @@ function RoutinePage() {
               <div className='d-flex text-secondary'>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
-                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
             <div className='centered'>
@@ -202,7 +213,7 @@ function RoutinePage() {
               <div className='d-flex text-secondary'>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
-                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
             <div className='centered'>
@@ -228,7 +239,7 @@ function RoutinePage() {
               <div className='d-flex text-secondary'>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
-                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
             <div className='centered'>
@@ -254,7 +265,7 @@ function RoutinePage() {
               <div className='d-flex text-secondary'>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
-                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteAction}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
             <div className='centered'>
