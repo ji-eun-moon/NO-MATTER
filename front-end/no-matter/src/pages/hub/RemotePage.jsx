@@ -105,7 +105,7 @@ function RemotePage() {
   const goRmtDetail = (data) => {
     setSelectRmtData(data)
     setIsUse(true)
-    publishMessage('IR/STATUS')
+    // publishMessage('IR/STATUS')
     navigate('/hubs/rmtdetail', { state: data })
   }
 
@@ -232,11 +232,12 @@ function RemotePage() {
   }
 
   const addRmt = () => {
-    setIsUse(true)
-    publishMessage('IR/STATUS')
+    setIsUse(false)
+    publishMessage('IR/RECEIVE')
+    setHubStatusChange(true)
     setTimeout(() => {
       navigate('/hubs/addrmt', { state: hub })
-      setIsUse(false)
+    setHubStatusChange(false)
     }, 30000)
   }
 
