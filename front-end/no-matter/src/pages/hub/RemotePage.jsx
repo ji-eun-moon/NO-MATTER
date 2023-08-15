@@ -46,7 +46,8 @@ function RemotePage() {
 
 
 
-  
+  // topic == 허브uuid/RC/CONTROLL
+  // topic == 허브uuid/IR
   const topic = 'ssafy' 
   const [socket, setSocket] = useState(null)
 
@@ -236,7 +237,7 @@ function RemotePage() {
     publishMessage('IR/RECEIVE')
     setHubStatusChange(true)
     setTimeout(() => {
-      navigate('/hubs/addrmt', { state: hub })
+      navigate('/hubs/addrmt', { state: hubId })
     setHubStatusChange(false)
     }, 30000)
   }

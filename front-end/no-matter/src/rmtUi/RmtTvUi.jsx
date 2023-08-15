@@ -94,9 +94,9 @@ function RmtTvUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     } else {
-      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     }
   }
 

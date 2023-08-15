@@ -21,7 +21,7 @@ function AddRemotePage() {
       <hr />
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true, '', hub[1]]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true, '', hub]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">TV</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -30,7 +30,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true, '', hub[1]]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true, '', hub]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">에어컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -39,7 +39,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true, '', hub[1]]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true, '', hub]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">선풍기</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
