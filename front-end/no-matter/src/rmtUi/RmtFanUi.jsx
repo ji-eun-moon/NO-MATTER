@@ -21,22 +21,22 @@ function RmtFanUi(props) {
 
   const [progress, setProgress] = React.useState(0);
 
-  React.useEffect(() => {
-    const interval = 30000 / 100; 
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return oldProgress + 1;
-      });
-    }, interval);
+  // React.useEffect(() => {
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function RmtFanUi(props) {
     console.log('Save')
     setNotSave(false)
 
-    setTimeout(() => {
+    // setTimeout(() => {
       axiosInstance({
         method : 'POST',
         url : '/remote/register',
@@ -72,7 +72,7 @@ function RmtFanUi(props) {
         console.log(err)
       })
 
-    },30000)
+    // },30000)
   }
 
   const handleClose = () => {
@@ -145,7 +145,7 @@ function RmtFanUi(props) {
   return (
     // <div className='page-container container'>
     <>
-    {!notSave ? 
+    {/* {!notSave ? 
       <div className="container page-container">
         <div className='d-flex flex-column justify-content-center align-items-center'>
           <div style={{
@@ -163,7 +163,6 @@ function RmtFanUi(props) {
             30초 정도 소요됩니다...
           </div>
           <Box sx={{ width: '100%' }}>
-            {/* <LinearProgress variant="determinate" value={progress} /> */}
             <div className="progress">
               <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -172,7 +171,7 @@ function RmtFanUi(props) {
       </div>    
       
       :      
-
+ */}
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -316,8 +315,8 @@ function RmtFanUi(props) {
           </div>
         </div>
       </div>
-    // </div>
-    }
+    {/* </div>
+    } */}
     </>
   )
 }

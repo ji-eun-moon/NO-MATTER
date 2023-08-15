@@ -10,7 +10,7 @@ function AddHub_Bluetooth({onBluetooth, onGattServer}) {
   // const [gattServer, setGattServer] = useState(null);
 
   useEffect(() => {
-    console.log('자식의 char', characteristic)
+    // console.log('자식의 char', characteristic)
   }, [characteristic, characteristicValue])
 
   useEffect(() => {
