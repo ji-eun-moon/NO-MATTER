@@ -53,6 +53,15 @@ function AddRemotePage() {
           </div>
         </div>
       </Card>
+      <Card>
+        <div className="d-flex align-items-center justify-content-between" 
+        onClick={() => navigate('/hubs/board', {state: ['Download', true, '', hub[1]]})} style={{width:"100%"}}>
+          <div className="text-secondary card-text">리모컨 다운로드</div>          
+          <div>
+            <i className="bi bi-chevron-right"></i>
+          </div>
+        </div>
+      </Card>
     </div>
   )
 }
