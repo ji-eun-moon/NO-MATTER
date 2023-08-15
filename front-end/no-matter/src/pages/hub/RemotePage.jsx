@@ -89,7 +89,7 @@ function RemotePage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
     })
     .then((response) => {  
-      console.log('response',response.data)
+      console.log('response : ',response.data)
       window.location.reload()
       // setHubs(response.data)
       // setLoading(false);
@@ -145,7 +145,7 @@ function RemotePage() {
 
   const goMember = () => {
     // if(hub.userHubAuth === 'admin'){
-    navigate(`/hubs/members/${hubId}`, { state: userId })
+    navigate(`/hubs/members/${hubId}`, { state: hub.userHubAuth })
     // }
     // else{
     //   alert('권한이 없습니다')
@@ -161,8 +161,10 @@ function RemotePage() {
 
   }
 
+
   const hubDelete = () => {
-    if (hub && hub.userHubAuth === 'admin' && hub.length === 1) {
+    console.log('hub : ', hub)
+    if (hub && hub.userHubAuth === 'admin' ) {
       swal({
         title: "정말 삭제하시겠습니까?",
         text: "삭제하시면 다시 되돌릴 수 없습니다",
@@ -174,40 +176,50 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${hubId}`,
+              url: `/userhub/deleteUserHub/${usersHubsId}`,
               headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
-                console.log(response.data)
+                console.log('이거 : ',response.data)
                 navigate('/hubs')
+                window.location.reload()
               })
+              .catch((err) => {
+                console.log('catch 찍음 : ', err)
+                swal({
+                  title : "본인 이외에 사용자가 있어 삭제할 수 없습니다",
+                  dangerMode: true,
+                });
+                navigate('/hubs')
+          })
           }
+          
         });
 
     }
-    else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
-      swal({
-        title: "본인 이외에 사용자가 있어 삭제할 수 없습니다",
-        text: "삭제하시면 다시 되돌릴 수 없습니다",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            axiosInstance({
-              method: 'Post',
-              url: `http://localhost:8080/api/v1/userhub/deleteUserHub/${hubId}`,
-              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
-            })
-              .then((response) => {
-                console.log(response.data)
-                navigate('/hubs')
-              })
-          }
-        });
+    // else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
+    //   swal({
+    //     title: "본인 이외에 사용자가 있어 삭제할 수 없습니다",
+    //     text: "삭제하시면 다시 되돌릴 수 없습니다",
+    //     icon: "warning",
+    //     buttons: true,
+    //     dangerMode: true,
+    //   })
+    //     .then((willDelete) => {
+    //       if (willDelete) {
+    //         axiosInstance({
+    //           method: 'Post',
+    //           url: `/userhub/deleteUserHub/${hubId}`,
+    //           headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+    //         })
+    //           .then((response) => {
+    //             console.log(response.data)
+    //             navigate('/hubs')
+    //           })
+    //       }
+    //     });
 
-    }
+    // }
     else {
       swal({
         title: "정말 나가시겠습니까?",
@@ -219,7 +231,7 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `http://localhost:5000/api/v1/userhub/deleteUserHub/${usersHubsId}`,
+              url: `/userhub/deleteUserHub/${usersHubsId}`,
               headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
@@ -340,13 +352,11 @@ function RemotePage() {
                   </div>))
               }
             </div>
-            {hub.userHubAuth === 'admin' &&
-              <div className='d-flex align-items-center' onClick={goMember}>
-                <div className="main-backgroud-color px-2 rounded centered" style={{width:"45px", height:"45px"}}>
-                  <i className="bi bi-people-fill fs-2 text-white" ></i>
-                </div>
+            <div className='d-flex align-items-center' onClick={goMember}>
+              <div className="main-backgroud-color px-2 rounded centered" style={{width:"45px", height:"45px"}}>
+                <i className="bi bi-people-fill fs-2 text-white" ></i>
               </div>
-            }
+            </div>            
           </div>
           <hr />
           {renderRemoteList()}
