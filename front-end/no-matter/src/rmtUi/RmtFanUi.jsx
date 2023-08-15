@@ -83,9 +83,9 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     } else {
-      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     }
   }
 
@@ -120,10 +120,10 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtName}/TurnOn`)
     } else {
       setIsOn(true);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtName}/TurnOn`)
     }
   };
 
@@ -131,10 +131,10 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtName}/TurnOff`)
     } else {
       setIsOn(false);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtName}/TurnOff`)
     }
   };
 
