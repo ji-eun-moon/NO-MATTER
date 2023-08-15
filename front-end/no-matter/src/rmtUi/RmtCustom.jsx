@@ -21,22 +21,22 @@ const RmtCustom = (props) => {
 
   const [progress, setProgress] = React.useState(0);
 
-  React.useEffect(() => {
-    const interval = 30000 / 100; 
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return oldProgress + 1;
-      });
-    }, interval);
+  // React.useEffect(() => {
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
 
 
@@ -60,7 +60,7 @@ const RmtCustom = (props) => {
         data: {
             "hubId" : hubId,
             "controllerName" : saveRmtName,
-            "remoteType" : "TV",
+            "remoteType" : "Custom",
             "remoteCode" : "A1B2C3D4"
         }
       })
@@ -247,7 +247,7 @@ const RmtCustom = (props) => {
         
   return (
     <>
-    {!notSave ? 
+    {/* {!notSave ? 
       <div className="container page-container">
         <div className='d-flex flex-column justify-content-center align-items-center'>
           <div style={{
@@ -265,7 +265,6 @@ const RmtCustom = (props) => {
             30초 정도 소요됩니다...
           </div>
           <Box sx={{ width: '100%' }}>
-            {/* <LinearProgress variant="determinate" value={progress} /> */}
             <div className="progress">
               <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -273,7 +272,7 @@ const RmtCustom = (props) => {
         </div>
       </div>    
       
-      :      
+      :       */}
 
     <div id="outerContainer">
       <div className='d-flex flex-column mt-5'>
@@ -459,7 +458,7 @@ const RmtCustom = (props) => {
         )}
       </div>
     </div>
-    }
+    {/* } */}
     </>
   );
 };

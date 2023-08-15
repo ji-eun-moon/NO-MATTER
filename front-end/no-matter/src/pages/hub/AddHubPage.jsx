@@ -38,7 +38,7 @@ const onBluetooth = (newcharacteristic, newcharacteristicValue)=>{
 // console.log(typeof onBluetooth);
 
 useEffect(() => {
-  console.log('부모의 char', characteristic)
+  // console.log('부모의 char', characteristic)
 }, [characteristic, characteristicValue])
 
 
