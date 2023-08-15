@@ -91,10 +91,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     } else {
         if(isOn){
-          props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+          props.publishMessage(`${saveRmtName}/${e}`)
         }
     }
   }
@@ -130,11 +130,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/increaseTemperature`)
+      props.publishMessage(`${saveRmtName}/increaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature + 1);
-          props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+          props.publishMessage(`${saveRmtName}/increaseTemperature`)
         }
     }
   };
@@ -143,11 +143,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/decreaseTemperature`)
+      props.publishMessage(`${saveRmtName}/decreaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature - 1);
-          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+          props.publishMessage(`${saveRmtName}/decreaseTemperature`)
         }
     }
   };
@@ -156,11 +156,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/increaseWindSpeed`)
+      props.publishMessage(`${saveRmtName}/increaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
-          props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+          props.publishMessage(`${saveRmtName}/increaseWindSpeed`)
         }
     }
   };
@@ -170,11 +170,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/decreaseWindSpeed`)
+      props.publishMessage(`${saveRmtName}/decreaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
-          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+          props.publishMessage(`${saveRmtName}/decreaseWindSpeed`)
         }
     }
   };
@@ -183,10 +183,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtName}/TurnOn`)
     } else {
       setIsOn(true);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtName}/TurnOn`)
     }
   };
 
@@ -194,10 +194,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtName}/TurnOff`)
     } else {
       setIsOn(false);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtName}/TurnOff`)
     }
   };
 
