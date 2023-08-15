@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,22 @@ public class RemoteService {
         Remote remote = remoteRepository.findByRemoteId(remoteId).get();
 
         remoteRepository.delete(remote);
+
+    }
+
+    public void save(Remote remote){
+
+        remoteRepository.save(remote);
+
+    }
+
+    public void findByHubIdAndIsBoard(Long hubId, Long isBoard){
+
+        Optional<Remote> optionalRemote = remoteRepository.findByHubIdAndIsBoard(hubId, isBoard);
+
+        if (optionalRemote.isPresent()) {
+            throw new AppException(Errorcode.DOWNLOAD_DUCPLICATED, "이미 다운로드 받은 리모컨입니다.");
+        }
 
     }
 }
