@@ -138,7 +138,7 @@ function MoblieLanding() {
       </div>
 
       <div className='intro-image'>
-        <img src="/images/intro/4.png" alt="main background" style={{width:"100%"}}/>
+        <img src="/images/intro/4.png" alt="main background" style={{width:"100%", height:"300px"}}/>
           <div className='intro-text' style={{width:"100%"}}>
             <Fade direction='up'>
               <h4 className='font-700'>어디에나 자연스럽게</h4>

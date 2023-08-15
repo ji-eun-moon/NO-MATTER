@@ -73,7 +73,7 @@ function PCLanding() {
       <div className='container d-flex justify-content-around intro-1 mb-3'>
         <div>
           <Fade>
-            <img src='images/intro/3-3.png' style={{width:"350px"}}/>
+            <img src='images/intro/3-3.png' style={{width:"500px"}}/>
           </Fade>
         </div>
         <Fade direction='right'>
