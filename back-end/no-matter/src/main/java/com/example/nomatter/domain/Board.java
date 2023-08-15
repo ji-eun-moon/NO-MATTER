@@ -19,9 +19,9 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
-    private Long userId;
-    private Long remoteId;
     private Long download;
+    private String remoteType;
+    private String remoteCode;
     private LocalDateTime createDate;
 
 }

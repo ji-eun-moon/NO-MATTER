@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from '../../components/GoBack.jsx'
 import SelectResult from './SelectResult.jsx';
-import axios from 'axios'
 import axiosInstance from '../../config/axios'
 import './Routine.scss'
-
 import Form from 'react-bootstrap/Form';
+
+import io from 'socket.io-client'
+const BrokerAddress = 'i9c105.p.ssafy.io:3002'
 
 const conditionStyle = {
   border: "2px solid #0097B2",
@@ -42,13 +43,56 @@ function RoutineResult() {
 
   const [selectedHub, setSelectedHub] = useState(null);
   const [selectedRemote, setSelectedRemote] = useState(null);
-  const [selectedRemoteAction, setSelectedRemoteAction] = useState(null);
+  const [selectedRemoteAction, setSelectedRemoteAction] = useState(null); // 통신용
+  const [selectedRemoteButton, setSelectedRemoteButton] = useState(null); // 출력용
   const [active, setActive] = useState(false)
+  const [routineId, SetRoutineId] = useState(null);
 
-  const handleSelection = (hub, remote, action) => {
+  const [topic, setTopic] = useState('ssafy');
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(BrokerAddress, {
+      cors: {origin: '*'}
+    });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
+   
+    // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
+    newSocket.on('message', (receivedMessage) => {
+      console.log(`Received message: ${receivedMessage}`);
+    });
+    
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+
+  const subscribeToTopic = () => {
+    if (socket && topic) {
+      socket.emit('subscribe', topic);
+      console.log(`Subscribed to topic: ${topic}`);
+    }
+  };
+
+  const publishMessage = (message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+    }
+  };
+
+
+  const handleSelection = (hub, remote, action, button) => {
     setSelectedHub(hub);
     setSelectedRemote(remote);
     setSelectedRemoteAction(action);
+    setSelectedRemoteButton(button);
   };
   
   useEffect(() => {
@@ -57,8 +101,9 @@ function RoutineResult() {
     if (editing) {
       setSelectedHub(location.state.selectedHub)
       setSelectedRemote(location.state.selectedRemote)
-      setSelectedRemoteAction(location.state.selectedRemoteAction)
+      setSelectedRemoteButton(location.state.selectedRemoteButton)
       setActive(location.state.active)
+      SetRoutineId(location.state.routineId)
     }
   }, [])
 
@@ -146,23 +191,23 @@ function RoutineResult() {
   }
 
   const renderSelectedInfo = () => {
-    if (selectedHub && selectedRemote && selectedRemoteAction) {
+    if (selectedHub && selectedRemote && selectedRemoteButton) {
       return (
         <div className='mt-4'>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>허브</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedHub.userHubName}</p>
+            <h4 className='result-item text-secondary me-2'>허브</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedHub.userHubName}</p>
           </div>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>리모컨</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedRemote.controllerName}</p>
+            <h4 className='result-item text-secondary me-2'>리모컨</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedRemote.controllerName}</p>
           </div>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>동작</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedRemoteAction}</p>
+            <h4 className='result-item text-secondary me-2'>동작</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedRemoteButton}</p>
           </div>
           
         </div>
@@ -194,22 +239,56 @@ function RoutineResult() {
       selectedHub: selectedHub,
       selectedRemote: selectedRemote,
       selectedRemoteAction: selectedRemoteAction,
+      selectedRemoteButton: selectedRemoteButton,
       active: active
     };
     if (editing) {
-      // 루틴 수정 API
-    } else {
+      // 루틴 수정
       axiosInstance({
         method: 'POST',
         url: '/routine/update',
         data: { 
+          routineId: routineId,
           hubId : selectedHub.hubId, 
           attributes : JSON.stringify(routineData)
         }
-      }).then (
-        navigate('/routine')
-      )
-      
+      })
+      .then (() => {
+        // 등록 이후 루틴 전체 리스트 불러오기
+        axiosInstance({
+          method :'GET',
+          url: `/routine/list/${selectedHub.hubId}`,
+        }).then((response) => {
+          console.log('등록 후 루틴', response.data)
+          const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
+          publishMessage(`ROUTINE/${result}`)
+          // console.log(result)
+          navigate('/routine')
+        })
+      })
+    } else {
+      // 루틴 등록
+      axiosInstance({
+        method: 'POST',
+        url: '/routine/register',
+        data: { 
+          hubId : selectedHub.hubId, 
+          attributes : JSON.stringify(routineData)
+        }
+      })
+      .then (() => {
+        // 등록 이후 루틴 전체 리스트 불러오기
+        axiosInstance({
+          method :'GET',
+          url: `/routine/list/${selectedHub.hubId}`,
+        }).then((response) => {
+          console.log('등록 후 루틴', response.data)
+          const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
+          publishMessage(`ROUTINE/${result}`)
+          // console.log(result)
+          navigate('/routine')
+        })
+      })
     }
   }
 

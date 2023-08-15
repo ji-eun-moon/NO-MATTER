@@ -21,20 +21,21 @@ public class RemoteController {
 
     private final RemoteService remoteService;
     private final RemoteRepository remoteRepository;
-    private final UserHubService userHubService;
 
     @GetMapping("/list/{hubId}")
     public ResponseEntity<?> list(@PathVariable Long hubId, Authentication authentication){
 
-//        Long hubId = userHubService.findByUsersHubsId(usersHubsId).get().getHubId();
+        List<Remote> list = remoteService.findAllByHubId(hubId);
 
         log.info(String.valueOf(hubId));
 
-        return ResponseEntity.ok().body(remoteService.findAllByHubId(hubId));
+        return ResponseEntity.ok().body(list);
 
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Remote remote, Authentication authentication){
+
+        remote.setIsBoard(-1L);
 
         remoteRepository.save(remote);
 

@@ -1,6 +1,8 @@
 package com.example.nomatter.service;
 
 import com.example.nomatter.domain.Remote;
+import com.example.nomatter.exception.AppException;
+import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.RemoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ public class RemoteService {
 
     public List<Remote> findAllByHubId(Long HubId){
 
-        return remoteRepository.findAllByHubId(HubId);
+        List<Remote> list = remoteRepository.findAllByHubId(HubId);
+
+        return list;
 
     }
 

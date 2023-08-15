@@ -402,16 +402,7 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
         </div>
 
         :
-        ((isConnecting && !isConnected) ?
-          // 연결 중
-          <div className='centered'>
-            <div className='d-flex flex-column justify-content-center align-items-center'>
-              <img src='/images/WifiGif.gif' alt='wifi gif' style={{ width: "200px", height: "200px", marginTop: "50px", marginBottom: "10px"}}></img>
-              <span style={{fontWeight:"bold", fontSize:"30px"}}>연결 중</span>
-            </div>
-          </div>
-
-          :
+        ((isConnecting && isConnected) ?
             // 연결완료
             <div className='centered'>
               <div className='d-flex flex-column justify-content-center align-items-center'>
@@ -419,11 +410,18 @@ export default function NestedModal({ onWifi, characteristic, onHubUuId, gattSer
                 <span style={{fontWeight:"bold", fontSize:"30px"}}>연결 완료</span>
               </div>
             </div>
+          :
+          // 연결 중
+          <div className='centered'>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+              <img src='/images/WifiGif.gif' alt='wifi gif' style={{ width: "200px", height: "200px", marginTop: "50px", marginBottom: "10px"}}></img>
+              <span style={{fontWeight:"bold", fontSize:"30px"}}>연결 중</span>
+            </div>
+          </div>          
         )
       }
   </div> 
   );   
 
 }
-
 

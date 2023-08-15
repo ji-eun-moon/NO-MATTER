@@ -25,11 +25,31 @@ public class RoutineController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestBody Routine routine){
+    public ResponseEntity<?> update(@RequestBody Routine routine, Authentication authentication){
+
+        Routine selectedRoutine = routineService.findByRoutineId(routine.getRoutineId());
+
+        selectedRoutine.setAttributes(routine.getAttributes());
+
+        routineService.save(selectedRoutine);
+
+        return ResponseEntity.ok().body("루틴 변경 완료");
+    }
+
+    @DeleteMapping("/delete/{routineId}")
+    public ResponseEntity<?> delete(@PathVariable Long routineId, Authentication authentication){
+
+        routineService.delete(routineId);
+
+        return ResponseEntity.ok().body("루틴 삭제 완료");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Routine routine, Authentication authentication){
 
         routineService.save(routine);
 
-        return ResponseEntity.ok().body("루틴 변경 완료");
+        return ResponseEntity.ok().body("루틴 등록 완료");
     }
 
 }

@@ -51,14 +51,16 @@ function HubMemberPage() {
   const [ managerCheck, setManagerCheck ] = useState(false)
   const [ userCheck, setUserCheck ] = useState(false)
 
+  const [curUser, setCurUser] = useState([])
+
     const location = useLocation();
-    console.log('location',location.state)
-    const userId = location.state;
+    // console.log('location',location.state)
+    const userHubAuth = location.state;
     // const adminHubsId = location.state;
     // console.log('adminHubsId', adminHubsId)
   
   const handleInviteOpen = (e) => {
-    console.log('click')
+    // console.log('click')
     setInviteOpen(true);
     e.stopPropagation();
   };
@@ -67,9 +69,9 @@ function HubMemberPage() {
     setInviteOpen(false);
     setCodeStatus(false)
   };
-  const handleModifyOpen = useCallback((currentAuth) => {
-    console.log('current',currentAuth)
-    if(currentAuth === 'manager'){
+  const handleModifyOpen = (user) => {
+    console.log('current User',user)
+    if(user[2] === 'manager'){
       setManagerCheck(true)
       setUserCheck(false)
     }
@@ -77,19 +79,21 @@ function HubMemberPage() {
       setManagerCheck(false)
       setUserCheck(true)
     }
-    console.log('click')
+    // console.log('click')
     setModifyOpen(true);
+    setCurUser(user)
     // e.stopPropagation();
-  },[]);
+  }
 
   const handleModifyClose = (e) => {
     e.stopPropagation();
     setModifyOpen(false);
     window.location.reload()
+    console.log('close 후 ', users)
   };
 
 
-  const onManager = (changeUserHubId) => {
+  const onManager = (curUser) => {
     setManagerCheck(true)
     setUserCheck(false)
     axiosInstance({
@@ -98,17 +102,18 @@ function HubMemberPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
       data: {
         'userHubId' : usersHubsId,
-        'changeUserHubId' : changeUserHubId,
+        'changeUserHubId' : curUser[0],
         'grade' : 'manager'
       }
     })
     .then((response) => {  
-      console.log('response',response.data)
+      // console.log('response',response.data)
+      getUser(hubId)
       // setHubs(response.data)
       // setLoading(false);
     })
   }
-  const onUser = (changeUserHubId) => {
+  const onUser = (curUser) => {
     setManagerCheck(false)
     setUserCheck(true)
     axiosInstance({
@@ -117,12 +122,13 @@ function HubMemberPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
       data: {
         'userHubId' : usersHubsId,
-        'changeUserHubId' : changeUserHubId,
+        'changeUserHubId' : curUser[0],
         'grade' : 'user'
       }
     })
     .then((response) => {  
-      console.log(response.data)
+      console.log('user로 바꿈',response.data)
+      getUser(hubId)
       // setHubs(response.data)
       // setLoading(false);
     })
@@ -136,6 +142,7 @@ function HubMemberPage() {
     })
     .then((response) => {
       const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
+      console.log('specificHub 확인: ', specificHub)
       setHub(specificHub);
       setUsersHubsId(specificHub.usersHubsId)
     });
@@ -155,12 +162,12 @@ function HubMemberPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-      console.log(response.data)
-      console.log(response.data[0][0])
-      console.log(response.data[0][1])
-      console.log(response.data[0][2])
+      // console.log(response.data)
+      // console.log(response.data[0][0])
+      // console.log(response.data[0][1])
+      // console.log(response.data[0][2])
       setUsers(response.data) // 유저 리스트
-      console.log('users', users)
+      console.log('users', response.data)
       setLoading(false);
     })
 
@@ -208,6 +215,7 @@ function HubMemberPage() {
     })
     .then((response) => {  
       console.log('response',response.data)
+      window.location.reload()
       // setHubs(response.data)
       // setLoading(false);
     })
@@ -219,6 +227,14 @@ function HubMemberPage() {
     console.log('click Modify')
     setModifyOpen(true);
   }
+
+  const sortedUsers = users.sort((a, b) => {
+    if (a[2] === 'admin') return -1;
+    if (b[2] === 'admin') return 1;
+    if (a[2] === 'manager') return -1;
+    if (b[2] === 'manager') return 1;
+    return 0;
+  });
 
   const renderUserList = () => {
     if (loading) {
@@ -234,10 +250,13 @@ function HubMemberPage() {
         </div>
       )}
 
-    return users.map((user, index) => {
+    return sortedUsers.map((user) => {
       return (
-        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
-          {/* <div className='card-body' style={{position:'relative', padding:'0', width:"100%", zIndex:"1"}}> */}
+        <>
+        {hub.userHubAuth === 'admin'?
+        
+        <div key={user[0]} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
+
             <SwipeCard >
               <div className='d-flex align-items-center justify-content-between' 
                 style={{width:"100%"}}>
@@ -250,15 +269,24 @@ function HubMemberPage() {
                 </div>
               </div>
             </SwipeCard>
-        {/* </div> */}
+
           <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
             {/* 멤버 설정 */}
-            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}} onClick={() => {handleModifyOpen(user[2])}}>
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}} onClick={() => {handleModifyOpen(user)}}>
               
               <div className="card-body centered">
                 <SyncAltOutlinedIcon fontSize='large' style={{color:'white'}} />
               </div>
             </div>
+
+            {/* 멤버 삭제 */}
+            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}} onClick={() => clickDelete(user[0])}>
+              <div className="card-body centered">
+                <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
+              </div>
+            </div>
+          </div>
+          
             <Modal
               open={ModifyOpen}
               onClose={handleModifyClose}
@@ -269,17 +297,17 @@ function HubMemberPage() {
                   style={{ backgroundColor:"#FCFCFC", borderRadius:"10px", border:"1px solid #FCFCFC", padding:"20px"}}>
                 <div>
                   <i className="bi bi-x-lg" onClick={handleModifyClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-                    <p style={{fontSize:"18px", fontWeight:"700"}}>"{user[1]}" 님의 권한</p>
+                    <p style={{fontSize:"18px", fontWeight:"700"}}>"{curUser[1]}" 님의 권한</p>
 
                       {managerCheck? 
                         <div className='d-flex justify-content-evenly'>
-                          <div style={{borderRadius:"10px", border:"2px solid #0d00ff", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onManager(user[0])}>
+                          <div style={{borderRadius:"10px", border:"2px solid #0d00ff", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onManager(curUser)}>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin:"10px"}}>
                               <CheckCircleOutlineIcon style={{color:"#0d00ff"}}/>
                               <p style={{textAlign:'center', margin:'0px', color:"#0d00ff"}}>MANAGER</p>
                             </div>
                           </div>                        
-                          <div style={{borderRadius:"10px", border:"1px solid #dbdbdb", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onUser(user[0])}>
+                          <div style={{borderRadius:"10px", border:"1px solid #dbdbdb", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onUser(curUser)}>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin:"10px"}}>
                               <RadioButtonUncheckedIcon style={{color:"#dbdbdb"}}/>
                               <p style={{textAlign:'center', margin:'0px', color:"#dbdbdb"}}>USER</p>
@@ -288,13 +316,13 @@ function HubMemberPage() {
                         </div> 
                         :
                         <div className='d-flex justify-content-evenly'>
-                          <div style={{borderRadius:"10px", border:"1px solid #dbdbdb", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onManager(user[0])}>
+                          <div style={{borderRadius:"10px", border:"1px solid #dbdbdb", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onManager(curUser)}>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin:"10px"}}>
                               <RadioButtonUncheckedIcon style={{color:"#dbdbdb"}}/>
                               <p style={{textAlign:'center', margin:'0px', color:"#dbdbdb"}}>MANAGER</p>
                             </div>
                           </div>  
-                          <div style={{borderRadius:"10px", border:"2px solid #0d00ff", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onUser(user[0])}>
+                          <div style={{borderRadius:"10px", border:"2px solid #0d00ff", width:"45%", display: "flex", alignItems: "center", justifyContent: "center"}} onClick={() => onUser(curUser)}>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin:"10px"}}>
                               <CheckCircleOutlineIcon style={{color:"#0d00ff"}}/>
                               <p style={{textAlign:'center', margin:'0px', color:"#0d00ff"}}>USER</p>
@@ -305,19 +333,26 @@ function HubMemberPage() {
                 </div>
               </Box>
             </Modal>
-
-            {/* 멤버 삭제 */}
-            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}} onClick={() => clickDelete(user[0])}>
-              <div className="card-body centered">
-                <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
-              </div>
+        </div>        
+        :
+        <Card >
+          <div className='d-flex align-items-center justify-content-between' 
+            style={{width:"100%"}}>
+            <div className='centered' >
+              <AccountCircleOutlinedIcon fontSize='large' style={{marginRight:'10px'}}/>
+              <div className='card-text' style={{marginBottom:'0'}}>{user[1]}</div>
+            </div>
+            <div>
+              <div className='card-text' style={{marginBottom:'0'}}>{user[2]}</div>
             </div>
           </div>
-        </div>
-      )
-    })
-  }
+        </Card>
+        }
 
+      </>)
+    })
+    
+  }
   
   return (
     <div className="container page-container">
@@ -331,12 +366,14 @@ function HubMemberPage() {
       {renderUserList()}
 
       <ToastContainer />
-      <Card>
-        <div className="centered" style={{width:"100%"}} onClick={handleInviteOpen}>
-          <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
-          <div className="text-secondary">초대하기</div>
-        </div>
-      </Card>
+      {userHubAuth === 'admin' && 
+        <Card>
+          <div className="centered" style={{width:"100%"}} onClick={handleInviteOpen}>
+            <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
+            <div className="text-secondary">초대하기</div>
+          </div>
+        </Card>
+      }
       <Modal
         open={inviteOpen}
         onClose={handleInviteClose}

@@ -160,10 +160,27 @@ function RemotePage() {
   }
 
   // console.log(hub)
-  useEffect(() => {
-    hubInfo(hubId)
-    getRemote(hubId)
-  }, [hubId])
+  // useEffect(() => {
+  //   hubInfo(hubId)
+  //   getRemote(hubId)
+  // }, [hubId])
+
+  const clickDelete = (remoteId) => {
+    console.log('click Delete')
+    axiosInstance({
+      method : 'Delete',
+      url : `remote/delete/${remoteId}`,
+      headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`},
+    })
+    .then((response) => {  
+      console.log('response : ',response.data)
+      window.location.reload()
+      // setHubs(response.data)
+      // setLoading(false);
+    })
+
+  }
+
 
   const renderRemoteList = () => {
     if (loading) {
@@ -198,7 +215,7 @@ function RemotePage() {
               </div>
             </div>
             {/* 리모컨 삭제 */}
-            <div className="card mb-3 bg-danger" style={{ height: '79px', width: '79px', marginRight: '1px' }}>
+            <div className="card mb-3 bg-danger" style={{ height: '79px', width: '79px', marginRight: '1px' }} onClick={() => clickDelete(remote.remoteId)}>
               <div className="card-body centered">
                 <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{ color: 'white' }} />
               </div>
@@ -211,15 +228,26 @@ function RemotePage() {
 
   const goMember = () => {
     // if(hub.userHubAuth === 'admin'){
-    navigate(`/hubs/members/${hubId}`, { state: userId })
+    navigate(`/hubs/members/${hubId}`, { state: hub.userHubAuth })
     // }
     // else{
     //   alert('권한이 없습니다')
     // }
   }
 
+  const addRmt = () => {
+    setIsAdd(true)
+    setTimeout(() => {
+      navigate('/hubs/addrmt', { state: hub })
+      setIsAdd(false)
+    }, 30000)
+
+  }
+
+
   const hubDelete = () => {
-    if (hub && hub.userHubAuth === 'admin' && hub.length === 1) {
+    console.log('hub : ', hub)
+    if (hub && hub.userHubAuth === 'admin' ) {
       swal({
         title: "정말 삭제하시겠습니까?",
         text: "삭제하시면 다시 되돌릴 수 없습니다",
@@ -231,36 +259,49 @@ function RemotePage() {
           if (willDelete) {
             axiosInstance({
               method: 'Post',
-              url: `/userhub/deleteUserHub/${hubId}`,
+              url: `/userhub/deleteUserHub/${usersHubsId}`,
+              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
-                console.log(response.data)
+                console.log('이거 : ',response.data)
                 navigate('/hubs')
+                window.location.reload()
               })
+              .catch((err) => {
+                console.log('catch 찍음 : ', err)
+                swal({
+                  title : "본인 이외에 사용자가 있어 삭제할 수 없습니다",
+                  dangerMode: true,
+                });
+                navigate('/hubs')
+          })
           }
+          
         });
     }
-    else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
-      swal({
-        title: "master 이외에 사용자가 있어 삭제할 수 없습니다",
-        text: "삭제하시면 다시 되돌릴 수 없습니다",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            axiosInstance({
-              method: 'Post',
-              url: `/userhub/deleteUserHub/${hubId}`,
-            })
-              .then((response) => {
-                console.log(response.data)
-                navigate('/hubs')
-              })
-          }
-        });
-    }
+    // else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
+    //   swal({
+    //     title: "본인 이외에 사용자가 있어 삭제할 수 없습니다",
+    //     text: "삭제하시면 다시 되돌릴 수 없습니다",
+    //     icon: "warning",
+    //     buttons: true,
+    //     dangerMode: true,
+    //   })
+    //     .then((willDelete) => {
+    //       if (willDelete) {
+    //         axiosInstance({
+    //           method: 'Post',
+    //           url: `/userhub/deleteUserHub/${hubId}`,
+    //           headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
+    //         })
+    //           .then((response) => {
+    //             console.log(response.data)
+    //             navigate('/hubs')
+    //           })
+    //       }
+    //     });
+
+    // }
     else {
       swal({
         title: "정말 나가시겠습니까?",
@@ -273,6 +314,7 @@ function RemotePage() {
             axiosInstance({
               method: 'Post',
               url: `/userhub/deleteUserHub/${usersHubsId}`,
+              headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
             })
               .then((response) => {
                 console.log(response.data)
@@ -284,19 +326,24 @@ function RemotePage() {
   }
 
   React.useEffect(() => {
+    hubInfo(hubId)
+    getRemote(hubId)
+
+    const interval = 30000 / 100; 
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
-          return 0;
+          clearInterval(timer);
+          return 100;
         }
-        return Math.min(oldProgress + 1, 100);
+        return oldProgress + 1;
       });
-    }, 300);
+    }, interval);
 
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [hubId]);
 
   return (
     <>
@@ -319,13 +366,16 @@ function RemotePage() {
                 30초 정도 소요됩니다...
               </div>
               <Box sx={{ width: '100%' }}>
-                <LinearProgress variant="determinate" value={progress} />
+                {/* <LinearProgress variant="determinate" value={progress} /> */}
+                <div className="progress">
+                  <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
               </Box>
             </div>
           </div>)
           :
         <div className="container page-container">
-          <div className='d-flex justify-content-between mt-5'>
+          {/* <div className='d-flex justify-content-between mt-5'>
             <div className='d-flex'>
               <GoBack />
               <h1 className="font-700">{hub.userHubName}</h1>
@@ -334,40 +384,69 @@ function RemotePage() {
                   style={{ backgroundColor: "#fdd969", borderRadius: "10px", padding: "5px 10px 5px" }}>
                   <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
                   <p style={{ fontWeight: 'bold', fontSize: '7px', color: "white", margin: "0px" }}>ADMIN</p>
-                  {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
                 </div>)
                 : (hub.userHubAuth === 'manager' ?
                   (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
                     style={{ backgroundColor: "#11c942", borderRadius: "10px", padding: "5px 10px 5px" }}>
                     <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
                     <p style={{ fontWeight: 'bold', fontSize: '6px', color: "white", margin: "0px" }}>MANAGER</p>
-                    {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
                   </div>)
                   :
                   (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
                     style={{ backgroundColor: "#b6b6b6", borderRadius: "10px", padding: "5px 10px 5px" }}>
                     <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
                     <p style={{ fontWeight: 'bold', fontSize: '8px', color: "white", margin: "0px" }}>USER</p>
-                    {/* <h5 style={{color:"#FCFCFC", fontWeight:"600"}}>master</h5> */}
                   </div>))
               }
             </div>
-           {hub.userHubAuth === 'admin' &&
-              <div className='d-flex' onClick={goMember}>
-                <div className="main-backgroud-color px-2 rounded centered">
-                  <i className="bi bi-people-fill fs-2 text-white"></i>
+            {hub.userHubAuth === 'admin' &&
+                <div className='d-flex' onClick={goMember}>
+                  <div className="main-backgroud-color px-2 rounded centered">
+                    <i className="bi bi-people-fill fs-2 text-white"></i>
+                  </div>
                 </div>
-              </div>
             }
+          </div> */}
+          <div className='d-flex justify-content-between align-items-center mt-5'>
+            <div className='d-flex align-items-center'>
+              <GoBack />
+              <h1 className="font-700" style={{margin: '0px'}}>{hub.userHubName}</h1>
+              {hub.userHubAuth === 'admin' ?
+                (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
+                  style={{ backgroundColor: "#fdd969", borderRadius: "10px", padding: "5px 10px 5px", width:"48px", height:"45px" }}>
+                  <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
+                  <p style={{ fontWeight: 'bold', fontSize: '7px', color: "white", margin: "0px" }}>ADMIN</p>
+                </div>)
+                : (hub.userHubAuth === 'manager' ?
+                  (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
+                    style={{ backgroundColor: "#11c942", borderRadius: "10px", padding: "5px 10px 5px", width:"48px", height:"45px" }}>
+                    <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
+                    <p style={{ fontWeight: 'bold', fontSize: '6px', color: "white", margin: "0px" }}>MANAGER</p>
+                  </div>)
+                  :
+                  (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
+                    style={{ backgroundColor: "#b6b6b6", borderRadius: "10px", padding: "5px 10px 5px", width:"48px", height:"45px" }}>
+                    <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
+                    <p style={{ fontWeight: 'bold', fontSize: '8px', color: "white", margin: "0px" }}>USER</p>
+                  </div>))
+              }
+            </div>
+            <div className='d-flex align-items-center' onClick={goMember}>
+              <div className="main-backgroud-color px-2 rounded centered" style={{width:"45px", height:"45px"}}>
+                <i className="bi bi-people-fill fs-2 text-white" ></i>
+              </div>
+            </div>            
           </div>
           <hr />
           {renderRemoteList()}
+          {hub.userHubAuth!=='user' && 
           <Card>
             <div className="centered" style={{ width: "100%" }} onClick={addRmt}>
               <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
               <div className="text-secondary">리모컨 추가하기</div>
             </div>
           </Card>
+          }
 
           <div className='centered' style={{ color: "crimson", textDecoration: "underline" }} onClick={hubDelete}>
             { }

@@ -13,21 +13,10 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public void save(Board board){
+    public List<Board> findAll(){
 
-        boardRepository.save(board);
-
-    }
-
-    public List<Object> findBoardsWithControllerNames(){
-
-        return boardRepository.findBoardsWithControllerNames();
+        return boardRepository.findAll();
 
     }
 
-    public List<Object> findBoardsWithControllerNames(String controllerName){
-
-        return boardRepository.findBoardsWithControllerNames(controllerName);
-
-    }
 }

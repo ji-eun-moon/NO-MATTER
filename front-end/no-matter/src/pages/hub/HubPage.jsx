@@ -179,7 +179,7 @@ function HubPage() {
   // }
   return (
     <div className="page-container container">
-      <div className='d-flex justify-content-between mt-5'>
+      <div className='d-flex justify-content-between mt-5 container'>
         <h1 className="font-700">My Hub</h1>
         {/* <div className="main-backgroud-color px-2 rounded">
           <i className="bi bi-people-fill fs-2 text-white"></i>
