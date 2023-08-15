@@ -81,9 +81,9 @@ const RmtCustom = (props) => {
 
   const handleClick = (e) => {
     if (isCreate) {
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     } else {
-      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     }
   }
 
