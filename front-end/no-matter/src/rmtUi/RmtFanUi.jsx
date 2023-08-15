@@ -19,6 +19,26 @@ function RmtFanUi(props) {
   const [saveRmtName, setSaveRmtName] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = 30000 / 100; 
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        return oldProgress + 1;
+      });
+    }, interval);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
@@ -32,23 +52,27 @@ function RmtFanUi(props) {
   const remoteSave = () => {
     console.log('Save')
     setNotSave(false)
-    axiosInstance({
-      method : 'POST',
-      url : '/remote/register',
-      data: {
-          "hubId" : hubId,
-          "controllerName" : saveRmtName,
-          "remoteType" : "Fan",
-          "remoteCode" : "A1B2C3D4"
-      }
-    })
-    .then((res) => {
-      console.log(res)
-      navigate(-2)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+
+    setTimeout(() => {
+      axiosInstance({
+        method : 'POST',
+        url : '/remote/register',
+        data: {
+            "hubId" : hubId,
+            "controllerName" : saveRmtName,
+            "remoteType" : "Fan",
+            "remoteCode" : "A1B2C3D4"
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        navigate(-2)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    },30000)
   }
 
   const handleClose = () => {
@@ -85,6 +109,7 @@ function RmtFanUi(props) {
     width: 400,
     bgcolor: 'background.paper',
     border: '0px solid #000',
+    borderRadius: "10px",
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -119,6 +144,35 @@ function RmtFanUi(props) {
 
   return (
     // <div className='page-container container'>
+    <>
+    {!notSave ? 
+      <div className="container page-container">
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+          <div style={{
+            width: "500px",
+            height: "500px",
+            backgroundImage: `url("/images/logoGif.gif")`,
+            backgroundSize: "cover",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            color: "black", // 텍스트 색상 설정,
+            fontSize: "30px",
+            fontWeight: "bold"
+          }}>
+            30초 정도 소요됩니다...
+          </div>
+          <Box sx={{ width: '100%' }}>
+            {/* <LinearProgress variant="determinate" value={progress} /> */}
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </Box>
+        </div>
+      </div>    
+      
+      :      
+
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -263,6 +317,8 @@ function RmtFanUi(props) {
         </div>
       </div>
     // </div>
+    }
+    </>
   )
 }
 
