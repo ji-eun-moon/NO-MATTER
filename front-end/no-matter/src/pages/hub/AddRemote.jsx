@@ -13,7 +13,8 @@ const BrokerAddress = 'i9c105.p.ssafy.io:3002'
 function AddRemotePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const hub = location.state;
+  const hubId = location.state;
+  console.log('진짜?', hubId)
 
   const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
@@ -21,16 +22,18 @@ function AddRemotePage() {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
-    const interval = 30000 / 100; 
+    // 30초 동안 100번 progress를 증가시키려면 300ms 간격으로 증가시켜야 합니다.
+    const intervalTime = 300;
+
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
-          clearInterval(timer);
+          oldProgress = 0
           return 100;
         }
         return oldProgress + 1;
       });
-    }, interval);
+    }, intervalTime);
 
     return () => {
       clearInterval(timer);
@@ -40,7 +43,7 @@ function AddRemotePage() {
   const getUuid = () => {
     axiosInstance({
       method :'GET',
-      url: `/hub/view/${hub}`,
+      url: `/hub/view/${hubId}`,
     }).then((response) => {
       const hubuuid = response.data.hubUuid
       setTopic(`${hubuuid}/IR/`)
@@ -123,7 +126,7 @@ function AddRemotePage() {
       <hr />
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true, '', hub]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['TV', true, '', hubId]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">TV</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -132,7 +135,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true, '', hub]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['AC', true, '', hubId]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">에어컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -141,7 +144,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true, '', hub]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['Fan', true, '', hubId]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">선풍기</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -150,7 +153,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true, '', hub[1]]})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true, '', hubId]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">커스텀 리모컨</div>          
           <div>
             <i className="bi bi-chevron-right"></i>
@@ -159,7 +162,7 @@ function AddRemotePage() {
       </Card>
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/board', {state:  hub.hubId})} style={{width:"100%"}}>
+        onClick={() => navigate('/hubs/board', {state: hubId})} style={{width:"100%"}}>
           <div className="text-secondary card-text">리모컨 다운로드</div>          
           <div>
             <i className="bi bi-chevron-right"></i>

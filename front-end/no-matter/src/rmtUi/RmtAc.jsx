@@ -78,7 +78,7 @@ function RmtAc(props) {
       })
       .then((res) => {
         console.log(res)
-        navigate(-2)
+        navigate(-1)
       })
       .catch((err) => {
         console.log(err)
