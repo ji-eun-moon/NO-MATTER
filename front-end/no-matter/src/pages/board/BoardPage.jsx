@@ -212,7 +212,7 @@ function BoardPage() {
               </tr>
             ) : (
               postsForCurrentPage.map((remote, index) => (
-                  <tr key={remote.id} onClick={() => {onClickBoard(remote)}}>
+                  <tr key={index} onClick={() => {onClickBoard(remote)}}>
                     <td className="text-center">{startIndex + index + 1}</td>
                     <td className="text-center">{remote.remoteCode}</td>
                     <td className="text-center">{remote.download}</td>
