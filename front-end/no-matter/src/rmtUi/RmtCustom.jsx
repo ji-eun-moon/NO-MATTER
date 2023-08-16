@@ -66,7 +66,7 @@ const RmtCustom = (props) => {
       })
       .then((res) => {
         console.log(res)
-        navigate(-2)
+        navigate(-1)
       })
       .catch((err) => {
         console.log(err)
@@ -233,6 +233,24 @@ const RmtCustom = (props) => {
         return <AddIcon />;
       case "HorizontalRuleIcon":
         return <HorizontalRuleIcon />;
+      case "Chicken":
+        return <img src='/custom/chicken.png' style={{width:"30px"}}/>
+      case "Dolphin":
+        return <img src='/custom/dolphin.png' style={{width:"30px"}}/>
+      case "Duck":
+        return <img src='/custom/duck.png' style={{width:"30px"}}/>
+      case "Elephant":
+        return <img src='/custom/elephant.png' style={{width:"30px"}}/>
+      case "Rabbit":
+        return <img src='/custom/rabbit.png' style={{width:"30px"}}/>
+      case "Monkey":
+        return <img src='/custom/monkey.png' style={{width:"30px"}}/>
+      case "Penguin":
+        return <img src='/custom/penguin.png' style={{width:"30px"}}/>
+      case "Sheep":
+        return <img src='/custom/sheep.png' style={{width:"30px"}}/>
+      case "Squirrel":
+        return <img src='/custom/squirrel.png' style={{width:"30px"}}/>
     default:
       return null;
     }
@@ -405,6 +423,15 @@ const RmtCustom = (props) => {
                     >
                     <MenuItem value={'AddIcon'}>+</MenuItem>
                     <MenuItem value={'HorizontalRuleIcon'}>-</MenuItem>
+                    <MenuItem value={'Chicken'}><img src='/custom/chicken.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Dolphin'}><img src='/custom/dolphin.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Duck'}><img src='/custom/duck.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Elephant'}><img src='/custom/elephant.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Rabbit'}><img src='/custom/rabbit.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Monkey'}><img src='/custom/monkey.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Penguin'}><img src='/custom/penguin.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Sheep'}><img src='/custom/sheep.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Squirrel'}><img src='/custom/squirrel.png' style={{width:"20px"}}/></MenuItem>
                   </Select>
                 </FormControl>
                 </div>
@@ -428,9 +455,9 @@ const RmtCustom = (props) => {
             <div className="custom-button" key={item.name}>
               <div
                 id="container"
-                onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
-                onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
-                onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
+                // onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
+                // onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
+                // onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
               >
                 <div
                   id="item"

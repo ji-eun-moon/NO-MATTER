@@ -129,6 +129,7 @@ function BoardPage() {
   }
   
   const onDownload = () => {
+    console.log('체크', hubId, curRmt.boardId, rmtName)
     axiosInstance({
       method: 'POST',
       url: '/remote/download',
@@ -143,10 +144,15 @@ function BoardPage() {
         setRemotes(response.data); // 리모컨 리스트
         setLoading(false);
         navigate(`/hubs/${hubId}`)
+        setOpen(false)
       })
       .catch((error) => {
-        console.error("Error fetching remotes:", error);
-        alert('이미 등록된 리모컨입니다')
+        if(error.response.data === 'DOWNLOAD_DUCPLICATED Code Duplicated'){
+          alert('이미 등록된 리모컨입니다')
+        }
+        else if(error.response.data === 'REMOTE_NAME_DUPLICATED Name Duplicated'){
+          alert('이미 등록된 이름입니다')
+        }
       });
   }
 
