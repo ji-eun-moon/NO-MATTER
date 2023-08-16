@@ -1,6 +1,15 @@
 // axios.js
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+
+function AutomaticLogin() {
+  const navigate = useNavigate()
+
+  const goLogin = () => {
+    navigate('/login')
+  }
+}
+
 // 인스턴스 생성
 const instance = axios.create({
   baseURL: 'https://i9c105.p.ssafy.io/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
@@ -48,10 +57,9 @@ instance.interceptors.response.use(
       .catch((error) => {
         // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
         // 여기에 오류 처리 코드를 작성
-          const navigate = useNavigate()
           localStorage.clear()
           console.log(error)
-          navigate('/login')
+          AutomaticLogin()
           return Promise.reject(error);
         });
     }
