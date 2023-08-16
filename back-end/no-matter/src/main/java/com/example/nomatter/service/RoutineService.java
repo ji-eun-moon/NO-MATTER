@@ -22,7 +22,7 @@ public class RoutineService {
 
     }
 
-    public List<Routine> findAllByHubId(Long hubId){
+    public List<Object> findAllByHubId(Long hubId){
 
 //        routineRepository.findByHubId(hubId)
 //                .orElseThrow(() -> new AppException(Errorcode.ROUTINE_NOT_FOUND, "등록된 루틴이 없습니다. "));

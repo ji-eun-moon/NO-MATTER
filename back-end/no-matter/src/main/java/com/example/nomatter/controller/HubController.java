@@ -126,4 +126,13 @@ public class HubController {
 
     }
 
+    @GetMapping("/command/{command}")
+    public ResponseEntity<?> findUuiddByCommand(@PathVariable String command, Authentication authentication){
+
+        String uuid = hubService.findUuiddByCommand(command, userService.findByUserId(authentication.getName()).get().getMemberId());
+
+        return ResponseEntity.ok().body(uuid);
+
+    }
+
 }
