@@ -106,7 +106,9 @@ function LoginPage() {
         <CssBaseline/>
           <div className="paper">
             <div className='d-flex mb-3'>
-              <GoBack/>
+            <div onClick={() => navigate('/')}>
+              <i className="bi bi-chevron-left fs-2 me-3"></i>
+            </div>
               <h1 className='font-700'>
                 Login
               </h1>
