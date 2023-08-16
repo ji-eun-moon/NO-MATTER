@@ -290,7 +290,7 @@ function RoutineResult() {
           url: `/routine/list/${selectedHub.hubId}`,
         }).then((response) => {
           console.log('등록 후 루틴', response.data)
-          const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
           publishMessage(`ROUTINE/${result}`)
           // console.log(result)
           navigate('/routine')
@@ -313,7 +313,7 @@ function RoutineResult() {
           url: `/routine/list/${selectedHub.hubId}`,
         }).then((response) => {
           console.log('등록 후 루틴', response.data)
-          const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
           publishMessage(`ROUTINE/${result}`)
           // console.log(result)
           navigate('/routine')
@@ -326,7 +326,8 @@ function RoutineResult() {
     <div className='container page-container'>
       <div className='d-flex mt-5 mb-3'>
         <GoBack />
-        <h1 className="font-700">루틴 등록</h1>
+        { editing ? <h1 className="font-700">루틴 수정</h1> :
+        <h1 className="font-700">루틴 등록</h1> }
       </div>
       <div>
         {renderCondition()}
