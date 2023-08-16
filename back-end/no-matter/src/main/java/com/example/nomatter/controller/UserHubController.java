@@ -36,11 +36,14 @@ public class UserHubController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody HubRegisterDto hubRegisterDto, Authentication authentication){
 
+        userHubService.findByUserHubNameAndUserId(hubRegisterDto.getUserHubName(), userService.findByUserId(authentication.getName()).get().getMemberId());
+
         Hub hub = Hub.builder()
                 .hubUuid(hubRegisterDto.getHubUuid())
                 .location(hubRegisterDto.getLocation())
                 .weatherKey(hubRegisterDto.getWeatherKey())
                 .build();
+
 
         hubService.register(hub);
 
@@ -120,6 +123,17 @@ public class UserHubController {
         userHubService.outUserHubId(userHubId, changeUserHubId);
 
         return ResponseEntity.ok().body("삭제 완료");
+
+    }
+
+    @GetMapping("/getName/{hubId}")
+    public ResponseEntity<?> getName(@PathVariable Long hubId, Authentication authentication){
+
+        Long memberId = userService.findByUserId(authentication.getName()).get().getMemberId();
+
+        String Name = userHubService.findNameByHubIdAndUserId(hubId, memberId);
+
+        return ResponseEntity.ok().body(Name);
 
     }
 

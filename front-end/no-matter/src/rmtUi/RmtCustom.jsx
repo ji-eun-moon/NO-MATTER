@@ -19,6 +19,27 @@ const RmtCustom = (props) => {
   const [isNameSet, setIsNameSet] = useState(false)
   const [customButtonName, setCustomButtonName] = useState('')
 
+  const [progress, setProgress] = React.useState(0);
+
+  // React.useEffect(() => {
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
+
+
+
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
@@ -31,22 +52,39 @@ const RmtCustom = (props) => {
 
   const remoteSave = () => {
     setNotSave(false)
+
     axiosInstance({
       method : 'POST',
       url : '/remote/register',
       data: {
           "hubId" : hubId,
           "controllerName" : saveRmtName,
-          "remoteType" : "TV",
+          "remoteType" : "Custom",
           "remoteCode" : "A1B2C3D4"
       }
     })
     .then((res) => {
       console.log(res)
-      navigate(-2)
     })
     .catch((err) => {
       console.log(err)
+    })
+    cusBtnmapping.map(function(item) {
+      console.log('이름', item.name)
+      axiosInstance({
+        method: 'POST',
+        url : 'custom/registerButtons',
+        data: {
+          button_name:item.name, height:item.position[0].icon, ir_signal:'', remote_id:'', width:''
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        navigate(-1)
+      })
+      .catch((err) => {
+        console.log('버튼 등록 에러', err)
+      })
     })
   }
 
@@ -56,9 +94,9 @@ const RmtCustom = (props) => {
 
   const handleClick = (e) => {
     if (isCreate) {
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     } else {
-      props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtName}/${e}`)
     }
   }
 
@@ -75,79 +113,88 @@ const RmtCustom = (props) => {
   }
 
   const [active, setActive] = useState(false);
-  const [currentX, setCurrentX] = useState(0);
-  const [currentY, setCurrentY] = useState(0);
-  const [initialX, setInitialX] = useState(0);
-  const [initialY, setInitialY] = useState(0);
+  // const [currentX, setCurrentX] = useState(0);
+  // const [currentY, setCurrentY] = useState(0);
+  // const [initialX, setInitialX] = useState(0);
+  // const [initialY, setInitialY] = useState(0);
   
   const [customButton, setCustomButton] = useState({
-    cusBtn1:[{active:false, currentX:0, currentY:150, icon:'AddIcon', name:'더하기'}],
-    cusBtn2:[{active:false, currentX:50, currentY:150, icon:'HorizontalRuleIcon', name:'빼기'}]
+    // cusBtn1:[{icon:'AddIcon'}],
+    // cusBtn2:[{icon:'HorizontalRuleIcon'}]
   })
-  
+  console.log(customButton)
   const [open, setOpen] = useState(false);
   
   const [icon, setIcon] = useState('');
   
   const addButton = (e) => {
     let cntBtn = Object.keys(customButton).length
-    const baseData = [{active:false, currentX:50, currentY:150, icon:e, name:customButtonName}]
+    const baseData = [{icon:e}]
     let copy = {...customButton}
     copy[`cusBtn${cntBtn+1}`] = baseData
     setCustomButton(copy)
+
+    // axiosInstance({
+    //   method: 'Post',
+    //   url: 'custom/registerButtons',
+    //   data: [`cusBtn${cntBtn+1}`, e]
+    // })
+    // .then((response) => {
+    //   console.log(response)
+    // })
   }
 
-  const dragStart = (e, name, positionData) => {
-    if (e.type === 'touchstart') {
-      setInitialX(e.touches[0].clientX - positionData.currentX);
-      setInitialY(e.touches[0].clientY - positionData.currentY);
-    } else {
-      setInitialX(e.clientX - positionData.currentX);
-      setInitialY(e.clientY - positionData.currentY);
-    }
-    setActive(true);
-  };
+  // const dragStart = (e, name, positionData) => {
+  //   if (e.type === 'touchstart') {
+  //     setInitialX(e.touches[0].clientX - positionData.currentX);
+  //     setInitialY(e.touches[0].clientY - positionData.currentY);
+  //   } else {
+  //     setInitialX(e.clientX - positionData.currentX);
+  //     setInitialY(e.clientY - positionData.currentY);
+  //   }
+  //   setActive(true);
+  // };
 
-  const dragEnd = (name, btnIcon) => {
-    if (isCreate === true) {
-      setInitialX(currentX);
-      setInitialY(currentY);
-      setActive(false);
-      const data = [{active:active, currentX:currentX, currentY:currentY, icon:btnIcon}]
-      updateBtn(name, data)}
-  };
+  // const dragEnd = (name, btnIcon) => {
+  //   if (isCreate === true) {
+  //     setInitialX(currentX);
+  //     setInitialY(currentY);
+  //     setActive(false);
+  //     const data = [{active:active, currentX:currentX, currentY:currentY, icon:btnIcon}]
+  //     updateBtn(name, data)}
+  // };
 
-  const drag = (e, name, btnIcon) => {
-    if (active) {
-      if (e.type === 'touchmove') {
-        setCurrentX(e.touches[0].clientX - initialX);
-        setCurrentY(e.touches[0].clientY - initialY);
-      } else {
-        setCurrentX(e.clientX - initialX);
-        setCurrentY(e.clientY - initialY);
-      }
-      const data = [{active:active, currentX:currentX, currentY:currentY, icon:btnIcon}]
-      updateBtn(name, data)
-    }
-  };
+  // const drag = (e, name, btnIcon) => {
+  //   if (active) {
+  //     if (e.type === 'touchmove') {
+  //       setCurrentX(e.touches[0].clientX - initialX);
+  //       setCurrentY(e.touches[0].clientY - initialY);
+  //     } else {
+  //       setCurrentX(e.clientX - initialX);
+  //       setCurrentY(e.clientY - initialY);
+  //     }
+  //     const data = [{active:active, currentX:currentX, currentY:currentY, icon:btnIcon}]
+  //     updateBtn(name, data)
+  //   }
+  // };
 
   /* 버튼 클릭시 실행 */
-  const onTouchStart = (e, positionData, name) => {
-    if (isCreate === true) {
-      updateBtn(name, positionData)
-      selectBtn(e, positionData[0])
-      dragStart(e, name, positionData[0])
-    }
-  }
+  // const onTouchStart = (e, positionData, name) => {
+  //   if (isCreate === true) {
+  //     updateBtn(name, positionData)
+  //     selectBtn(e, positionData[0])
+  //     dragStart(e, name, positionData[0])
+  //   }
+  // }
 
   /* 버튼 클릭시 실행되며 object에 저장된 x, y좌표값 state에 저장 */
-  const selectBtn = (e, positionData) => {
-    if (isCreate === true) {
-      setActive(positionData.active)
-      setCurrentX(positionData.currentX)
-      setCurrentY(positionData.currentY)
-    }
-  };
+  // const selectBtn = (e, positionData) => {
+  //   if (isCreate === true) {
+  //     setActive(positionData.active)
+  //     setCurrentX(positionData.currentX)
+  //     setCurrentY(positionData.currentY)
+  //   }
+  // };
 
   /* 버튼 좌표 object에 업데이트 */
   const updateBtn = (key, data) => {
@@ -170,6 +217,7 @@ const RmtCustom = (props) => {
     width: 400,
     bgcolor: 'background.paper',
     border: '0px solid #000',
+    borderRadius: "10px",
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -207,6 +255,24 @@ const RmtCustom = (props) => {
         return <AddIcon />;
       case "HorizontalRuleIcon":
         return <HorizontalRuleIcon />;
+      case "Chicken":
+        return <img src='/custom/chicken.png' style={{width:"30px"}}/>
+      case "Dolphin":
+        return <img src='/custom/dolphin.png' style={{width:"30px"}}/>
+      case "Duck":
+        return <img src='/custom/duck.png' style={{width:"30px"}}/>
+      case "Elephant":
+        return <img src='/custom/elephant.png' style={{width:"30px"}}/>
+      case "Rabbit":
+        return <img src='/custom/rabbit.png' style={{width:"30px"}}/>
+      case "Monkey":
+        return <img src='/custom/monkey.png' style={{width:"30px"}}/>
+      case "Penguin":
+        return <img src='/custom/penguin.png' style={{width:"30px"}}/>
+      case "Sheep":
+        return <img src='/custom/sheep.png' style={{width:"30px"}}/>
+      case "Squirrel":
+        return <img src='/custom/squirrel.png' style={{width:"30px"}}/>
     default:
       return null;
     }
@@ -218,8 +284,40 @@ const RmtCustom = (props) => {
     position,
     index,
   }));
+
+  cusBtnmapping.map(function(item) {
+    console.log('이름', item.name)
+  })
         
   return (
+    <>
+    {/* {!notSave ? 
+      <div className="container page-container">
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+          <div style={{
+            width: "500px",
+            height: "500px",
+            backgroundImage: `url("/images/logoGif.gif")`,
+            backgroundSize: "cover",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            color: "black", // 텍스트 색상 설정,
+            fontSize: "30px",
+            fontWeight: "bold"
+          }}>
+            30초 정도 소요됩니다...
+          </div>
+          <Box sx={{ width: '100%' }}>
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </Box>
+        </div>
+      </div>    
+      
+      :       */}
+
     <div id="outerContainer">
       <div className='d-flex flex-column mt-5'>
         <div className='d-flex justify-content-between'>
@@ -351,6 +449,15 @@ const RmtCustom = (props) => {
                     >
                     <MenuItem value={'AddIcon'}>+</MenuItem>
                     <MenuItem value={'HorizontalRuleIcon'}>-</MenuItem>
+                    <MenuItem value={'Chicken'}><img src='/custom/chicken.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Dolphin'}><img src='/custom/dolphin.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Duck'}><img src='/custom/duck.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Elephant'}><img src='/custom/elephant.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Rabbit'}><img src='/custom/rabbit.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Monkey'}><img src='/custom/monkey.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Penguin'}><img src='/custom/penguin.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Sheep'}><img src='/custom/sheep.png' style={{width:"20px"}}/></MenuItem>
+                    <MenuItem value={'Squirrel'}><img src='/custom/squirrel.png' style={{width:"20px"}}/></MenuItem>
                   </Select>
                 </FormControl>
                 </div>
@@ -370,22 +477,24 @@ const RmtCustom = (props) => {
           </Fab>
           : null
         } */}
+        <div className="d-flex justify-content-center">
         { cusBtnmapping.map((item) => (
             <div className="custom-button" key={item.name}>
-              <div
+              {/* <div
                 id="container"
-                onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
-                onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
-                onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
-              >
-                <div
+                // onTouchStart={(e) => {onTouchStart(e, item.position, item.name)}}
+                // onTouchEnd={() =>{dragEnd(item.name, item.position[0].icon)}}
+                // onTouchMove={(e) => {drag(e, item.name, item.position[0].icon)}}
+              > */}
+                {/* <div
                   id="item"
                   style={{
-                    position: 'absolute',
-                    left: `${item.position[0].currentX}px`,
-                    top: `${item.position[0].currentY}px`,
+                    // position: 'absolute',
+                    // left: `${item.position[0].currentX}px`,
+                    // top: `${item.position[0].currentY}px`,
+                    display: 'flex'
                   }}
-                >
+                > */}
                     {/* <Fab color="primary" aria-label="add">
                       <AddIcon />
                     </Fab> */}
@@ -397,13 +506,16 @@ const RmtCustom = (props) => {
                     >
                       {getIcon(item.position[0].icon)}
                     </ButtonBase>
-                </div>
-              </div>
+                {/* </div>
+              </div> */}
             </div>
           )
         )}
+        </div>
       </div>
     </div>
+    {/* } */}
+    </>
   );
 };
 

@@ -25,39 +25,65 @@ function RmtAc(props) {
   const [notSave, setNotSave] = useState(false)
 
   const [rmtName, setRmtName] = useState('')
+  const [rmtCode, setRmtCode] = useState('')
   const [saveRmtName, setSaveRmtName] = useState('')
+  const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
+
+  const [progress, setProgress] = React.useState(0);
+
 
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
-    } else (
+    } else {
       setSaveRmtName(props.remoteName)
-    )
+      setSaveRmtCode(props.remoteCode)
+    }
   }, [])
+
+  // React.useEffect(() => {
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   const hubId = props.hubId
 
   const remoteSave = () => {
-    console.log('Save')
-    setNotSave(false)
-    axiosInstance({
-      method : 'POST',
-      url : '/remote/register',
-      data: {
-          "hubId" : hubId,
-          "controllerName" : saveRmtName,
-          "remoteType" : "AC",
-          "remoteCode" : "A1B2C3D4"
-      }
-    })
-    .then((res) => {
-      console.log(res)
-      navigate(-2)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    console.log('Save');
+    setNotSave(false);
+
+    // setTimeout(() => {
+      axiosInstance({
+        method : 'POST',
+        url : '/remote/register',
+        data: {
+            "hubId" : hubId,
+            "controllerName" : saveRmtName,
+            "remoteType" : "AC",
+            "remoteCode" : saveRmtCode
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        navigate(-1)
+      })
+      .catch((err) => {
+        console.log(err)
+      })      
+    // }, 30000);
   }
 
   const handleClose = () => {
@@ -68,10 +94,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
         if(isOn){
-          props.publishMessage(`CONTROLL/${saveRmtName}/${e}`)
+          props.publishMessage(`${saveRmtCode}/${e}`)
         }
     }
   }
@@ -81,9 +107,15 @@ function RmtAc(props) {
     // console.log(event.currentTarget.value)
   }, [])
 
+  const onCodeChange = useCallback((event) => {
+    setRmtCode(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
   const settingRmtName = () => {
-    if (rmtName !== '') {
+    if (rmtCode !== '' && rmtName !== '') {
       setSaveRmtName(rmtName)
+      setSaveRmtCode(rmtCode)
       setIsNameSet(false)
     }
   }
@@ -96,6 +128,7 @@ function RmtAc(props) {
     width: 400,
     bgcolor: 'background.paper',
     border: '0px solid #000',
+    borderRadius: "10px",
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -106,11 +139,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/increaseTemperature`)
+      props.publishMessage(`${saveRmtCode}/increaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature + 1);
-          props.publishMessage(`CONTROLL/${saveRmtName}/increaseTemperature`)
+          props.publishMessage(`${saveRmtCode}/increaseTemperature`)
         }
     }
   };
@@ -119,11 +152,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/decreaseTemperature`)
+      props.publishMessage(`${saveRmtCode}/decreaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature - 1);
-          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseTemperature`)
+          props.publishMessage(`${saveRmtCode}/decreaseTemperature`)
         }
     }
   };
@@ -132,11 +165,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/increaseWindSpeed`)
+      props.publishMessage(`${saveRmtCode}/increaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
-          props.publishMessage(`CONTROLL/${saveRmtName}/increaseWindSpeed`)
+          props.publishMessage(`${saveRmtCode}/increaseWindSpeed`)
         }
     }
   };
@@ -146,11 +179,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/decreaseWindSpeed`)
+      props.publishMessage(`${saveRmtCode}/decreaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
-          props.publishMessage(`CONTROLL/${saveRmtName}/decreaseWindSpeed`)
+          props.publishMessage(`${saveRmtCode}/decreaseWindSpeed`)
         }
     }
   };
@@ -159,10 +192,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     } else {
       setIsOn(true);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     }
   };
 
@@ -170,10 +203,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`ADD/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     } else {
       setIsOn(false);
-      props.publishMessage(`CONTROLL/${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     }
   };
 
@@ -187,6 +220,35 @@ function RmtAc(props) {
 
   return (
     // <div className='page-container container'>
+    <>
+    {/* {!notSave ? 
+      <div className="container page-container">
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+          <div style={{
+            width: "500px",
+            height: "500px",
+            backgroundImage: `url("/images/logoGif.gif")`,
+            backgroundSize: "cover",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            color: "black", // 텍스트 색상 설정,
+            fontSize: "30px",
+            fontWeight: "bold"
+          }}>
+            30초 정도 소요됩니다...
+          </div>
+          <Box sx={{ width: '100%' }}>
+             <LinearProgress variant="determinate" value={progress} /> 
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </Box>
+        </div>
+      </div>    
+      
+      :       */}
+
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -207,7 +269,8 @@ function RmtAc(props) {
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC"}}
                 onClick={remoteSave}
                 >저장하기
-              </button> : 
+              </button> 
+              : 
               null
             }
           </div>
@@ -240,7 +303,7 @@ function RmtAc(props) {
           aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
-              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <h2 id="child-modal-title">리모컨의 이름과 제품코드를 입력해주세요</h2>
               {
                 rmtName.length <= 5 ? 
                 <div>
@@ -251,12 +314,19 @@ function RmtAc(props) {
                   value={rmtName}
                   onChange={onNameChange}
                   autoFocus
-                />
-                <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                  <Button onClick={() => settingRmtName()}>확인</Button>
-                  <Button onClick={() => navigate(-1)}>취소</Button>
-                </div>
-              </div> : 
+                  />
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
+                  <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                    <Button onClick={() => settingRmtName()}>확인</Button>
+                    <Button onClick={() => navigate(-1)}>취소</Button>
+                  </div>
+                </div> : 
               <div>
                 <TextField
                   id="filled-basic"
@@ -268,6 +338,13 @@ function RmtAc(props) {
                   helperText={'5글자 이하로 적어주세요'}
                   autoFocus
                 />
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
                 <div style={{display: 'flex', justifyContent:'flex-end'}}>
                   <Button onClick={() => navigate(-1)}>취소</Button>
                 </div>
@@ -359,9 +436,12 @@ function RmtAc(props) {
             onClick={() => {handleClick('mode3')}}>mode 3</button>
           </div>
 
+
         </div>
       </div>
-    // </div>
+    {/* // </div> 
+    // */}
+    </>
   );
 }
 

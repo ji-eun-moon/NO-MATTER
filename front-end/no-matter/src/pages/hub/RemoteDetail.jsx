@@ -4,25 +4,43 @@ import RmtTvUi from '../../rmtUi/RmtTvUi.jsx';
 import RmtFanUi from '../../rmtUi/RmtFanUi.jsx';
 import RmtCustom from '../../rmtUi/RmtCustom.jsx';
 import RmtAc from '../../rmtUi/RmtAc.jsx';
+import axiosInstance from '../../config/axios.jsx'
+
 
 import io from 'socket.io-client'
 const BrokerAddress = 'i9c105.p.ssafy.io:3002'
 
 
 function RemoteDetail() {
-  const topic = 'ssafy' 
+  const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
 
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
   const hubId = remoteType.state[3]
+  const remoteCode = remoteType.state[4]
 
-  
   const newSocket = io(BrokerAddress, {
     cors: { origin: '*' }
   });
   
+
+  const getUuid = () => {
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${hubId}`,
+    }).then((response) => {
+      const hubuuid = response.data.hubUuid
+      if (isCreate === true) {
+        setTopic(`${hubuuid}/RC/ADD/`)
+      } else if (isCreate === false) {
+        setTopic(`${hubuuid}/RC/CONTROLL/`)
+      }
+    })
+  }
+
   useEffect(() => {
+    getUuid()
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -64,15 +82,15 @@ function RemoteDetail() {
       <div className="container page-container">
         {
           remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-          publishMessage={publishMessage}/> :
+          publishMessage={publishMessage} remoteCode={remoteCode}/> :
           (
             remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-            publishMessage={publishMessage}/> :
+            publishMessage={publishMessage} remoteCode={remoteCode}/> :
             (
               remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage}/> : 
+              publishMessage={publishMessage} remoteCode={remoteCode}/> : 
               <RmtCustom isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage}/>
+              publishMessage={publishMessage} remoteCode={remoteCode}/>
             )
           )
         }

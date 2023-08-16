@@ -1,6 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useParams, } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import axiosInstance from '../../config/axios.jsx'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
@@ -13,6 +13,22 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
+import io from 'socket.io-client'
+const BrokerAddress = 'i9c105.p.ssafy.io:3002'
+
+function useNonNullEffect(callback, deps) {
+  const callbackRef = useRef();
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    if (callbackRef.current && deps.every(dep => dep !== null)) {
+      return callbackRef.current();
+    }
+  }, deps);
+}
 
 function RemotePage() {
   const { hubId } = useParams()  // 허브 id
@@ -21,30 +37,127 @@ function RemotePage() {
   const [hub, setHub] = useState([]);
   const [remotes, setRemotes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAdd, setIsAdd] = useState(false)
+  const [hubStatusChange, setHubStatusChange] = useState(false) // 허브 모드 변경이 필요한가
   const [progress, setProgress] = React.useState(0);
+  const [isUse, setIsUse] = useState(true) // 리모컨 사용인가
+  const [selectRmtData, setSelectRmtData] = useState([])
 
   const navigate = useNavigate();
 
+
+
+  // topic == 허브uuid/RC/CONTROLL
+  // topic == 허브uuid/IR
+  const [topic, setTopic] = useState('')
+  const [socket, setSocket] = useState(null)
+
+  const getUuid = () => {
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${hubId}`,
+    }).then((response) => {
+      const hubuuid = response.data.hubUuid
+      setTopic(`${hubuuid}/IR/`)
+    })
+  }
+  
+  useEffect(() => {
+    hubInfo(hubId)
+    getRemote(hubId)
+
+    const newSocket = io(BrokerAddress, {
+      cors: { origin: '*' }
+    });
+    getUuid()
+    setSocket(newSocket);
+
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
+
+    if (newSocket && topic) {
+      newSocket.emit('subscribe', topic);
+      console.log(`Subscribed to topic: ${topic}`);
+    }
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [hubId]);
+
+  React.useEffect(() => {
+    // 30초 동안 100번 progress를 증가시키려면 300ms 간격으로 증가시켜야 합니다.
+    const intervalTime = 300;
+
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          oldProgress = 0
+          return 0;
+        }
+        return oldProgress + 1;
+      });
+    }, intervalTime);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
+  useNonNullEffect(() => {
+    socket.on('message', (receivedMessage) => {
+      console.log(receivedMessage)
+      // 리모컨 수정 or 추가 일때 허브 수신모드
+      if (receivedMessage === 'RECEIVE' && isUse === false) {
+        navigate('/hubs/addrmt', { state: hubId })
+      // 리모컨 수정 or 추가 일때 허브 송출모드
+      } else if (receivedMessage === 'TRANSMIT' && isUse === false) {
+        publishMessage('TRANSMIT')
+        setHubStatusChange(true)
+        setTimeout(setHubStatusChange(false), 30000)
+      // 리모컨 사용 일때 허브 수신모드
+      } else if (receivedMessage === 'RECEIVE' && isUse === true) {
+        publishMessage('RECEIVE')
+        setHubStatusChange(true)
+        setTimeout(setHubStatusChange(false), 30000)
+      // 리모컨 사용 일때 허브 송출모드
+      } else if (receivedMessage === 'TRANSMIT' && isUse === true) {
+        navigate('/hubs/rmtdetail', { state: selectRmtData })
+      }
+    });
+  }, [socket])
+
+  const publishMessage = (message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+    }
+  };
+
+  const goRmtDetail = (data) => {
+    setSelectRmtData(data)
+    setIsUse(true)
+    // publishMessage('IR/STATUS')
+    navigate('/hubs/rmtdetail', { state: data })
+  }
+
+
+
   // 특정 허브 정보 저장
   const hubInfo = (hubId) => {
-    console.log('제발:', hubId)
     axiosInstance({
       method: 'Get',
       url: '/userhub/list',
       headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
     })
       .then((response) => {
-        console.log('response', response)
         const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
         setHub(specificHub);
-        console.log('specificHub: ', specificHub)
         setUserId(specificHub.userId)
         setUsersHubsId(specificHub.usersHubsId)
       });
   }
-
-
 
   // json-server 테스트용
   // axios.get(`http://localhost:3001/hubs/${id}`)
@@ -120,14 +233,14 @@ function RemotePage() {
             <div className='d-flex align-items-center row'
               style={{ width: "100%" }}>
               <div className='card-text col-11'
-                onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, false, remote.controllerName, hubId] })}>{remote.controllerName}</div>
+                onClick={() => goRmtDetail([remote.remoteType, false, remote.controllerName, hubId, remote.remoteCode])}>{remote.controllerName}</div>
             </div>
           </SwipeCard>
           <div className='card-body mb-3 d-flex justify-content-between' style={{ position: 'absolute', padding: '0', width: '100%' }}>
             {/* 리모컨 수정 */}
             <div className="card mb-3 bg-primary" style={{ height: '79px', width: '79px', marginLeft: '1px' }}>
               <div className="card-body centered">
-                <SettingsOutlinedIcon fontSize='large' style={{ color: 'white' }} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, true, remote.controllerName, hubId] })} />
+                <SettingsOutlinedIcon fontSize='large' style={{ color: 'white' }} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, true, remote.controllerName, hubId, remote.remoteCode] })} />
               </div>
             </div>
             {/* 리모컨 삭제 */}
@@ -142,7 +255,6 @@ function RemotePage() {
     })
   }
 
-
   const goMember = () => {
     // if(hub.userHubAuth === 'admin'){
     navigate(`/hubs/members/${hubId}`, { state: hub.userHubAuth })
@@ -153,12 +265,13 @@ function RemotePage() {
   }
 
   const addRmt = () => {
-    setIsAdd(true)
+    setIsUse(false)
+    publishMessage('RECEIVE')
+    setHubStatusChange(true)
     setTimeout(() => {
-      navigate('/hubs/addrmt', { state: hub })
-      setIsAdd(false)
+      navigate('/hubs/addrmt', { state: hubId })
+    setHubStatusChange(false)
     }, 30000)
-
   }
 
 
@@ -195,7 +308,6 @@ function RemotePage() {
           }
           
         });
-
     }
     // else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
     //   swal({
@@ -240,36 +352,33 @@ function RemotePage() {
               })
           }
         });
-
-
     }
-
   }
 
-  React.useEffect(() => {
-    hubInfo(hubId)
-    getRemote(hubId)
+  // React.useEffect(() => {
+  //   hubInfo(hubId)
+  //   getRemote(hubId)
 
-    const interval = 30000 / 100; 
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return oldProgress + 1;
-      });
-    }, interval);
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [hubId]);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, [hubId]);
 
   return (
     <>
       {
-        isAdd ?
+        hubStatusChange ?
           (<div className="container page-container">
             <div className='d-flex flex-column justify-content-center align-items-center'>
               <div style={{
@@ -287,7 +396,6 @@ function RemotePage() {
                 30초 정도 소요됩니다...
               </div>
               <Box sx={{ width: '100%' }}>
-                {/* <LinearProgress variant="determinate" value={progress} /> */}
                 <div className="progress">
                   <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
