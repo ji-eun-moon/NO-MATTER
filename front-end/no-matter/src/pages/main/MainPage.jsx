@@ -9,8 +9,10 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import useSpeechToText from '../../components/useSpeechToText.jsx';
 
 function MainPage() {
+  const { transcript, listening, toggleListening } = useSpeechToText();
   const navigate = useNavigate();
 
   // const hublist = ['1번']
@@ -109,6 +111,10 @@ function MainPage() {
       <div className='centered mt-5 mb-4' >
         <h1 className='welcome'>{userName}'s Home</h1>
       </div>
+      <textarea className="transcript" value={transcript} onChange={() => {}} />
+      <button onClick={toggleListening}>
+        {listening ? '음성인식 중지' : '음성인식 시작'}
+      </button>
       {/* <div className='d-flex justify-content-center p-3'>
           <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
         </div> */}

@@ -93,6 +93,15 @@ function RoutineResult() {
     setSelectedRemote(remote);
     setSelectedRemoteAction(action);
     setSelectedRemoteButton(button);
+    // 선택한 허브 정보 받아와서 topic 저장
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${hub.hubId}`,
+    }).then((response) => {
+      // console.log(response.data)
+      const hubUuId = response.data.hubUuid
+      setTopic(hubUuId + '/ROUTINE/')
+    })
   };
   
   useEffect(() => {
@@ -104,6 +113,15 @@ function RoutineResult() {
       setSelectedRemoteButton(location.state.selectedRemoteButton)
       setActive(location.state.active)
       SetRoutineId(location.state.routineId)
+      // 선택한 허브 정보 받아와서 topic 저장
+      axiosInstance({
+        method :'GET',
+        url: `/hub/view/${location.state.selectedHub.hubId}`,
+      }).then((response) => {
+        // console.log(response.data)
+        const hubUuId = response.data.hubUuid
+        setTopic(hubUuId + '/ROUTINE')
+      })
     }
   }, [])
 
@@ -245,14 +263,14 @@ function RoutineResult() {
     };
     
     // 선택한 허브 정보 받아와서 topic 저장
-    axiosInstance({
-      method :'GET',
-      url: `/hub/view/${selectedHub.hubId}`,
-    }).then((response) => {
-      // console.log(response.data)
-      const hubUuId = response.data.hubUuid
-      setTopic(hubUuId + '/ROUTINE')
-    })
+    // axiosInstance({
+    //   method :'GET',
+    //   url: `/hub/view/${selectedHub.hubId}`,
+    // }).then((response) => {
+    //   // console.log(response.data)
+    //   const hubUuId = response.data.hubUuid
+    //   setTopic(hubUuId + '/ROUTINE')
+    // })
 
     if (editing) {
       // 루틴 수정
