@@ -13,52 +13,65 @@ const BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
 function RoutinePage() {
   const navigate = useNavigate();
   const [routines, setRoutines] = useState([])
-  const [hubs, setHubs] = useState([])
+  // const [hubs, setHubs] = useState([])
 
+  // const getRoutinesForHub = (hubId) => {
+  //   return axiosInstance({
+  //     method: 'get',
+  //     url: `/routine/list/${hubId}`,
+  //   })
+  //   .then((response) => {
+  //     return response.data;
+  //   });
+  // };
 
-  const getRoutinesForHub = (hubId) => {
-    return axiosInstance({
-      method: 'get',
-      url: `/routine/list/${hubId}`,
-    })
-    .then((response) => {
-      return response.data;
-    });
-  };
+  // const getHubs = () => {
+  //   axiosInstance({
+  //     method: 'Get',
+  //     url: '/userhub/list',
+  //     headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` },
+  //   })
+  //   .then((response) => {  
+  //     setHubs(response.data);
+  //   });
+  // };
 
-  const getHubs = () => {
+  // useEffect(() => {
+  //   getHubs();
+  // }, []);
+
+  // useEffect(() => {
+  //   // Fetch routines for all hubs
+  //   const fetchRoutinesForAllHubs = async () => {
+  //     const routinesForHubs = await Promise.all(
+  //       hubs.map(async (hub) => {
+  //         return getRoutinesForHub(hub.hubId);
+  //       })
+  //     );
+  //     const combinedRoutines = routinesForHubs.flat();
+  //     setRoutines(combinedRoutines);
+  //     // console.log('Combined routines:', combinedRoutines);
+  //   };
+
+  //   if (hubs.length > 0) {
+  //     fetchRoutinesForAllHubs();
+  //   }
+  // }, [hubs]);
+
+  const getRoutines = () => {
     axiosInstance({
       method: 'Get',
-      url: '/userhub/list',
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` },
+      url: '/routine/list',
     })
     .then((response) => {  
-      setHubs(response.data);
+      // console.log(response.data)
+      setRoutines(response.data);
     });
   };
 
   useEffect(() => {
-    getHubs();
+    getRoutines();
   }, []);
-
-  useEffect(() => {
-    // Fetch routines for all hubs
-    const fetchRoutinesForAllHubs = async () => {
-      const routinesForHubs = await Promise.all(
-        hubs.map(async (hub) => {
-          return getRoutinesForHub(hub.hubId);
-        })
-      );
-      const combinedRoutines = routinesForHubs.flat();
-      setRoutines(combinedRoutines);
-      // console.log('Combined routines:', combinedRoutines);
-    };
-
-    if (hubs.length > 0) {
-      fetchRoutinesForAllHubs();
-    }
-  }, [hubs]);
-
 
   // const getRoutines = () => {
 
@@ -77,7 +90,6 @@ function RoutinePage() {
   //   getRoutines()
   // }, [])
 
-  const [topic, setTopic] = useState('');
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -101,46 +113,47 @@ function RoutinePage() {
     };
   }, []);
 
-  const publishMessage = (message) => {
+  const publishMessage = (topic, message) => {
     if (socket && topic && message) {
       socket.emit('publish', { topic, message });
       console.log(`Published message "${message}" to topic: ${topic}`);
     }
   };
 
-  const deleteRoutine = (routineId, hubId) => {
-    axiosInstance({
-      method : 'Delete',
-      url : `routine/delete/${routineId}`,
-    })
-    .then (() => {
-      // 삭제한 루틴의 허브 정보 불러오기 - uuid 받기 위해서
-      axiosInstance({
-        method :'GET',
-        url: `/hub/view/${hubId}`,
-      }).then((response) => {
-        // console.log(response.data)
-        const hubUuId = response.data.hubUuid
-        setTopic(hubUuId + '/ROUTINE')
-      })
-    .then (() => {
-      // 삭제 이후 루틴 전체 리스트 불러오기
-      axiosInstance({
-        method :'GET',
-        url: `/routine/list/${hubId}`,
-      }).then((response) => {
-        // console.log('삭제 후 루틴', response.data)
-        window.location.reload()
-        const result = "[" + response.data.map(item => item.attributes).join(", ") + "]"
-        publishMessage(`ROUTINE/${result}`)
-        console.log(result)
-      })
-    })
-    })
-  }
 
+  const deleteRoutine = async (routineId, hubId) => {
+    try {
+      const hubResponse = await axiosInstance({
+        method: 'GET',
+        url: `/hub/view/${hubId}`,
+      });
+  
+      const hubUuId = hubResponse.data.hubUuid;
+      const newTopic = hubUuId + '/ROUTINE/';
+  
+      const deleteResponse = await axiosInstance({
+        method: 'DELETE',
+        url: `routine/delete/${routineId}`,
+      });
+  
+      const routineListResponse = await axiosInstance({
+        method: 'GET',
+        url: `/routine/list/${hubId}`,
+      });
+  
+      const result = "[" + routineListResponse.data.map(item => item[3]).join(", ") + "]";
+      await publishMessage(newTopic, `${result}`);
+      window.location.reload()
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  
   const renderRoutine = (routineInfo) => {
-    const routine = JSON.parse(routineInfo.attributes)
+    
+    const routine = JSON.parse(routineInfo[3])
+
     if (routine.kind === 'voice') {
       return (
         <div className='centered' style={{width :"100%"}}>
@@ -148,7 +161,7 @@ function RoutinePage() {
             <div className='d-flex flex-column'>
               <p style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition}</p>
               <div className='d-flex text-secondary'>
-                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
@@ -186,7 +199,7 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.minute}분</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
@@ -211,7 +224,7 @@ function RoutinePage() {
                 <p className="me-2" style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.updown === 'up' ? '초과' : '미만'}</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
@@ -237,7 +250,7 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-2'>할 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
@@ -263,7 +276,7 @@ function RoutinePage() {
                 <p style={{marginBottom:"0px", fontSize:"18px"}}>일 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedHub.userHubName}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
                 <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
                 <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
@@ -301,15 +314,15 @@ function RoutinePage() {
             {/* 루틴 수정 */}
             <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}}
                  onClick={() => navigate('/routine/result', 
-                 { state: { kind: JSON.parse(routineInfo.attributes).kind, 
-                           condition: JSON.parse(routineInfo.attributes).condition, 
+                 { state: { kind: JSON.parse(routineInfo[3]).kind, 
+                           condition: JSON.parse(routineInfo[3]).condition, 
                            editing: true, 
-                           selectedHub:  JSON.parse(routineInfo.attributes).selectedHub,
-                           selectedRemote:  JSON.parse(routineInfo.attributes).selectedRemote,
-                           selectedRemoteAction:  JSON.parse(routineInfo.attributes).selectedRemoteAction,
-                           selectedRemoteButton:  JSON.parse(routineInfo.attributes).selectedRemoteButton,
-                           active: JSON.parse(routineInfo.attributes).active,
-                           routineId: routineInfo.routineId
+                           selectedHub:  JSON.parse(routineInfo[3]).selectedHub,
+                           selectedRemote:  JSON.parse(routineInfo[3]).selectedRemote,
+                           selectedRemoteAction:  JSON.parse(routineInfo[3]).selectedRemoteAction,
+                           selectedRemoteButton:  JSON.parse(routineInfo[3]).selectedRemoteButton,
+                           active: JSON.parse(routineInfo[3]).active,
+                           routineId: routineInfo[1]
                            }})}>
               <div className="card-body centered">
                 <SettingsOutlinedIcon fontSize='large' style={{color:'white'}} />
@@ -318,7 +331,7 @@ function RoutinePage() {
 
              {/* 루틴 삭제 */}
             <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}
-                onClick={() => deleteRoutine(routineInfo.routineId, routineInfo.hubId)}>
+                onClick={() => deleteRoutine(routineInfo[1], routineInfo[0])}>
                 <div className="card-body centered">
                   <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
                 </div>
