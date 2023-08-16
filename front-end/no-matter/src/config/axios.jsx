@@ -1,14 +1,5 @@
 // axios.js
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom'
-
-function AutomaticLogin() {
-  const navigate = useNavigate()
-
-  const goLogin = () => {
-    navigate('/login')
-  }
-}
 
 // 인스턴스 생성
 const instance = axios.create({
@@ -57,10 +48,13 @@ instance.interceptors.response.use(
       .catch((error) => {
         // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
         // 여기에 오류 처리 코드를 작성
-          localStorage.clear()
-          console.log(error)
-          AutomaticLogin()
-          return Promise.reject(error);
+        alert('세션이 만료되어 로그아웃 되었습니다')
+        localStorage.clear()
+        console.log(error)
+        localStorage.clear()
+        sessionStorage.clear()
+        window.location.href = '/login';
+        return Promise.reject(error);
         });
     }
     return Promise.reject(error);

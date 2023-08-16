@@ -14,7 +14,7 @@ function AddRemotePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const hubId = location.state;
-  console.log('진짜?', hubId)
+  // console.log('진짜?', hubId)
 
   const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
