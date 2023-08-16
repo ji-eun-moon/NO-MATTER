@@ -8,7 +8,13 @@ import axiosInstance from '../../config/axios.jsx'
 
 
 import io from 'socket.io-client'
-const BrokerAddress = 'i9c105.p.ssafy.io:3002'
+const protocol = window.location.protocol
+let BrokerAddress = ''
+if (protocol === 'https:') {
+  BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
+} else {
+  BrokerAddress = 'ws://i9c105.p.ssafy.io:3002'
+}
 
 
 function RemoteDetail() {

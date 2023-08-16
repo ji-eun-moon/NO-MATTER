@@ -216,7 +216,7 @@ function MainPage() {
                         <div className='d-flex row justify-content-start align-items-baseline'>
                           {remotes.map((remote) => {
                             return (
-                              <div className="col-6" key={remote.remoteId} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, false, remote.controllerName, hub.hubId] })}>
+                              <div className="col-6" key={remote.remoteId} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, false, remote.controllerName, hub.hubId, remote.remoteCode] })}>
                                 <Card>
                                   <div className='centered' style={{ width: "100%" }}>
                                     <span style={{ fontWeight: "700", marginBottom: "0px", fontSize: "18px" }}>{remote.controllerName}</span>
