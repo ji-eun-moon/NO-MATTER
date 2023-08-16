@@ -20,4 +20,6 @@ public interface RemoteRepository extends JpaRepository<Remote, Long> {
 
     Optional<Remote> findByHubIdAndIsBoard(Long hubId, Long isBoard);
 
+    Optional<Remote> findByHubIdAndControllerName(Long hubId, String controllerName);
+
 }

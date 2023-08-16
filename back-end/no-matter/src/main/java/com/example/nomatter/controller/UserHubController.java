@@ -123,4 +123,15 @@ public class UserHubController {
 
     }
 
+    @GetMapping("/getName/{hubId}")
+    public ResponseEntity<?> getName(@PathVariable Long hubId, Authentication authentication){
+
+        Long memberId = userService.findByUserId(authentication.getName()).get().getMemberId();
+
+        String Name = userHubService.findNameByHubIdAndUserId(hubId, memberId);
+
+        return ResponseEntity.ok().body(Name);
+
+    }
+
 }
