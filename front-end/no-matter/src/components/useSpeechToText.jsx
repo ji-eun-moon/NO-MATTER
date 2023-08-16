@@ -17,6 +17,7 @@ const useSpeechToText = () => {
   }
 
   const processCommand = (transcript) => {
+    console.log('tr', transcript)
     if (transcript) {
       const words = transcript.split(' '); // 음성 입력을 공백을 기준으로 나눔
       if (words.length >= 2) {
@@ -34,9 +35,9 @@ const useSpeechToText = () => {
               url : `/hub/command/${location}`,
             })
             .then((response) => {
-              // console.log(response.data)
+              console.log(response.data)
 							const topic = response.data + '/VOICE/';
-							publishMessage(topic, command);
+							publishMessage(topic, command, location);
 							resetTranscript()
             })
 						.catch((err) => {
@@ -83,10 +84,13 @@ const useSpeechToText = () => {
         }
     };
 
-    const publishMessage = (topic, message) => {
+    const publishMessage = (topic, message, location) => {
         if (socket && topic && message) {
         socket.emit('publish', { topic, message });
         console.log(`Published message "${message}" to topic: ${topic}`);
+        setTimeout(() => {
+          alert(`${location} ${message}를 실행하였습니다.`)
+        }, 3000);
         }
     };
 
