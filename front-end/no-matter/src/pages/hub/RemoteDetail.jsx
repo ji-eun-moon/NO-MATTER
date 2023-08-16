@@ -39,8 +39,8 @@ function RemoteDetail() {
     })
   }
 
+  getUuid()
   useEffect(() => {
-    getUuid()
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -55,7 +55,7 @@ function RemoteDetail() {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [topic]);
   
   // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
   useEffect(() => {

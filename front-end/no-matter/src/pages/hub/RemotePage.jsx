@@ -60,7 +60,9 @@ function RemotePage() {
       setTopic(`${hubuuid}/IR/`)
     })
   }
-  
+
+  getUuid()
+
   useEffect(() => {
     hubInfo(hubId)
     getRemote(hubId)
@@ -68,7 +70,7 @@ function RemotePage() {
     const newSocket = io(BrokerAddress, {
       cors: { origin: '*' }
     });
-    getUuid()
+    
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -83,7 +85,7 @@ function RemotePage() {
     return () => {
       newSocket.disconnect();
     };
-  }, [hubId]);
+  }, [topic]);
 
   React.useEffect(() => {
     // 30초 동안 100번 progress를 증가시키려면 300ms 간격으로 증가시켜야 합니다.
@@ -107,20 +109,23 @@ function RemotePage() {
   // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
   useNonNullEffect(() => {
     socket.on('message', (receivedMessage) => {
-      console.log(receivedMessage)
+      console.log('received',receivedMessage)
       // 리모컨 수정 or 추가 일때 허브 수신모드
-      if (receivedMessage === 'RECEIVE' && isUse === false) {
-        navigate('/hubs/addrmt', { state: hubId })
-      // 리모컨 수정 or 추가 일때 허브 송출모드
-      } else if (receivedMessage === 'TRANSMIT' && isUse === false) {
-        publishMessage('TRANSMIT')
-        setHubStatusChange(true)
-        setTimeout(setHubStatusChange(false), 30000)
+      // if (receivedMessage === 'RECEIVE' && isUse === false) {
+      //   navigate('/hubs/addrmt', { state: hubId })
+      // // 리모컨 수정 or 추가 일때 허브 송출모드
+      // } else if (receivedMessage === 'TRANSMIT' && isUse === false) {
+      //   publishMessage('TRANSMIT')
+      //   setHubStatusChange(true)
+      //   setTimeout(setHubStatusChange(false), 30000)
       // 리모컨 사용 일때 허브 수신모드
-      } else if (receivedMessage === 'RECEIVE' && isUse === true) {
+      if (receivedMessage === 'RECEIVE' && isUse === true) {
         publishMessage('RECEIVE')
         setHubStatusChange(true)
-        setTimeout(setHubStatusChange(false), 30000)
+        setTimeout(() => {
+          setHubStatusChange(false)
+          navigate('/hubs/rmtdetail', { state: selectRmtData })
+        }, 30000)
       // 리모컨 사용 일때 허브 송출모드
       } else if (receivedMessage === 'TRANSMIT' && isUse === true) {
         navigate('/hubs/rmtdetail', { state: selectRmtData })
@@ -132,13 +137,14 @@ function RemotePage() {
     if (socket && topic && message) {
       socket.emit('publish', { topic, message });
       console.log(`Published message "${message}" to topic: ${topic}`);
+      return message
     }
   };
 
   const goRmtDetail = (data) => {
     setSelectRmtData(data)
     setIsUse(true)
-    // publishMessage('IR/STATUS')
+    publishMessage('STATUS')
     navigate('/hubs/rmtdetail', { state: data })
   }
 
@@ -270,7 +276,7 @@ function RemotePage() {
     setHubStatusChange(true)
     setTimeout(() => {
       navigate('/hubs/addrmt', { state: hubId })
-    setHubStatusChange(false)
+      setHubStatusChange(false)
     }, 30000)
   }
 
@@ -375,6 +381,7 @@ function RemotePage() {
   //   };
   // }, [hubId]);
 
+ 
   return (
     <>
       {
