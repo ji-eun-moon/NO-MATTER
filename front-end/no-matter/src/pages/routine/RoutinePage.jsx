@@ -497,20 +497,11 @@ function RoutinePage() {
     }
   };
 
-  const getUserHubName = (hubId) => {
-    console.log(hubId)
-    axiosInstance({
-      method: 'Get',
-      url: `/userhub/getName/${hubId}`
-    })
-    .then((response) => {  
-      console.log('허브이름',response.data)
-      return response.data
-    });
-  }
+  
+  const renderRoutine = (routineInfo) => {
+    
+    const routine = JSON.parse(routineInfo[3])
 
-  const renderRoutine = async (routineInfo) => {
-    const routine = JSON.parse(routineInfo.attributes)
     if (routine.kind === 'voice') {
       return (
         <div className='centered' style={{width :"100%"}}>
