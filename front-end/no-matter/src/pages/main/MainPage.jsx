@@ -253,7 +253,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../../config/axios'
+import axiosInstance from '../../config/axios.jsx'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import './MainPage.scss'
@@ -270,7 +270,7 @@ import useSpeechToText from '../../components/useSpeechToText.jsx';
 
 
 function MainPage() {
-  const { transcript, listening, toggleListening } = useSpeechToText();
+  const { transcript, listening, toggleListening, resetTranscript, processCommand } = useSpeechToText();
   const navigate = useNavigate();
 
   // const hublist = ['1번']
@@ -282,6 +282,7 @@ function MainPage() {
   const [userName, setUserName] = useState('')
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const [acticvate, setActivate] = useState(false)
 
   const [isListening, setIsListening] = useState(false)
 
@@ -352,6 +353,35 @@ function MainPage() {
     }, []);
 
   
+
+  useEffect(() => {
+    // processCommand(transcript)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.start();
+    recognition.onresult = function(event) {
+        const current = event.resultIndex;
+        const transcript = event.results[current][0].transcript.trim();
+        console.log(event)
+        if (transcript === '지은아') {        
+          toggleListening()
+          setActivate(true)
+          // console.log('시작하겠습니다')
+          // 여기에서 원하는 음성 인식 로직을 추가하세요. 
+        }           
+        console.log(transcript)
+    };              
+    setTimeout(() => {
+      console.log(acticvate)
+      if(acticvate){
+        toggleListening()
+        setActivate(false)
+        recognition.stop()
+        processCommand(transcript)
+      }
+    }, 7000);
+
+  }, [listening])
 
   const getHubs = () => {
     axiosInstance({
@@ -428,9 +458,19 @@ function MainPage() {
         <h1 className='welcome'>{userName}'s Home</h1>
       </div>
       <textarea className="transcript" value={transcript} onChange={() => {}} />
-      <button onClick={toggleListening}>
-        {listening ? '음성인식 중지' : '음성인식 시작'}
-      </button>
+      {acticvate?         
+          <Fab size='small' aria-label="add" 
+            style={{ borderRadius: "50%", backgroundColor: "#0097b2", color: "white", width: "60px", height: "60px" }} 
+            onClick={toggleListening}>
+            <i className="bi bi-mic-fill" style={{fontSize: "30px"}}></i>
+          </Fab>
+
+        : 
+        <Fab size='small' aria-label="add" 
+          style={{ borderRadius: "50%", backgroundColor: "#0097b2", color: "white", width: "60px", height: "60px" }} >
+          <i className="bi bi-mic-mute-fill" style={{fontSize: "30px"}}></i>
+        </Fab>
+        }
       {/* <div className='d-flex justify-content-center p-3'>
           <img src="images/logo2.png" alt="No Matter logo" style={{width:"300px"}}/>
         </div> */}
