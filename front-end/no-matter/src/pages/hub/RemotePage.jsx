@@ -48,14 +48,24 @@ function RemotePage() {
 
   // topic == 허브uuid/RC/CONTROLL
   // topic == 허브uuid/IR
-  const topic = 'ssafy' 
+  const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
 
+  const getUuid = () => {
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${hubId}`,
+    }).then((response) => {
+      const hubuuid = response.data.hubUuid
+      setTopic(`${hubuuid}/IR/`)
+    })
+  }
   
   useEffect(() => {
     const newSocket = io(BrokerAddress, {
       cors: { origin: '*' }
     });
+    getUuid()
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -81,12 +91,12 @@ function RemotePage() {
         navigate('/hubs/addrmt', { state: hubId })
       // 리모컨 수정 or 추가 일때 허브 송출모드
       } else if (receivedMessage === 'TRANSMIT' && isUse === false) {
-        publishMessage('IR/TRANSMIT')
+        publishMessage('TRANSMIT')
         setHubStatusChange(true)
         setTimeout(setHubStatusChange(false), 30000)
       // 리모컨 사용 일때 허브 수신모드
       } else if (receivedMessage === 'RECEIVE' && isUse === true) {
-        publishMessage('IR/RECEIVE')
+        publishMessage('RECEIVE')
         setHubStatusChange(true)
         setTimeout(setHubStatusChange(false), 30000)
       // 리모컨 사용 일때 허브 송출모드
@@ -234,7 +244,7 @@ function RemotePage() {
 
   const addRmt = () => {
     setIsUse(false)
-    publishMessage('IR/RECEIVE')
+    publishMessage('RECEIVE')
     setHubStatusChange(true)
     setTimeout(() => {
       navigate('/hubs/addrmt', { state: hubId })
