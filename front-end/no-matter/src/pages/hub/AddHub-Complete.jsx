@@ -18,8 +18,9 @@ export default function Inputs({onHubName}) {
   onHubName(hubName)
   return (   
     <div>
-      <div className='centered'>
+      <div className='centered d-flex flex-column'>
         <h2 className='font-700'>허브의 이름을 설정해주세요.</h2>
+        <h6 style={{color:'red'}}>※띄어쓰기 금지</h6>
       </div>
       <br />
 
