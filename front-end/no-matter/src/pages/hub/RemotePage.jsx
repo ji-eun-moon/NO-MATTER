@@ -92,7 +92,7 @@ function RemotePage() {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
-          clearInterval(timer);
+          oldProgress = 0
           return 0;
         }
         return oldProgress + 1;
@@ -396,7 +396,6 @@ function RemotePage() {
                 30초 정도 소요됩니다...
               </div>
               <Box sx={{ width: '100%' }}>
-                {/* <LinearProgress variant="determinate" value={progress} /> */}
                 <div className="progress">
                   <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
