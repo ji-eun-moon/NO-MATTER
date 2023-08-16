@@ -25,7 +25,9 @@ function RmtAc(props) {
   const [notSave, setNotSave] = useState(false)
 
   const [rmtName, setRmtName] = useState('')
+  const [rmtCode, setRmtCode] = useState('')
   const [saveRmtName, setSaveRmtName] = useState('')
+  const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
   const [progress, setProgress] = React.useState(0);
@@ -34,9 +36,10 @@ function RmtAc(props) {
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
-    } else (
+    } else {
       setSaveRmtName(props.remoteName)
-    )
+      setSaveRmtCode(props.remoteCode)
+    }
   }, [])
 
   // React.useEffect(() => {
@@ -70,7 +73,7 @@ function RmtAc(props) {
             "hubId" : hubId,
             "controllerName" : saveRmtName,
             "remoteType" : "AC",
-            "remoteCode" : "A1B2C3D4"
+            "remoteCode" : saveRmtCode
         }
       })
       .then((res) => {
@@ -91,10 +94,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
         if(isOn){
-          props.publishMessage(`${saveRmtName}/${e}`)
+          props.publishMessage(`${saveRmtCode}/${e}`)
         }
     }
   }
@@ -104,9 +107,15 @@ function RmtAc(props) {
     // console.log(event.currentTarget.value)
   }, [])
 
+  const onCodeChange = useCallback((event) => {
+    setRmtCode(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
   const settingRmtName = () => {
-    if (rmtName !== '') {
+    if (rmtCode !== '' && rmtName !== '') {
       setSaveRmtName(rmtName)
+      setSaveRmtCode(rmtCode)
       setIsNameSet(false)
     }
   }
@@ -130,11 +139,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/increaseTemperature`)
+      props.publishMessage(`${saveRmtCode}/increaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature + 1);
-          props.publishMessage(`${saveRmtName}/increaseTemperature`)
+          props.publishMessage(`${saveRmtCode}/increaseTemperature`)
         }
     }
   };
@@ -143,11 +152,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/decreaseTemperature`)
+      props.publishMessage(`${saveRmtCode}/decreaseTemperature`)
     } else {
         if(isOn){
           setTemperature((prevTemperature) => prevTemperature - 1);
-          props.publishMessage(`${saveRmtName}/decreaseTemperature`)
+          props.publishMessage(`${saveRmtCode}/decreaseTemperature`)
         }
     }
   };
@@ -156,11 +165,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/increaseWindSpeed`)
+      props.publishMessage(`${saveRmtCode}/increaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed < 4 ? prevWindSpeed + 1 : prevWindSpeed));
-          props.publishMessage(`${saveRmtName}/increaseWindSpeed`)
+          props.publishMessage(`${saveRmtCode}/increaseWindSpeed`)
         }
     }
   };
@@ -170,11 +179,11 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/decreaseWindSpeed`)
+      props.publishMessage(`${saveRmtCode}/decreaseWindSpeed`)
     } else {
         if(isOn){
           setWindSpeed((prevWindSpeed) => (prevWindSpeed > 1 ? prevWindSpeed - 1 : prevWindSpeed));
-          props.publishMessage(`${saveRmtName}/decreaseWindSpeed`)
+          props.publishMessage(`${saveRmtCode}/decreaseWindSpeed`)
         }
     }
   };
@@ -183,10 +192,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     } else {
       setIsOn(true);
-      props.publishMessage(`${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     }
   };
 
@@ -194,10 +203,10 @@ function RmtAc(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     } else {
       setIsOn(false);
-      props.publishMessage(`${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     }
   };
 
@@ -294,7 +303,7 @@ function RmtAc(props) {
           aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
-              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <h2 id="child-modal-title">리모컨의 이름과 제품코드를 입력해주세요</h2>
               {
                 rmtName.length <= 5 ? 
                 <div>
@@ -305,12 +314,19 @@ function RmtAc(props) {
                   value={rmtName}
                   onChange={onNameChange}
                   autoFocus
-                />
-                <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                  <Button onClick={() => settingRmtName()}>확인</Button>
-                  <Button onClick={() => navigate(-1)}>취소</Button>
-                </div>
-              </div> : 
+                  />
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
+                  <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                    <Button onClick={() => settingRmtName()}>확인</Button>
+                    <Button onClick={() => navigate(-1)}>취소</Button>
+                  </div>
+                </div> : 
               <div>
                 <TextField
                   id="filled-basic"
@@ -322,6 +338,13 @@ function RmtAc(props) {
                   helperText={'5글자 이하로 적어주세요'}
                   autoFocus
                 />
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
                 <div style={{display: 'flex', justifyContent:'flex-end'}}>
                   <Button onClick={() => navigate(-1)}>취소</Button>
                 </div>

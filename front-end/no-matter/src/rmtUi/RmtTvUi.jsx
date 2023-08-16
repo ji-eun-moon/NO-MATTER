@@ -27,7 +27,9 @@ function RmtTvUi(props) {
   const [isModify, setIsModify] = useState(false)
   const [notSave, setNotSave] = useState(false)
   const [rmtName, setRmtName] = useState(props.remoteName)
+  const [rmtCode, setRmtCode] = useState('')
   const [saveRmtName, setSaveRmtName] = useState('')
+  const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
 
@@ -36,9 +38,10 @@ function RmtTvUi(props) {
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
-    } else (
+    } else {
       setSaveRmtName(props.remoteName)
-    )
+      setSaveRmtCode(props.remoteCode)
+    }
   }, [])
 
   const hubId = props.hubId
@@ -52,7 +55,7 @@ function RmtTvUi(props) {
             "hubId" : hubId,
             "controllerName" : saveRmtName,
             "remoteType" : "TV",
-            "remoteCode" : "A1B2C3D4"
+            "remoteCode" : saveRmtCode
         }
       })
       .then((res) => {
@@ -72,9 +75,9 @@ function RmtTvUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
-      props.publishMessage(`${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     }
   }
 
@@ -83,9 +86,15 @@ function RmtTvUi(props) {
     // console.log(event.currentTarget.value)
   }, [])
 
+  const onCodeChange = useCallback((event) => {
+    setRmtCode(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
   const settingRmtName = () => {
-    if (rmtName !== '') {
+    if (rmtCode !== '' && rmtName !== '') {
       setSaveRmtName(rmtName)
+      setSaveRmtCode(rmtCode)
       setIsNameSet(false)
     }
   }
@@ -164,7 +173,7 @@ function RmtTvUi(props) {
           aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
-              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <h2 id="child-modal-title">리모컨의 이름과 제품코드를 입력해주세요</h2>
               {
                 rmtName.length <= 5 ? 
                 <div>
@@ -175,12 +184,19 @@ function RmtTvUi(props) {
                   value={rmtName}
                   onChange={onNameChange}
                   autoFocus
-                />
-                <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                  <Button onClick={() => settingRmtName()}>확인</Button>
-                  <Button onClick={() => navigate(-1)}>취소</Button>
-                </div>
-              </div> : 
+                  />
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
+                  <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                    <Button onClick={() => settingRmtName()}>확인</Button>
+                    <Button onClick={() => navigate(-1)}>취소</Button>
+                  </div>
+                </div> : 
               <div>
                 <TextField
                   id="filled-basic"
@@ -192,6 +208,13 @@ function RmtTvUi(props) {
                   helperText={'5글자 이하로 적어주세요'}
                   autoFocus
                 />
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
                 <div style={{display: 'flex', justifyContent:'flex-end'}}>
                   <Button onClick={() => navigate(-1)}>취소</Button>
                 </div>

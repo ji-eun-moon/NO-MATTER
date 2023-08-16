@@ -18,6 +18,7 @@ function RemoteDetail() {
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
   const hubId = remoteType.state[3]
+  const remoteCode = remoteType.state[4]
 
   const newSocket = io(BrokerAddress, {
     cors: { origin: '*' }
@@ -81,15 +82,15 @@ function RemoteDetail() {
       <div className="container page-container">
         {
           remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-          publishMessage={publishMessage}/> :
+          publishMessage={publishMessage} remoteCode={remoteCode}/> :
           (
             remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-            publishMessage={publishMessage}/> :
+            publishMessage={publishMessage} remoteCode={remoteCode}/> :
             (
               remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage}/> : 
+              publishMessage={publishMessage} remoteCode={remoteCode}/> : 
               <RmtCustom isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage}/>
+              publishMessage={publishMessage} remoteCode={remoteCode}/>
             )
           )
         }
