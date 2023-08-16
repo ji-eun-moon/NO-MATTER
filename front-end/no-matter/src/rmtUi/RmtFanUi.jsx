@@ -16,7 +16,9 @@ function RmtFanUi(props) {
   const [isModify, setIsModify] = useState(false)
   const [notSave, setNotSave] = useState(false)
   const [rmtName, setRmtName] = useState('')
+  const [rmtCode, setRmtCode] = useState('')
   const [saveRmtName, setSaveRmtName] = useState('')
+  const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
   const [progress, setProgress] = React.useState(0);
@@ -42,9 +44,10 @@ function RmtFanUi(props) {
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
-    } else (
+    } else {
       setSaveRmtName(props.remoteName)
-    )
+      setSaveRmtCode(props.remoteCode)
+    }
   }, [])
 
   const hubId = props.hubId
@@ -61,7 +64,7 @@ function RmtFanUi(props) {
             "hubId" : hubId,
             "controllerName" : saveRmtName,
             "remoteType" : "Fan",
-            "remoteCode" : "A1B2C3D4"
+            "remoteCode" : saveRmtCode
         }
       })
       .then((res) => {
@@ -83,9 +86,9 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
-      props.publishMessage(`${saveRmtName}/${e}`)
+      props.publishMessage(`${saveRmtCode}/${e}`)
     }
   }
 
@@ -94,9 +97,15 @@ function RmtFanUi(props) {
     // console.log(event.currentTarget.value)
   }, [])
 
+  const onCodeChange = useCallback((event) => {
+    setRmtCode(event.currentTarget.value)
+    // console.log(event.currentTarget.value)
+  }, [])
+
   const settingRmtName = () => {
-    if (rmtName !== '') {
+    if (rmtCode !== '' && rmtName !== '') {
       setSaveRmtName(rmtName)
+      setSaveRmtCode(rmtCode)
       setIsNameSet(false)
     }
   }
@@ -120,10 +129,10 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     } else {
       setIsOn(true);
-      props.publishMessage(`${saveRmtName}/TurnOn`)
+      props.publishMessage(`${saveRmtCode}/TurnOn`)
     }
   };
 
@@ -131,10 +140,10 @@ function RmtFanUi(props) {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
-      props.publishMessage(`${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     } else {
       setIsOn(false);
-      props.publishMessage(`${saveRmtName}/TurnOff`)
+      props.publishMessage(`${saveRmtCode}/TurnOff`)
     }
   };
 
@@ -225,7 +234,7 @@ function RmtFanUi(props) {
           aria-describedby="child-modal-description"
           >
             <Box sx={{ ...modalStyle, width: 300 }}>
-              <h2 id="child-modal-title">리모컨의 이름을 입력해주세요</h2>
+              <h2 id="child-modal-title">리모컨의 이름과 제품코드를 입력해주세요</h2>
               {
                 rmtName.length <= 5 ? 
                 <div>
@@ -236,12 +245,19 @@ function RmtFanUi(props) {
                   value={rmtName}
                   onChange={onNameChange}
                   autoFocus
-                />
-                <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                  <Button onClick={() => settingRmtName()}>확인</Button>
-                  <Button onClick={() => navigate(-1)}>취소</Button>
-                </div>
-              </div> : 
+                  />
+                  <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
+                  <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                    <Button onClick={() => settingRmtName()}>확인</Button>
+                    <Button onClick={() => navigate(-1)}>취소</Button>
+                  </div>
+                </div> : 
               <div>
                 <TextField
                   id="filled-basic"
@@ -253,6 +269,13 @@ function RmtFanUi(props) {
                   helperText={'5글자 이하로 적어주세요'}
                   autoFocus
                 />
+                <TextField
+                  id="filled-basic"
+                  label="리모컨 제품코드"
+                  variant="filled" sx={{ '& .MuiFilledInput-input': { backgroundColor: 'white' } }}
+                  value={rmtCode}
+                  onChange={onCodeChange}
+                  />
                 <div style={{display: 'flex', justifyContent:'flex-end'}}>
                   <Button onClick={() => navigate(-1)}>취소</Button>
                 </div>

@@ -233,14 +233,14 @@ function RemotePage() {
             <div className='d-flex align-items-center row'
               style={{ width: "100%" }}>
               <div className='card-text col-11'
-                onClick={() => goRmtDetail([remote.remoteType, false, remote.controllerName, hubId])}>{remote.controllerName}</div>
+                onClick={() => goRmtDetail([remote.remoteType, false, remote.controllerName, hubId, remote.remoteCode])}>{remote.controllerName}</div>
             </div>
           </SwipeCard>
           <div className='card-body mb-3 d-flex justify-content-between' style={{ position: 'absolute', padding: '0', width: '100%' }}>
             {/* 리모컨 수정 */}
             <div className="card mb-3 bg-primary" style={{ height: '79px', width: '79px', marginLeft: '1px' }}>
               <div className="card-body centered">
-                <SettingsOutlinedIcon fontSize='large' style={{ color: 'white' }} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, true, remote.controllerName, hubId] })} />
+                <SettingsOutlinedIcon fontSize='large' style={{ color: 'white' }} onClick={() => navigate('/hubs/rmtdetail', { state: [remote.remoteType, true, remote.controllerName, hubId, remote.remoteCode] })} />
               </div>
             </div>
             {/* 리모컨 삭제 */}
