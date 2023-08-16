@@ -23,5 +23,6 @@ public interface UserHubRepository extends JpaRepository<UserHub, Long> {
     @Query("SELECT uh.userHubName FROM UserHub uh WHERE uh.hubId = :hubId AND uh.userId = :userId")
     String findNameByHubIdAndUserId(@Param("hubId") Long hubId, @Param("userId") Long userId);
 
+    Optional<UserHub> findByUserHubNameAndUserId(String userHubName, Long userId);
 
 }
