@@ -53,6 +53,9 @@ function RemotePage() {
 
   
   useEffect(() => {
+    hubInfo(hubId)
+    getRemote(hubId)
+
     const newSocket = io(BrokerAddress, {
       cors: { origin: '*' }
     });
@@ -70,8 +73,27 @@ function RemotePage() {
     return () => {
       newSocket.disconnect();
     };
+  }, [hubId]);
+
+  React.useEffect(() => {
+    // 30초 동안 100번 progress를 증가시키려면 300ms 간격으로 증가시켜야 합니다.
+    const intervalTime = 300;
+
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          clearInterval(timer);
+          return 0;
+        }
+        return oldProgress + 1;
+      });
+    }, intervalTime);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
-  
+
   // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
   useNonNullEffect(() => {
     socket.on('message', (receivedMessage) => {
@@ -323,25 +345,25 @@ function RemotePage() {
     }
   }
 
-  React.useEffect(() => {
-    hubInfo(hubId)
-    getRemote(hubId)
+  // React.useEffect(() => {
+  //   hubInfo(hubId)
+  //   getRemote(hubId)
 
-    const interval = 30000 / 100; 
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return oldProgress + 1;
-      });
-    }, interval);
+  //   const interval = 30000 / 100; 
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         clearInterval(timer);
+  //         return 100;
+  //       }
+  //       return oldProgress + 1;
+  //     });
+  //   }, interval);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [hubId]);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, [hubId]);
 
   return (
     <>
