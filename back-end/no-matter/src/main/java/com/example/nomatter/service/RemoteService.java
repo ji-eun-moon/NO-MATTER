@@ -50,7 +50,7 @@ public class RemoteService {
         Optional<Remote> optionalRemote = remoteRepository.findByHubIdAndIsBoard(hubId, isBoard);
 
         if (optionalRemote.isPresent()) {
-            throw new AppException(Errorcode.DOWNLOAD_DUCPLICATED, "Code Duplicated");
+            throw new AppException(Errorcode.DOWNLOAD_DUPLICATED, "Code Duplicated");
         }
 
     }

@@ -9,8 +9,10 @@ function VoicePage() {
   const navigate = useNavigate();
 
   const onSubmit = () => {
-    if (command.trim() !== '') {
-      navigate('/routine/result', { state: { kind: "voice", condition: command, editing: false} });
+    const noSpaceCommand = command.replace(/\s/g, ''); // 입력된 값에서 공백 전부 제거
+
+    if (noSpaceCommand !== '') {
+      navigate('/routine/result', { state: { kind: "voice", condition: noSpaceCommand, editing: false} });
     } else {
       window.alert('등록할 명령어를 입력하세요.');
     }
