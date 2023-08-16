@@ -36,11 +36,14 @@ public class UserHubController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody HubRegisterDto hubRegisterDto, Authentication authentication){
 
+        userHubService.findByUserHubNameAndUserId(hubRegisterDto.getUserHubName(), userService.findByUserId(authentication.getName()).get().getMemberId());
+
         Hub hub = Hub.builder()
                 .hubUuid(hubRegisterDto.getHubUuid())
                 .location(hubRegisterDto.getLocation())
                 .weatherKey(hubRegisterDto.getWeatherKey())
                 .build();
+
 
         hubService.register(hub);
 

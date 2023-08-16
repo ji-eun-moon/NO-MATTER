@@ -2,6 +2,7 @@ package com.example.nomatter.controller;
 
 import com.example.nomatter.domain.Routine;
 import com.example.nomatter.service.RoutineService;
+import com.example.nomatter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class RoutineController {
 
     private final RoutineService routineService;
+    private final UserService userService;
 
 
     @GetMapping("/list/{hubId}")
@@ -22,6 +24,14 @@ public class RoutineController {
 
 
         return ResponseEntity.ok().body(routineService.findAllByHubId(hubId));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> list(Authentication authentication){
+
+        Long userId = userService.findByUserId(authentication.getName()).get().getMemberId();
+
+        return ResponseEntity.ok().body(routineService.findAllByHubId(userId));
     }
 
     @PostMapping("/update")

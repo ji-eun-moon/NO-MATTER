@@ -108,4 +108,14 @@ public class UserHubService {
 
         return "추방 완료";
     }
+
+    public void findByUserHubNameAndUserId(String userHubName, Long userId){
+
+        Optional<UserHub> optionalUserHub = userHubRepository.findByUserHubNameAndUserId(userHubName, userId);
+
+        if(optionalUserHub.isPresent()){
+            throw new AppException(Errorcode.USER_HUB_NAME_DUPLICATED, "중복된 이름");
+        }
+
+    }
 }

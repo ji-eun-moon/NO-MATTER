@@ -21,8 +21,10 @@ public enum Errorcode {
     ROUTINE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
     REMOTE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
     ADMIN_CANNOT_DELETE(HttpStatus.BAD_REQUEST, " "),
-    DOWNLOAD_DUCPLICATED(HttpStatus.CONFLICT, " "),
-    REMOTE_NAME_DUPLICATED(HttpStatus.CONFLICT, " ")
+    DOWNLOAD_DUPLICATED(HttpStatus.CONFLICT, " "),
+    REMOTE_NAME_DUPLICATED(HttpStatus.CONFLICT, " "),
+    COMMAND_HUB_NOT_FOUNT(HttpStatus.NOT_FOUND, " "),
+    USER_HUB_NAME_DUPLICATED(HttpStatus.NOT_FOUND, " ")
     ;
 
     private HttpStatus httpStatus;
