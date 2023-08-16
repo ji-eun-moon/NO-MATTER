@@ -57,11 +57,13 @@ public class RemoteController {
     public ResponseEntity<?> download(@RequestBody Map<String, String > map, Authentication authentication){
 
         Board board = boardService.findByBoardId(Long.parseLong(map.get("boardId")));
-
         String controllerName = map.get("controllerName");
         Long hudId = Long.parseLong(map.get("hubId"));
 
+
+
         remoteService.findByHubIdAndIsBoard(hudId, board.getBoardId());
+        remoteService.findByHubIdAndControllerName(hudId, controllerName);
 
         Remote remote = Remote.builder()
                 .controllerName(controllerName)

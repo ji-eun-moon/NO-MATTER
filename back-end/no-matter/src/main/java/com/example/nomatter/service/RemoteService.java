@@ -5,6 +5,7 @@ import com.example.nomatter.exception.AppException;
 import com.example.nomatter.exception.Errorcode;
 import com.example.nomatter.repository.RemoteRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +50,17 @@ public class RemoteService {
         Optional<Remote> optionalRemote = remoteRepository.findByHubIdAndIsBoard(hubId, isBoard);
 
         if (optionalRemote.isPresent()) {
-            throw new AppException(Errorcode.DOWNLOAD_DUCPLICATED, "이미 다운로드 받은 리모컨입니다.");
+            throw new AppException(Errorcode.DOWNLOAD_DUCPLICATED, "Code Duplicated");
+        }
+
+    }
+
+    public void findByHubIdAndControllerName(Long hubId, String controllerName){
+
+        Optional<Remote> optionalRemote = remoteRepository.findByHubIdAndControllerName(hubId, controllerName);
+
+        if(optionalRemote.isPresent()){
+            throw new AppException(Errorcode.REMOTE_NAME_DUPLICATED, "Name Duplicated");
         }
 
     }

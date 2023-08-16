@@ -43,6 +43,12 @@ public class UserHubService {
 
     }
 
+    public String findNameByHubIdAndUserId(Long hubId, Long userId){
+
+        return userHubRepository.findNameByHubIdAndUserId(hubId, userId);
+
+    }
+
     public String modifyGrade(Long userHubId, Long changeUserHubId, String grade){
 
         UserHub userHub = userHubRepository.findByUsersHubsId(userHubId)

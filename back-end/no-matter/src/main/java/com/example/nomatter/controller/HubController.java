@@ -62,7 +62,9 @@ public class HubController {
             code = stringBuilder.toString();
 
             hub.setInviteCode(code);
-            hub.setCodeExpiredTime(LocalDateTime.now().plus(1, ChronoUnit.DAYS));
+
+            log.info("LocalDateTime.now() = " + LocalDateTime.now());
+            hub.setCodeExpiredTime(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(9,ChronoUnit.HOURS));
 
             hubService.save(hub);
         }
