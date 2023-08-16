@@ -115,6 +115,8 @@ function RmtTvUi(props) {
   };
 
   const tenkey = [1, 2, 3, 4, 5, 6, 7, 8, 9, '-', 0]
+  const tenkeyButtonName = ['KEY_1', 'KEY_2', 'KEY_3', 'KEY_4', 'KEY_5', 'KEY_6'
+  , 'KEY_7', 'KEY_8', 'KEY_9', '-', 'KEY_0']
 
   return(
     // <div className='page-container container'>
@@ -250,7 +252,7 @@ function RmtTvUi(props) {
         tenkey.map((i, key) => {
           return (
             <button key={key} className="ten-key-button" 
-            onClick={() => {handleClick(i)}}>{i}</button>
+            onClick={() => {handleClick(tenkeyButtonName[key])}}>{i}</button>
           )
         })
       }
@@ -261,7 +263,7 @@ function RmtTvUi(props) {
       
       <div className="button-box">
         <button className="func-button" 
-        onClick={() => {handleClick("soundup")}}><AddIcon/></button>
+        onClick={() => {handleClick("KEY_UP")}}><AddIcon/></button>
 
         <button className="text-button">음량</button>
 
