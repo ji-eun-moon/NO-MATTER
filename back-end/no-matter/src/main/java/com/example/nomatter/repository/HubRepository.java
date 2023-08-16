@@ -22,4 +22,7 @@ public interface HubRepository extends JpaRepository<Hub, Long> {
     @Query("SELECT uh.usersHubsId, u.userName, uh.userHubAuth FROM User u JOIN UserHub uh ON u.memberId = uh.userId WHERE uh.hubId = :hubId")
     List<Object> findAllByHubId(@Param("hubId") Long hubId);
 
+    @Query("SELECT h.hubUuid FROM Hub h where h.hubId IN (SELECT uh.hubId FROM UserHub uh WHERE uh.userId = :userId AND uh.userHubName = :command)")
+    String findUuiddByCommand(@Param("command") String command, @Param("userId") Long userId);
+
 }

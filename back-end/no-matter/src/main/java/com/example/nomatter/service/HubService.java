@@ -67,4 +67,15 @@ public class HubService {
 
     }
 
+    public String findUuiddByCommand(String command, Long userId){
+
+        String uuid = hubRepository.findUuiddByCommand(command, userId);
+
+        if(uuid == null){
+            throw new AppException(Errorcode.COMMAND_HUB_NOT_FOUNT, "허브 없어여");
+        }
+
+        return uuid;
+    }
+
 }
