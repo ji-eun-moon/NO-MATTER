@@ -204,18 +204,22 @@ function RmtAc(props) {
       setOpen(true)
       setIsModify(true)
       props.publishMessage(`${saveRmtCode}/TurnOff`)
+      setTemperature(25)
+      setWindSpeed(1)
     } else {
       setIsOn(false);
       props.publishMessage(`${saveRmtCode}/TurnOff`)
+      setTemperature(25)
+      setWindSpeed(1)
     }
   };
 
   const filledFanImages = Array.from({ length: windSpeed }, (_, index) => (
-    <img key={index} src='/images/fan-filled.png' style={{ width: '30px' }} className='fan-image me-1' />
+    <img key={index} src='/images/fan-filled.png' style={{ width: '25px' }} className='fan-image me-1' />
   ));
 
   const emptyFanImages = Array.from({ length: 4 - windSpeed }, (_, index) => (
-    <img key={index} src='/images/fan.png' style={{ width: '30px' }} className='fan-image me-1' />
+    <img key={index} src='/images/fan.png' style={{ width: '25px' }} className='fan-image me-1' />
   ));
 
   return (
@@ -375,8 +379,8 @@ function RmtAc(props) {
         <div style={{borderWidth:'1px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC', padding:'30px'}}>
           <div>
             {isOn? (
-              <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
-                <p style={{ fontSize:"50px", color:"black", fontWeight:"700"}}>{temperature}°C</p>
+              <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-3 flex-column centered'>
+                <p style={{ fontSize:"40px", color:"black", fontWeight:"700"}}>{temperature}°C</p>
                 {/* <p className='ac-wind-speed'>바람 세기: {windSpeed}</p>
                 <img src='/images/fan.png' style={{width:"30px"}} className='fan-image'/> */}
                 <div className='d-flex'>
@@ -386,7 +390,7 @@ function RmtAc(props) {
               </div>
             ) : (
               <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-4 flex-column centered'>
-                <p style={{ fontSize:"50px", color:"white", fontWeight:"700"}}>OFF</p>
+                <p style={{ fontSize:"40px", color:"white", fontWeight:"700"}}>OFF</p>
               </div>
             )}
           </div>
@@ -394,12 +398,12 @@ function RmtAc(props) {
           <div className='my-3'>
             {isOn ? (
               <div onClick={handleTurnOff} className='flex-column centered'>
-                <img src='/images/turnon.png' style={{width:"80px"}}/>
+                <img src='/images/turnon.png' style={{width:"60px"}}/>
                 {/* <p style={{fontSize:"30px", fontWeight:"500"}}>OFF</p> */}
               </div>
               ) : (
               <div onClick={handleTurnOn} className='flex-column centered'>
-                <img src='/images/turnoff.png' style={{width:"80px"}}/>
+                <img src='/images/turnoff.png' style={{width:"60px"}}/>
                 {/* <p style={{fontSize:"30px", fontWeight:"500"}}>ON</p> */}
               </div>
             )}
@@ -428,11 +432,11 @@ function RmtAc(props) {
           </div>
 
           <div className='d-flex justify-content-around mt-4'>
-            <button className='btn mode-btn btn-lg'
+            <button className='btn mode-btn btn-sm btn-outline-secondary'
             onClick={() => {handleClick('mode1')}}>mode 1</button>
-            <button className='btn mode-btn btn-lg'
+            <button className='btn mode-btn btn-sm btn-outline-secondary'
             onClick={() => {handleClick('mode2')}}>mode 2</button>
-            <button className='btn mode-btn btn-lg'
+            <button className='btn mode-btn btn-sm btn-outline-secondary'
             onClick={() => {handleClick('mode3')}}>mode 3</button>
           </div>
 

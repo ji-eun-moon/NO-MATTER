@@ -120,7 +120,7 @@ function RoutineResult() {
       }).then((response) => {
         // console.log(response.data)
         const hubUuId = response.data.hubUuid
-        setTopic(hubUuId + '/ROUTINE')
+        setTopic(hubUuId + '/ROUTINE/')
       })
     }
   }, [])
@@ -291,7 +291,7 @@ function RoutineResult() {
         }).then((response) => {
           console.log('등록 후 루틴', response.data)
           const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          publishMessage(`ROUTINE/${result}`)
+          publishMessage(`${result}`)
           // console.log(result)
           navigate('/routine')
         })
@@ -314,7 +314,7 @@ function RoutineResult() {
         }).then((response) => {
           console.log('등록 후 루틴', response.data)
           const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          publishMessage(`ROUTINE/${result}`)
+          publishMessage(`${result}`)
           // console.log(result)
           navigate('/routine')
         })
