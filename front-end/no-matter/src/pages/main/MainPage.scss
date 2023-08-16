@@ -34,3 +34,16 @@
     margin-top: 10px;
     color: #777;
   }
+
+  .voice-container {
+    width: 93%;
+    position: absolute;
+    background-color: #000000;
+    border-radius: 10px;
+    bottom: 50px;
+    padding: 20px;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 998;
+  }
