@@ -151,7 +151,7 @@ function MoblieLanding() {
 
       <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='/images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/intro/6.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>편리함을 공유하기</h2>
@@ -163,7 +163,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='/images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/intro/8.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>DIY 맞춤 리모컨</h2>
@@ -175,7 +175,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-            <img src='/images/phone.png' style={{width:"250px"}}/>
+            <img src='/images/intro/7.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>나만의 루틴</h2>
