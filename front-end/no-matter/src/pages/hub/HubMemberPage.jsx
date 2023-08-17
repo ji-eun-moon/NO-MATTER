@@ -1,21 +1,16 @@
-import React, { useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useLocation} from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import axiosInstance from '../../config/axios'
+import axiosInstance from '../../config/axios.jsx'
 
 import Card from '../../components/Card.jsx';
 import SwipeCard from '../../components/SwipeCard.jsx';
 import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
+import { Box, Button, Modal } from '@mui/material';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import TextField from '@mui/material/TextField';
 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'; // 멤버 아이콘
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
@@ -54,13 +49,9 @@ function HubMemberPage() {
   const [curUser, setCurUser] = useState([])
 
     const location = useLocation();
-    // console.log('location',location.state)
     const userHubAuth = location.state;
-    // const adminHubsId = location.state;
-    // console.log('adminHubsId', adminHubsId)
   
   const handleInviteOpen = (e) => {
-    // console.log('click')
     setInviteOpen(true);
     e.stopPropagation();
   };
@@ -70,7 +61,6 @@ function HubMemberPage() {
     setCodeStatus(false)
   };
   const handleModifyOpen = (user) => {
-    console.log('current User',user)
     if(user[2] === 'manager'){
       setManagerCheck(true)
       setUserCheck(false)
@@ -79,17 +69,14 @@ function HubMemberPage() {
       setManagerCheck(false)
       setUserCheck(true)
     }
-    // console.log('click')
     setModifyOpen(true);
     setCurUser(user)
-    // e.stopPropagation();
   }
 
   const handleModifyClose = (e) => {
     e.stopPropagation();
     setModifyOpen(false);
     window.location.reload()
-    console.log('close 후 ', users)
   };
 
 
@@ -106,11 +93,8 @@ function HubMemberPage() {
         'grade' : 'manager'
       }
     })
-    .then((response) => {  
-      // console.log('response',response.data)
+    .then(() => {  
       getUser(hubId)
-      // setHubs(response.data)
-      // setLoading(false);
     })
   }
   const onUser = (curUser) => {
@@ -126,11 +110,8 @@ function HubMemberPage() {
         'grade' : 'user'
       }
     })
-    .then((response) => {  
-      console.log('user로 바꿈',response.data)
+    .then(() => {  
       getUser(hubId)
-      // setHubs(response.data)
-      // setLoading(false);
     })
   }
   // 특정 허브 정보 저장
@@ -142,35 +123,21 @@ function HubMemberPage() {
     })
     .then((response) => {
       const specificHub = response.data.find(hub => hub.hubId === parseInt(hubId));
-      console.log('specificHub 확인: ', specificHub)
       setHub(specificHub);
       setUsersHubsId(specificHub.usersHubsId)
     });
   }
 
   const getUser = (hubId) => {   
-    // json-server 테스트용
-    // axios.get(`http://localhost:3001/hubs/${id}`)
-    // .then((response) => {
-    //   setHub(response.data)  // 허브 정보
-    //   setRemotes(response.data.remotes) // 유저 리스트
-    // })
-
     axiosInstance({
       method : 'Get',
       url : `/hub/members/${hubId}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-      // console.log(response.data)
-      // console.log(response.data[0][0])
-      // console.log(response.data[0][1])
-      // console.log(response.data[0][2])
       setUsers(response.data) // 유저 리스트
-      console.log('users', response.data)
       setLoading(false);
     })
-
   }
 
   useEffect(() => {
@@ -179,7 +146,6 @@ function HubMemberPage() {
   }, [hubId])
 
   const getCode = (event) => {
-    // const hubId = id
     event.preventDefault()
     axiosInstance({
         method : 'Get',
@@ -187,7 +153,6 @@ function HubMemberPage() {
         headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {
-        console.log('초대 코드 생성 성공', response.data)
         const res = response.data.split(' ')
         const code = res[0]
         const date = res[1].substring(0, 16).replace('T', ' ')
@@ -195,14 +160,12 @@ function HubMemberPage() {
         setDate(date)
         setCodeStatus(true)
     })
-    .catch((err) => {
-        console.log('초대 코드 생성 실패', err)
+    .catch(() => {
         setCodeStatus(false)
       })        
   }
 
   const clickDelete = (changeUserHubId) => {
-    console.log('click Delete')
     axiosInstance({
       method : 'Post',
       url : 'userhub/outUserHubId',
@@ -213,19 +176,9 @@ function HubMemberPage() {
         'grade' : 'manager'
       }
     })
-    .then((response) => {  
-      console.log('response',response.data)
+    .then(() => {  
       window.location.reload()
-      // setHubs(response.data)
-      // setLoading(false);
     })
-
-  }
-
-  const clickModify = (e) => {
-    e.stopPropagation();
-    console.log('click Modify')
-    setModifyOpen(true);
   }
 
   const sortedUsers = users.sort((a, b) => {
@@ -255,7 +208,7 @@ function HubMemberPage() {
         <>
         {hub.userHubAuth === 'admin'?
         
-        <div key={user[0]} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
+          <div key={user[0]} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden', pointerEvents: user[2] === 'admin' ? 'none' : 'auto'}}>
 
             <SwipeCard >
               <div className='d-flex align-items-center justify-content-between' 
@@ -391,7 +344,6 @@ function HubMemberPage() {
                 </div>
                 : <CopyToClipboard
                     text={inviteCode}
-                    // onCopy={() => toast.success(`초대 링크가 복사되었습니다.`, {autoClose: 3000})}
                   >
                     <div className='flex-column centered'>
                       <p style={{padding:'10px 0px 0px 0px'}}>{inviteCode}</p>

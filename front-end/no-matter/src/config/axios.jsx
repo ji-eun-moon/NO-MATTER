@@ -18,7 +18,6 @@ instance.interceptors.request.use(
   },
   (error) => {
     // 요청 전에 에러가 발생한 경우 처리하는 로직을 구현합니다.
-    console.log(error)
     return Promise.reject(error);
   }
 );
@@ -33,7 +32,6 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
     // 토큰이 만료되었거나 유효하지 않은 경우에만 토큰을 재발급 받을 수 있도록 조건을 설정
     if (error.response.status === 403 && !originalRequest._retry) {
-      console.log(error)
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행
       return axios.post('https://i9c105.p.ssafy.io/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
@@ -50,7 +48,6 @@ instance.interceptors.response.use(
         // 여기에 오류 처리 코드를 작성
         alert('세션이 만료되어 로그아웃 되었습니다')
         localStorage.clear()
-        console.log(error)
         localStorage.clear()
         sessionStorage.clear()
         window.location.href = '/login';
