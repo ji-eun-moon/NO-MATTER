@@ -35,11 +35,6 @@ const onBluetooth = (newcharacteristic, newcharacteristicValue)=>{
   setCharacteristic(newcharacteristic)
   setCharacteristicValue(newcharacteristicValue)
 }
-// console.log(typeof onBluetooth);
-
-useEffect(() => {
-  // console.log('부모의 char', characteristic)
-}, [characteristic, characteristicValue])
 
 
 const onWifi = (newcharacteristicValue)=>{
@@ -70,7 +65,6 @@ const steps = [
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  // const [allCompleted, setAllCompleted] = React.useState(false);
 
   const totalSteps = () => {
     return steps.length;
@@ -85,16 +79,13 @@ const steps = [
   };
 
   const allStepsCompleted = () => {
-    // setAllCompleted(true)
     return completedSteps() === totalSteps();
   };
 
   const handleNext = () => {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
+        ? steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -114,11 +105,6 @@ const steps = [
     handleNext();
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
-
   const AddHub = () => {
     const navigate = useNavigate();
     axiosInstance({
@@ -132,8 +118,7 @@ const steps = [
         "userHubName" : hubName
       }
     })
-    .then((response) => {
-      console.log(response)
+    .then(() => {
       console.log('성공')
       navigate('/hubs');    
     })
@@ -177,17 +162,12 @@ const steps = [
           ) : (
             <React.Fragment>
               <div sx={{ mt: 2, mb: 1, py: 1 }} className='container'>
-                {/* <span style={{fontSize:"25px", fontStyle:"bold", margin:"0px 0px 10px 0px"}}>
-                  Step {activeStep + 1}
-                </span> */}
                 <br />
-                {/* <Stepper nonLinear activeStep={activeStep}> */}
                   {steps.map((step, index) => (
                     <Step key={step.label} completed={completed[index]}>
                       {activeStep === index && step.component}
                     </Step>
                   ))}
-                {/* </Stepper> */}
               </div>
               <Box className='d-flex justify-content-evenly mt-5' sx={{ display: 'flex', flexDirection: 'row', pt: 2, width:"100%",position:"fixed", bottom:"100px"}} >
                 
@@ -199,8 +179,6 @@ const steps = [
                 >
                   Back
                 </Button>
-                
-                {/* <Box sx={{ flex: '1 1 auto' }} /> */}
                 
                 {activeStep !== steps.length &&
                   (completed[activeStep] ? (

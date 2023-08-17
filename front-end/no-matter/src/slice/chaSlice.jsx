@@ -19,7 +19,7 @@ const chaSlice = createSlice({
       state.characteristicValue = action.payload
     },
     wconnectFailure: (state, action) => {
-      console.log(action.payload)
+      // console.log(action.payload)
       state.characteristic = null
       state.errorMessage = action.payload
     },
@@ -56,15 +56,5 @@ export const cha = (value) => async(dispatch, getState) => {
       }    
     }
   } 
-        // .then(() => {
-        //   console.log('Data written successfully:', value);
-        //   dispatch(wconnectSuccess(value))
-        // })
-        // .catch((error) => {
-        //   console.error('Error writing data:', error);
-        // });
     
-  
-
-
 export default chaSlice.reducer;

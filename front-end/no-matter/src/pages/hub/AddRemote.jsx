@@ -27,7 +27,7 @@ function AddRemotePage() {
 
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
-        if (oldProgress === 100) {
+        if (oldProgress === 200) {
           oldProgress = 0
           return 100;
         }
@@ -84,7 +84,7 @@ function AddRemotePage() {
     setTimeout(() => {
       setHubStatusChange(false)
       navigate(-1)
-    }, 30000)
+    }, 600000)
   }
 
   return (
@@ -104,7 +104,7 @@ function AddRemotePage() {
             fontSize: "30px",
             fontWeight: "bold"
           }}>
-            30초 정도 소요됩니다...
+            1분 정도 소요됩니다...
           </div>
           <Box sx={{ width: '100%' }}>
             {/* <LinearProgress variant="determinate" value={progress} /> */}
@@ -151,15 +151,6 @@ function AddRemotePage() {
           </div>
         </div>
       </Card>
-      {/* <Card>
-        <div className="d-flex align-items-center justify-content-between" 
-        onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true, '', hubId]})} style={{width:"100%"}}>
-          <div className="text-secondary card-text">커스텀 리모컨</div>          
-          <div>
-            <i className="bi bi-chevron-right"></i>
-          </div>
-        </div>
-      </Card> */}
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
         onClick={() => navigate('/hubs/board', {state: hubId})} style={{width:"100%"}}>

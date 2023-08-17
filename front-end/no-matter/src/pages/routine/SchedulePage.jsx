@@ -6,11 +6,8 @@ import Box from '@mui/material/Box';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import GoBack from '../../components/GoBack.jsx'
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function VerticalTabs() {
   const navigate = useNavigate()
@@ -36,33 +33,28 @@ export default function VerticalTabs() {
   }, []);
   
   const onDayChange = (event) => {
-    console.log(event.target.name)
+    // console.log(event.target.name)
     setDay({ ...day, [event.target.name]: event.target.checked });
   };
   const onHourChange = (event, hour) => {
-    console.log(hour)
+    // console.log(hour)
     setHour(hour);
   };
   const onMinuteChange = (event, minute) => {
-    console.log(minute)
+    // console.log(minute)
     setMinute(minute);
   };
   const onAmPmChange = (event, ampm) => {
-    console.log(ampm)
+    // console.log(ampm)
     setAmPm(ampm);
   };
 
   const onSubmit = () => {
-    // if (command.trim() !== '') {
-      navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm}, editing: false } });
-    // } else {
-    //   window.alert('등록할 스케줄을 입력하세요.');
-    // }
+    navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm}, editing: false } });
   }
 
 
   return (
-    // <div className='d-flex flex-column justify-content-center ' style={{height:"100%"}}>    
       <div className='container page-container'>
         <div className='d-flex mt-5 mb-3'>
           <GoBack /> 
@@ -109,7 +101,6 @@ export default function VerticalTabs() {
                 display: 'flex', 
                 justifyContent: 'space-between',
                 width: "80%",
-                // height: "40vh",
                 border: '0.6px solid',
                 borderColor: 'grey.400', 
                 borderRadius: '6px' }}

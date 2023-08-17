@@ -21,25 +21,9 @@ function RmtFanUi(props) {
   const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
-  const [progress, setProgress] = React.useState(0);
-
-  // React.useEffect(() => {
-  //   const interval = 30000 / 100; 
-  //   const timer = setInterval(() => {
-  //     setProgress((oldProgress) => {
-  //       if (oldProgress === 100) {
-  //         clearInterval(timer);
-  //         return 100;
-  //       }
-  //       return oldProgress + 1;
-  //     });
-  //   }, interval);
-
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
-
+  const [handleBtn, setHandleBtn] = useState('')
+  const [isAddComplete, setIsAddComplete] = useState(false)
+  const [isAddCompleteModal, setIsAddCompleteModal] = useState(false)
 
   useEffect(() => {
     if (props.remoteName === '') {
@@ -53,53 +37,62 @@ function RmtFanUi(props) {
   const hubId = props.hubId
 
   const remoteSave = () => {
-    console.log('Save')
     setNotSave(false)
-
-    // setTimeout(() => {
-      axiosInstance({
-        method : 'POST',
-        url : '/remote/register',
-        data: {
-            "hubId" : hubId,
-            "controllerName" : saveRmtName,
-            "remoteType" : "Fan",
-            "remoteCode" : saveRmtCode
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        navigate(-1)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-
-    // },30000)
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "Fan",
+          "remoteCode" : saveRmtCode
+      }
+    })
+    .then(() => {
+      navigate(-1)
+    })
   }
 
   const handleClose = () => {
     setOpen(false);
+    setIsAddCompleteModal(false)
   };
 
   const handleClick = (e) => {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
+      setHandleBtn(e)
       props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
       props.publishMessage(`${saveRmtCode}/${e}`)
     }
   }
 
+  useEffect(() => {
+    if (isCreate) {
+      let msg = props.receiveMessage
+      let msgSlice = msg.split('/')
+      let msglength = msgSlice.length
+      let receivedMessage = msgSlice[msglength - 1]
+      if (receivedMessage === '#TRUE') {
+        setIsAddComplete(true)
+        setOpen(false)
+        setIsAddCompleteModal(true)
+      } else if (receivedMessage === '#FALSE') {
+        setIsAddComplete(false)
+        setOpen(false)
+        setIsAddCompleteModal(true)
+      }
+    }
+  }, [props.receiveMessage])
+
   const onNameChange = useCallback((event) => {
     setRmtName(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const onCodeChange = useCallback((event) => {
     setRmtCode(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const settingRmtName = () => {
@@ -147,40 +140,8 @@ function RmtFanUi(props) {
     }
   };
 
-  const filledFanImages = Array.from(() => (
-    <img src='/images/fan-filled.png' alt='' style={{ width: '30px' }} className='fan-image me-1' />
-  ));
-
   return (
-    // <div className='page-container container'>
-    <>
-    {/* {!notSave ? 
-      <div className="container page-container">
-        <div className='d-flex flex-column justify-content-center align-items-center'>
-          <div style={{
-            width: "500px",
-            height: "500px",
-            backgroundImage: `url("/images/logoGif.gif")`,
-            backgroundSize: "cover",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            color: "black", // 텍스트 색상 설정,
-            fontSize: "30px",
-            fontWeight: "bold"
-          }}>
-            30초 정도 소요됩니다...
-          </div>
-          <Box sx={{ width: '100%' }}>
-            <div className="progress">
-              <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </Box>
-        </div>
-      </div>    
-      
-      :      
- */}
+    <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -294,7 +255,7 @@ function RmtFanUi(props) {
           <Box sx={{ ...modalStyle, width: 300 }}>
             <h2 id="child-modal-title">버튼을 등록합니다</h2>
             <p id="child-modal-description">
-              허브를 향해<br/>리모컨 버튼을 눌러주세요
+              허브를 향해<br/>리모컨 버튼을 3번 눌러주세요
             </p>
             <div style={{display: 'flex', justifyContent:'flex-end'}}>
               <Button onClick={handleClose}>취소</Button>
@@ -302,45 +263,79 @@ function RmtFanUi(props) {
           </Box>
         </Modal> : null
         }
+        {
+          isAddComplete ? 
+          <Modal
+            open={isAddCompleteModal}
+            onClose={handleClose}
+            aria-labelledby="child-modal-title"
+            aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">버튼을 등록을 완료했습니다</h2>
+              <p id="child-modal-description">
+                확인을 눌러주세요
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={handleClose}>확인</Button>
+              </div>
+            </Box>
+          </Modal> : 
+          <Modal
+            open={isAddCompleteModal}
+            onClose={handleClose}
+            aria-labelledby="child-modal-title"
+            aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">버튼 등록에 실패했습니다</h2>
+              <p id="child-modal-description">
+                다시 시도해 주세요
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={handleClose}>확인</Button>
+              </div>
+            </Box>
+          </Modal>
+        }
+
         <div style={{borderWidth:'1px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC', padding:'30px'}}>
           <div className='mt-3 mb-5 d-flex justify-content-between'>
             {isOn ? (
               <div onClick={handleTurnOff} className='flex-column centered'>
-                <img src='/images/turnon.png' style={{width:"80px"}}/>
+                <img src='/images/turnon.png' alt='' style={{width:"80px"}}/>
               </div>
               ) : (
               <div onClick={handleTurnOn} className='flex-column centered'>
-                <img src='/images/turnoff.png' style={{width:"80px"}}/>
+                <img src='/images/turnoff.png' alt='' style={{width:"80px"}}/>
               </div>
             )}
             <div className='flex-column centered'
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
               onClick={() => {handleClick('WindSpeed')}}>
-              <img src='/images/fan.png' style={{ width: '80%', marginBottom:'8px' }}/>
+              <img src='/images/fan.png' alt='' style={{ width: '80%', marginBottom:'8px' }}/>
             </div>
           </div>
           <div className='d-flex justify-content-between'>
             <div className='flex-column centered'
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
               onClick={() => {handleClick('Timer')}}>
-              <img src='/images/timers.png' style={{ width: '80%', marginRight: '8px' }}/>
+              <img src='/images/timers.png' alt='' style={{ width: '80%', marginRight: '8px' }}/>
             </div>
             <div className='flex-column centered'
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
               onClick={() => {handleClick('Mode')}}>
-              <img src='/images/shuffle-arrows.png' style={{ width: '80%' }}/>
+              <img src='/images/shuffle-arrows.png' alt='' style={{ width: '80%' }}/>
             </div>
             <div className='flex-column centered'
               style={{width: '80px', height:'80px', borderWidth:'3px', borderRadius:'50px', borderStyle:'solid', borderColor:'hwb(0 58% 42%)', backgroundColor:'#FCFCFC'}}
               onClick={() => {handleClick('RotateFan')}}>
-              <img src='/images/rotatefan.png' style={{ width: '80%' }}/>
+              <img src='/images/rotatefan.png' alt='' style={{ width: '80%' }}/>
             </div>
           </div>
         </div>
       </div>
-    {/* </div>
-    } */}
-    </>
+    </div>
   )
 }
 

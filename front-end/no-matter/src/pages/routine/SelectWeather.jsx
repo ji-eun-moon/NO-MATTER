@@ -1,15 +1,10 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GoBack from '../../components/GoBack.jsx';
 import './Routine.scss';
 import Card from '../../components/Card.jsx';
 
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import { Radio, RadioGroup, FormControlLabel, FormControl } from '@mui/material';
 
 function SelectWeather() {
 
@@ -37,12 +32,10 @@ function SelectWeather() {
 
   const handleChange = (event) => {
     setSelectedWeather(event.target.value);
-    console.log(event.target.value)
   };
 
   const onSubmit = () => {
     const selectedCondition = weathers.find((item) => item.condition === selectedWeather)
-    console.log(selectedCondition)
     navigate('/routine/result', { state: { kind: 'weather', condition: selectedCondition, editing: false} });
   };
 
@@ -92,8 +85,6 @@ function SelectWeather() {
           </RadioGroup>
         </FormControl>
       </div>
-      
-
     </div>
   )
 }

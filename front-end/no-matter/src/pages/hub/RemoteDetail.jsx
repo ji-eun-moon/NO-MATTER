@@ -13,6 +13,7 @@ const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 function RemoteDetail() {
   const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
+  const [receiveMessage, setReceiveMessage] = useState('')
 
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
@@ -56,19 +57,12 @@ function RemoteDetail() {
     };
   }, [topic]);
   
-  // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
   useEffect(() => {
     newSocket.on('message', (receivedMessage) => {
       console.log(`Received message: ${receivedMessage}`);
+      setReceiveMessage(receivedMessage)
     });
   }, [newSocket])
-
-  // const subscribeToTopic = () => {
-  //   if (socket && topic) {
-  //     socket.emit('subscribe', topic);
-  //     console.log(`Subscribed to topic: ${topic}`);
-  //   }
-  // };
 
   const publishMessage = (message) => {
     if (socket && topic && message) {
@@ -81,15 +75,15 @@ function RemoteDetail() {
       <div className="container page-container">
         {
           remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-          publishMessage={publishMessage} remoteCode={remoteCode}/> :
+          publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> :
           (
             remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-            publishMessage={publishMessage} remoteCode={remoteCode}/> :
+            publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> :
             (
               remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage} remoteCode={remoteCode}/> : 
+              publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> : 
               <RmtCustom isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage} remoteCode={remoteCode}/>
+              publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/>
             )
           )
         }

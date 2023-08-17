@@ -1,4 +1,3 @@
-// import React, { useState } from 'react'
 import React, {useCallback, useState} from 'react'
 import { TextField, Button } from '@material-ui/core'
 import {useNavigate} from 'react-router-dom'
@@ -63,19 +62,16 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
   const onCheck = (event) => {
     event.preventDefault()
-    console.log('check')
     axiosInstance({
       method : 'Get',
       url : `/user/passwordCheck/${curPwd}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
-      console.log('response',response)
       window.confirm('확인되었습니다')
       setCur(false)
   })
   .catch((err) => {
-      console.log('err',err)
       alert('현재 비밀번호가 일치하지않습니다')
       setCur(true)
     })
@@ -84,8 +80,6 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
-
     axiosInstance({
       method : 'Post',
       url : `/user/modify`,
@@ -93,13 +87,11 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
-      console.log('response',response)
       window.confirm('비밀번호 수정이 완료되었습니다')
       setCur(false)
       navigate('/login')
   })
   .catch((err) => {
-      console.log('err',err)
       alert('비밀번호 수정이 완료되지 않았습니다')
       setCur(true)
     })
@@ -108,7 +100,6 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
 
   const deleteUser = (e) => {
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
     Swal.fire({
       html: '<h2 style="font-size: 1.3em;">진짜 탈퇴하시겠습니까?</h2>',      
       showConfirmButton: false,
@@ -117,24 +108,16 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
       denyButtonText: `탈퇴`,
       cancelButtonText: `취소`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isDenied) {
         axiosInstance({
           method : 'Delete',
           url : `user/delete`,
-          // headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
         })
-        .then((res) => {
+        .then(() => {
           Swal.fire('회원탈퇴가 완료되었습니다.', '', 'info')
           sessionStorage.clear()
           localStorage.clear()
-          console.log(res)
           navigate('/')
-        })
-        .catch((err) => {
-          console.log(err)
-          console.log(err.response.status)
-          // if (err.response.status === 403) {}
         })
       }
     })
@@ -172,7 +155,6 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
           fullWidth
           variant="contained"
           onClick={onCheck}
-          // color="primary"
           className="button"
           style={{ backgroundColor: "#0097B2", color: "#FFFFFF", margin:"1px"}}
           >

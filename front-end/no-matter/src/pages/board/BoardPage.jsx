@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import axiosInstance from '../../config/axios'
 import GoBack from '../../components/GoBack.jsx';
-import { InputLabel, MenuItem, FormControl, Select, TextField, InputAdornment, IconButton } from '@mui/material';
+import { MenuItem, FormControl, Select, TextField, InputAdornment, IconButton, Pagination, Stack } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import { useLocation } from 'react-router-dom'; // 이 부분을 추가하세요.
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'; // 이 부분을 추가하세요.
 
 // import swal from 'sweetalert';
 import Box from '@mui/material/Box';
@@ -43,17 +39,12 @@ function BoardPage() {
   const hubId = location.state;
   const navigate = useNavigate();
 
-  console.log('info', hubId)
-
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
     setWantDown(false)
-    // if (success) {
-    //   console.log('왔다')
-    // }
   };
 
   const getRemotes = () => {
@@ -63,7 +54,6 @@ function BoardPage() {
       url: 'board/list',
     })
       .then((response) => {
-        // console.log(response.data);
         setRemotes(response.data); // 리모컨 리스트
         setLoading(false);
       })
@@ -122,14 +112,12 @@ function BoardPage() {
   }
 
   const onClickBoard = (remote) => {
-    console.log(remote)
     setCurRmt(remote)
     setOpen(true)
     setWantDown(true)
   }
   
   const onDownload = () => {
-    console.log('체크', hubId, curRmt.boardId, rmtName)
     axiosInstance({
       method: 'POST',
       url: '/remote/download',
@@ -140,7 +128,6 @@ function BoardPage() {
       }
     })
       .then((response) => {
-        // console.log(response.data);
         setRemotes(response.data); // 리모컨 리스트
         setLoading(false);
         navigate(`/hubs/${hubId}`)
@@ -168,7 +155,7 @@ function BoardPage() {
 
       <div className='d-flex'>
         <div className='me-1'>
-        <TextField
+          <TextField
             label="리모컨 검색"
             variant="outlined"
             size="small"
@@ -196,7 +183,6 @@ function BoardPage() {
           </FormControl>
         </div>
       </div>
-      
  
       <div className="table-responsive" style={{borderRadius:"10px"}}>
         <table className="table" >
@@ -262,18 +248,12 @@ function BoardPage() {
               
               <Button onClick={onDownload}>Download</Button>
             </Box>
-
           </Box>
-      </Modal>    
-
+        </Modal>    
       </div>
 
-      
       <div className='centered'>
         <Stack spacing={2}>
-          {/* <Pagination 
-            count={totalPages} page={currentPage}
-            onChange={(event, page) => setCurrentPage(page)} /> */}
             <Pagination
             count={totalPages}
             page={currentPage}
