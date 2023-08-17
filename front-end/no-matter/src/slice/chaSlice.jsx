@@ -19,7 +19,7 @@ const chaSlice = createSlice({
       state.characteristicValue = action.payload
     },
     wconnectFailure: (state, action) => {
-      console.log(action.payload)
+      // console.log(action.payload)
       state.characteristic = null
       state.errorMessage = action.payload
     },

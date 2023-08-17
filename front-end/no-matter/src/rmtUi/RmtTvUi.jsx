@@ -95,11 +95,6 @@ function RmtTvUi(props) {
     }
   }, [props.receiveMessage])
 
-  const addRetry = () => {
-    setIsAddCompleteModal(false)
-    handleClick(handleBtn)
-  }
-
   const onNameChange = useCallback((event) => {
     setRmtName(event.currentTarget.value)
   }, [])

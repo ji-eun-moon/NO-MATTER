@@ -33,19 +33,19 @@ export default function VerticalTabs() {
   }, []);
   
   const onDayChange = (event) => {
-    console.log(event.target.name)
+    // console.log(event.target.name)
     setDay({ ...day, [event.target.name]: event.target.checked });
   };
   const onHourChange = (event, hour) => {
-    console.log(hour)
+    // console.log(hour)
     setHour(hour);
   };
   const onMinuteChange = (event, minute) => {
-    console.log(minute)
+    // console.log(minute)
     setMinute(minute);
   };
   const onAmPmChange = (event, ampm) => {
-    console.log(ampm)
+    // console.log(ampm)
     setAmPm(ampm);
   };
 

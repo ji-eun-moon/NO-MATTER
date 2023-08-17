@@ -78,12 +78,12 @@ function RemoteDetail() {
           publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> :
           (
             remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-            publishMessage={publishMessage} remoteCode={remoteCode}/> :
+            publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> :
             (
               remoteType.state[0] === 'Fan' ? <RmtFanUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage} remoteCode={remoteCode}/> : 
+              publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> : 
               <RmtCustom isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-              publishMessage={publishMessage} remoteCode={remoteCode}/>
+              publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/>
             )
           )
         }

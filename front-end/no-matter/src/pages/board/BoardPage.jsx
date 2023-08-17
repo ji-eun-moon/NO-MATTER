@@ -112,14 +112,12 @@ function BoardPage() {
   }
 
   const onClickBoard = (remote) => {
-    console.log(remote)
     setCurRmt(remote)
     setOpen(true)
     setWantDown(true)
   }
   
   const onDownload = () => {
-    console.log('체크', hubId, curRmt.boardId, rmtName)
     axiosInstance({
       method: 'POST',
       url: '/remote/download',

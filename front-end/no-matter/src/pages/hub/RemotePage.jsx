@@ -40,6 +40,7 @@ function RemotePage() {
   const [progress, setProgress] = React.useState(0);
   const [isUse, setIsUse] = useState(true) // 리모컨 사용인가
   const [selectRmtData, setSelectRmtData] = useState([])
+  const [isUseBtn, setIsUseBtn] = useState(false)
 
   const navigate = useNavigate();
   const [topic, setTopic] = useState('')
@@ -87,7 +88,7 @@ function RemotePage() {
 
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
-        if (oldProgress === 100) {
+        if (oldProgress === 200) {
           oldProgress = 0
           return 0;
         }
@@ -101,23 +102,28 @@ function RemotePage() {
   }, []);
 
   // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
-  useNonNullEffect(() => {
-    socket.on('message', (receivedMessage) => {
-      console.log('received',receivedMessage)
-      // 리모컨 사용 일때 허브 수신모드
-      if (receivedMessage === 'RECEIVE' && isUse === true) {
-        publishMessage('RECEIVE')
-        setHubStatusChange(true)
-        setTimeout(() => {
-          setHubStatusChange(false)
-          navigate('/hubs/rmtdetail', { state: selectRmtData })
-        }, 30000)
-      // 리모컨 사용 일때 허브 송출모드
-      } else if (receivedMessage === 'TRANSMIT' && isUse === true) {
-        navigate('/hubs/rmtdetail', { state: selectRmtData })
-      }
-    });
-  }, [socket])
+  // useNonNullEffect(() => {
+  //   if (isUseBtn === true) {
+  //   socket.on('message', (receivedMessage) => {
+  //     console.log('received',receivedMessage)
+  //     let msgSlice = receivedMessage.split('/')
+  //     let msglength = msgSlice.length
+  //     let receivedStatusMessage = msgSlice[msglength - 1]
+  //     // 리모컨 사용 일때 허브 수신모드
+  //     if (receivedStatusMessage === '#RECEIVE' && isUse === true) {
+  //       setHubStatusChange(true)
+  //       publishMessage('TRANSMIT')
+  //       setTimeout(() => {
+  //         console.log('개씨발')
+  //         setHubStatusChange(false)
+  //         navigate('/hubs/rmtdetail', { state: selectRmtData })
+  //       }, 60000)
+  //     // 리모컨 사용 일때 허브 송출모드
+  //     } else if (receivedStatusMessage === '#TRANSMIT' && isUse === true && hubStatusChange === false) {
+  //       navigate('/hubs/rmtdetail', { state: selectRmtData })
+  //     }
+  //   })};
+  // }, [isUseBtn])
 
   const publishMessage = (message) => {
     if (socket && topic && message) {
@@ -128,6 +134,7 @@ function RemotePage() {
   };
 
   const goRmtDetail = (data) => {
+    setIsUseBtn(true)
     setSelectRmtData(data)
     setIsUse(true)
     publishMessage('STATUS')
@@ -228,7 +235,7 @@ function RemotePage() {
     setTimeout(() => {
       navigate('/hubs/addrmt', { state: hubId })
       setHubStatusChange(false)
-    }, 30000)
+    }, 60000)
   }
 
   const hubDelete = () => {
@@ -306,7 +313,7 @@ function RemotePage() {
                 fontSize: "30px",
                 fontWeight: "bold"
               }}>
-                30초 정도 소요됩니다...
+                1분 정도 소요됩니다...
               </div>
               <Box sx={{ width: '100%' }}>
                 <div className="progress">

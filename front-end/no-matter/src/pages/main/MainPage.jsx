@@ -62,7 +62,7 @@ function MainPage() {
   })
 
   const voiceClick = () => {
-    console.log('click');
+    // console.log('click');
     setListening(true);
     setTimeout(() => {
       setListening(false);
@@ -86,7 +86,7 @@ function MainPage() {
       }
 
       if (listening) {
-        console.log('Recognized text:', transcript);
+        // console.log('Recognized text:', transcript);
         processCommand(transcript)
         setTimeout(() => {
 

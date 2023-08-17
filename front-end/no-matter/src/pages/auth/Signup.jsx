@@ -60,14 +60,10 @@ function Signup() {
             url : `/user/idCheck/${userId}`,
         })
         .then((response) => {
-            console.log('response',response)
             window.confirm('사용 가능한 아이디입니다')
-            console.log(idCheck)
             setIdCheck(true)
-            console.log(idCheck)
         })
         .catch((err) => {
-            console.log('err',err)
             alert('이미 사용중인 아이디입니다')
             setIdCheck(false)
           })
