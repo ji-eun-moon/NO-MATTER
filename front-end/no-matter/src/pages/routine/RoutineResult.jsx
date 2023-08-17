@@ -33,8 +33,6 @@ const activeStyle = {
 function RoutineResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
-  // const condition = location.state.condition  // 루틴 조건
 
   const editing = location.state.editing
   const [kind, setKind] = useState('')
@@ -60,7 +58,6 @@ function RoutineResult() {
       console.log('Connected to the broker.');
     });
    
-    // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
     newSocket.on('message', (receivedMessage) => {
       console.log(`Received message: ${receivedMessage}`);
     });
@@ -71,7 +68,6 @@ function RoutineResult() {
       newSocket.disconnect();
     };
   }, []);
-
 
   const subscribeToTopic = () => {
     if (socket && topic) {
@@ -87,7 +83,6 @@ function RoutineResult() {
     }
   };
 
-
   const handleSelection = (hub, remote, action, button) => {
     setSelectedHub(hub);
     setSelectedRemote(remote);
@@ -98,7 +93,6 @@ function RoutineResult() {
       method :'GET',
       url: `/hub/view/${hub.hubId}`,
     }).then((response) => {
-      // console.log(response.data)
       const hubUuId = response.data.hubUuid
       setTopic(hubUuId + '/ROUTINE/')
     })
@@ -118,13 +112,11 @@ function RoutineResult() {
         method :'GET',
         url: `/hub/view/${location.state.selectedHub.hubId}`,
       }).then((response) => {
-        // console.log(response.data)
         const hubUuId = response.data.hubUuid
         setTopic(hubUuId + '/ROUTINE/')
       })
     }
   }, [])
-
 
   const openModal = () => {
     setShowModal(true);
@@ -241,16 +233,6 @@ function RoutineResult() {
 
   // 루틴 등록
   const routineSubmit = () => {
-    // json-server test
-    // axios.post('http://localhost:3001/routines', {
-    //   kind: kind,
-    //   condition: condition,
-    //   selectedHub: selectedHub,
-    //   selectedRemote: selectedRemote,
-    //   selectedRemoteAction: selectedRemoteAction
-    // }).then (
-    //   navigate('/routine')
-    // )
     
     const routineData = {
       kind: kind,
@@ -261,16 +243,6 @@ function RoutineResult() {
       selectedRemoteButton: selectedRemoteButton,
       active: active
     };
-    
-    // 선택한 허브 정보 받아와서 topic 저장
-    // axiosInstance({
-    //   method :'GET',
-    //   url: `/hub/view/${selectedHub.hubId}`,
-    // }).then((response) => {
-    //   // console.log(response.data)
-    //   const hubUuId = response.data.hubUuid
-    //   setTopic(hubUuId + '/ROUTINE')
-    // })
 
     if (editing) {
       // 루틴 수정
@@ -289,7 +261,6 @@ function RoutineResult() {
           method :'GET',
           url: `/routine/list/${selectedHub.hubId}`,
         }).then((response) => {
-          console.log('등록 후 루틴', response.data)
           const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
           publishMessage(`${result}`)
           // console.log(result)
@@ -312,10 +283,8 @@ function RoutineResult() {
           method :'GET',
           url: `/routine/list/${selectedHub.hubId}`,
         }).then((response) => {
-          console.log('등록 후 루틴', response.data)
           const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
           publishMessage(`${result}`)
-          // console.log(result)
           navigate('/routine')
         })
       })

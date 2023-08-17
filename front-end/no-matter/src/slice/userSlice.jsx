@@ -49,27 +49,20 @@ export const signup = (userId, userPassword, userName, userEmail, userNumber) =>
 
     })
     .then((response) => {
-      console.log(response)
       const user = response.data
       dispatch(signupSuccess(user))
       Toast.fire({
         icon: 'success',
         title: '회원가입 완료',
         timer: 1500
-        // footer: '<a href="">Why do I have this issue?</a>'
       })
-
     })
     .catch((err) => {
-      console.log(userId, userPassword, userName, userEmail, userNumber)
-      console.log(err)
       dispatch(signupFailure())
       Toast.fire({
         icon: 'error',
         title: '회원가입 실패',
-        // footer: '<a href="">Why do I have this issue?</a>'
       })
-
     })
   }
 }

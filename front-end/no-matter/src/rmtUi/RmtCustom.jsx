@@ -63,14 +63,14 @@ const RmtCustom = (props) => {
           "remoteCode" : "A1B2C3D4"
       }
     })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    // .then((res) => {
+    //   console.log(res)
+    // })
+    // .catch((err) => {
+    //   console.log(err)
+    // })
     cusBtnmapping.map(function(item) {
-      console.log('이름', item.name)
+      // console.log('이름', item.name)
       axiosInstance({
         method: 'POST',
         url : 'custom/registerButtons',
@@ -79,12 +79,12 @@ const RmtCustom = (props) => {
         }
       })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         navigate(-1)
       })
-      .catch((err) => {
-        console.log('버튼 등록 에러', err)
-      })
+      // .catch((err) => {
+      //   console.log('버튼 등록 에러', err)
+      // })
     })
   }
 
@@ -122,7 +122,7 @@ const RmtCustom = (props) => {
     // cusBtn1:[{icon:'AddIcon'}],
     // cusBtn2:[{icon:'HorizontalRuleIcon'}]
   })
-  console.log(customButton)
+  // console.log(customButton)
   const [open, setOpen] = useState(false);
   
   const [icon, setIcon] = useState('');
@@ -226,7 +226,7 @@ const RmtCustom = (props) => {
 
   const handleCustomButtonName = useCallback((e) => {
     setCustomButtonName(e.currentTarget.value)
-    console.log(e)
+    // console.log(e)
   })
   
   const selectButton = () => {
@@ -286,7 +286,7 @@ const RmtCustom = (props) => {
   }));
 
   cusBtnmapping.map(function(item) {
-    console.log('이름', item.name)
+    // console.log('이름', item.name)
   })
         
   return (

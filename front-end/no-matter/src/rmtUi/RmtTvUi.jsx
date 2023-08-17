@@ -12,10 +12,7 @@ import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
 
 import './RmtTvUi.css'
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Modal, Button, TextField } from '@mui/material';
 
 function RmtTvUi(props) {
   const navigate = useNavigate();
@@ -31,10 +28,11 @@ function RmtTvUi(props) {
   const [saveRmtName, setSaveRmtName] = useState('')
   const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
+  const [handleBtn, setHandleBtn] = useState('')
+  const [isAddComplete, setIsAddComplete] = useState(false)
+  const [isAddCompleteModal, setIsAddCompleteModal] = useState(false)
 
 
-
-  
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
@@ -58,37 +56,51 @@ function RmtTvUi(props) {
             "remoteCode" : saveRmtCode
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         navigate(-1)
       })
-      .catch((err) => {
-        console.log(err)
-      })      
   }
 
   const handleClose = () => {
     setOpen(false);
+    setIsAddCompleteModal(false)
   };
 
   const handleClick = (e) => {
     if (isCreate) {
       setOpen(true)
       setIsModify(true)
+      setHandleBtn(e)
       props.publishMessage(`${saveRmtCode}/${e}`)
     } else {
       props.publishMessage(`${saveRmtCode}/${e}`)
     }
   }
 
+  useEffect(() => {
+    if (isCreate) {
+      let msg = props.receiveMessage
+      let msgSlice = msg.split('/')
+      let msglength = msgSlice.length
+      let receivedMessage = msgSlice[msglength - 1]
+      if (receivedMessage === '#TRUE') {
+        setIsAddComplete(true)
+        setOpen(false)
+        setIsAddCompleteModal(true)
+      } else if (receivedMessage === '#FALSE') {
+        setIsAddComplete(false)
+        setOpen(false)
+        setIsAddCompleteModal(true)
+      }
+    }
+  }, [props.receiveMessage])
+
   const onNameChange = useCallback((event) => {
     setRmtName(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const onCodeChange = useCallback((event) => {
     setRmtCode(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const settingRmtName = () => {
@@ -119,8 +131,7 @@ function RmtTvUi(props) {
   , 'KEY_7', 'KEY_8', 'KEY_9', '-', 'KEY_0']
 
   return(
-    // <div className='page-container container'>
-    <>
+    <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -235,7 +246,7 @@ function RmtTvUi(props) {
           <Box sx={{ ...modalStyle, width: 300 }}>
             <h2 id="child-modal-title">버튼을 등록합니다</h2>
             <p id="child-modal-description">
-              허브를 향해<br/>리모컨 버튼을 눌러주세요
+              허브를 향해<br/>리모컨 버튼을 3번 눌러주세요
             </p>
             <div style={{display: 'flex', justifyContent:'flex-end'}}>
               <Button onClick={handleClose}>취소</Button>
@@ -243,8 +254,43 @@ function RmtTvUi(props) {
           </Box>
         </Modal> : null
         }
+        {
+          isAddComplete ? 
+          <Modal
+            open={isAddCompleteModal}
+            onClose={handleClose}
+            aria-labelledby="child-modal-title"
+            aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">버튼을 등록을 완료했습니다</h2>
+              <p id="child-modal-description">
+                확인을 눌러주세요
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={handleClose}>확인</Button>
+              </div>
+            </Box>
+          </Modal> : 
+          <Modal
+            open={isAddCompleteModal}
+            onClose={handleClose}
+            aria-labelledby="child-modal-title"
+            aria-describedby="child-modal-description"
+          >
+            <Box sx={{ ...modalStyle, width: 300 }}>
+              <h2 id="child-modal-title">버튼 등록에 실패했습니다</h2>
+              <p id="child-modal-description">
+                다시 시도해 주세요
+              </p>
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Button onClick={handleClose}>확인</Button>
+              </div>
+            </Box>
+          </Modal>
+          }
       
-      <button className="ten-key-button" onClick={() => {handleClick('on/off')}} style={{borderRadius: '50px', paddingBottom:'17px'}}><PowerSettingsNewRoundedIcon/></button>
+      <button className="ten-key-button" onClick={() => {handleClick('KEY_POWER')}} style={{borderRadius: '50px', paddingBottom:'17px'}}><PowerSettingsNewRoundedIcon/></button>
       <div></div>
       <div></div>
 
@@ -289,7 +335,7 @@ function RmtTvUi(props) {
       </div>
     </div>
     </div>
-    </>
+    </div>
   )
 }
 

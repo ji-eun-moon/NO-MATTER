@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
-import Box from '@mui/material/Box';
-// import Input from '@mui/material/Input'; 
-import TextField from '@mui/material/TextField';
+import { Box, TextField } from '@mui/material';
 
-
-const ariaLabel = { 'aria-label': 'description' };
 
 export default function Inputs({onHubName}) {
   const [ hubName, setHubName ] = useState('')
@@ -14,7 +10,6 @@ export default function Inputs({onHubName}) {
       setHubName(event.target.value)
     }
   }
-  console.log('hubName : ', hubName)
   onHubName(hubName)
   return (   
     <div>
@@ -35,8 +30,6 @@ export default function Inputs({onHubName}) {
         className='centered'
       >
       <TextField id="standard-basic" label="허브 이름(5자 이내)" variant="standard" value={hubName} onChange={HubNameHandler} />
-
-        {/* <Input  placeholder="허브 이름(5자 이내)" inputProps={{ ...ariaLabel, maxLength: 5 }} /> */}
       </Box>
 
     </div> 
