@@ -114,7 +114,6 @@ function RemotePage() {
   //       setHubStatusChange(true)
   //       publishMessage('TRANSMIT')
   //       setTimeout(() => {
-  //         console.log('개씨발')
   //         setHubStatusChange(false)
   //         navigate('/hubs/rmtdetail', { state: selectRmtData })
   //       }, 60000)
