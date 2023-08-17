@@ -64,7 +64,7 @@ PWA(Progressive Web App)을 이용하여 모바일 환경에서도 서비스 사
 
 ## 아키텍처
 ---
-<img src="S09P12C105\front-end\no-matter\public\images\readme\architecture.png" title="" alt="architecture.png" width="233">
+<img src="S09P12C105/front-end/no-matter/public/images/aarchitecture.png" title="" alt="architecture.png" width="233">
 
 
 
