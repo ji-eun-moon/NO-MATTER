@@ -14,7 +14,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 import io from 'socket.io-client'
-let BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 function useNonNullEffect(callback, deps) {
   const callbackRef = useRef();
