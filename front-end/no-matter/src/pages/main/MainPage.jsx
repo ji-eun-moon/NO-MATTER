@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 
 import useSpeechToText from '../../components/useSpeechToText.jsx';
 
-
 function MainPage() {
   const { transcript, toggleListening, resetTranscript, processCommand } = useSpeechToText();
   const navigate = useNavigate();
@@ -107,7 +106,6 @@ function MainPage() {
       headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
     })
       .then((response) => {
-        // console.log(response.data)
         setHubs(response.data)
       })
   }
@@ -126,7 +124,6 @@ function MainPage() {
       headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
     })
       .then((response) => {
-        // console.log(response.data)
         setRemotes(response.data) // 리모컨 리스트
       })
   }

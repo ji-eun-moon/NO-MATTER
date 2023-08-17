@@ -12,10 +12,7 @@ import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'; // -
 
 import './RmtTvUi.css'
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Modal, Button, TextField } from '@mui/material';
 
 function RmtTvUi(props) {
   const navigate = useNavigate();
@@ -32,9 +29,6 @@ function RmtTvUi(props) {
   const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
-
-
-  
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
@@ -58,13 +52,9 @@ function RmtTvUi(props) {
             "remoteCode" : saveRmtCode
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         navigate(-1)
       })
-      .catch((err) => {
-        console.log(err)
-      })      
   }
 
   const handleClose = () => {
@@ -83,12 +73,10 @@ function RmtTvUi(props) {
 
   const onNameChange = useCallback((event) => {
     setRmtName(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const onCodeChange = useCallback((event) => {
     setRmtCode(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const settingRmtName = () => {
@@ -119,8 +107,7 @@ function RmtTvUi(props) {
   , 'KEY_7', 'KEY_8', 'KEY_9', '-', 'KEY_0']
 
   return(
-    // <div className='page-container container'>
-    <>
+    <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -289,7 +276,7 @@ function RmtTvUi(props) {
       </div>
     </div>
     </div>
-    </>
+    </div>
   )
 }
 

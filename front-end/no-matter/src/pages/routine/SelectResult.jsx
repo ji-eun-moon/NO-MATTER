@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './Routine.scss'
-import { useState, useEffect  } from 'react'
 import axiosInstance from '../../config/axios'
 import Card from '../../components/Card.jsx';
 import SelectButton from './SelectButton.jsx';
@@ -34,10 +33,8 @@ function SelectResult({setShowModal, handleSelection}) {
       url : `/remote/list/${id}`,
     })
     .then((response) => {
-      // console.log(response.data)
       setRemotes(response.data) // 리모컨 리스트
     })
-
   }
 
   useEffect(() => {
@@ -50,16 +47,13 @@ function SelectResult({setShowModal, handleSelection}) {
 
   const selectHub = (hubId) => {
     const selectedHub = hubs.find((hub) => hub.hubId === hubId);
-    // console.log(selectedHub);
     setSelectedHub(selectedHub); // 허브 선택
     getRemote(hubId)
-    // console.log(remotes)
   }
 
   const selectRemote = (remoteId) => {
     const selectedRemote = remotes.find((remote) => remote.remoteId === remoteId)
     const remoteType = selectedRemote.remoteType
-    // console.log(selectedRemote)
     setSelectedRemote(selectedRemote) // 리모컨 선택
     setRemoteType(remoteType)
   }
@@ -132,9 +126,6 @@ function SelectResult({setShowModal, handleSelection}) {
       )
     })
   }
-
-  
-
 
   return (
     <div className='modal-container container page-container centered'>

@@ -63,19 +63,11 @@ function RemoteDetail() {
     };
   }, [topic]);
   
-  // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
   useEffect(() => {
     newSocket.on('message', (receivedMessage) => {
       console.log(`Received message: ${receivedMessage}`);
     });
   }, [newSocket])
-
-  // const subscribeToTopic = () => {
-  //   if (socket && topic) {
-  //     socket.emit('subscribe', topic);
-  //     console.log(`Subscribed to topic: ${topic}`);
-  //   }
-  // };
 
   const publishMessage = (message) => {
     if (socket && topic && message) {

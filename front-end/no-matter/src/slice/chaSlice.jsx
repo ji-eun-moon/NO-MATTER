@@ -56,15 +56,5 @@ export const cha = (value) => async(dispatch, getState) => {
       }    
     }
   } 
-        // .then(() => {
-        //   console.log('Data written successfully:', value);
-        //   dispatch(wconnectSuccess(value))
-        // })
-        // .catch((error) => {
-        //   console.error('Error writing data:', error);
-        // });
     
-  
-
-
 export default chaSlice.reducer;

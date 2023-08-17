@@ -138,16 +138,10 @@ function PCLanding() {
             <p>연동된 제품을 제어할 수 있어요.</p>
           </Fade>
         </div>
-
       </div>
-
-
-
-
       <div className='container'>
         <InstallAccordion />
       </div>
-
     </div>
 
   );

@@ -5,12 +5,11 @@ import axiosInstance from '../../config/axios.jsx'
 import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-import SwipeCard from '../../components/SwipeCard.jsx';
+import SwipeLeft from '../../components/SwipeLeft.jsx';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 import io from 'socket.io-client'
@@ -49,11 +48,6 @@ function RemotePage() {
   const [selectRmtData, setSelectRmtData] = useState([])
 
   const navigate = useNavigate();
-
-
-
-  // topic == 허브uuid/RC/CONTROLL
-  // topic == 허브uuid/IR
   const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
 
@@ -116,14 +110,6 @@ function RemotePage() {
   useNonNullEffect(() => {
     socket.on('message', (receivedMessage) => {
       console.log('received',receivedMessage)
-      // 리모컨 수정 or 추가 일때 허브 수신모드
-      // if (receivedMessage === 'RECEIVE' && isUse === false) {
-      //   navigate('/hubs/addrmt', { state: hubId })
-      // // 리모컨 수정 or 추가 일때 허브 송출모드
-      // } else if (receivedMessage === 'TRANSMIT' && isUse === false) {
-      //   publishMessage('TRANSMIT')
-      //   setHubStatusChange(true)
-      //   setTimeout(setHubStatusChange(false), 30000)
       // 리모컨 사용 일때 허브 수신모드
       if (receivedMessage === 'RECEIVE' && isUse === true) {
         publishMessage('RECEIVE')
@@ -154,8 +140,6 @@ function RemotePage() {
     navigate('/hubs/rmtdetail', { state: data })
   }
 
-
-
   // 특정 허브 정보 저장
   const hubInfo = (hubId) => {
     axiosInstance({
@@ -171,22 +155,6 @@ function RemotePage() {
       });
   }
 
-  // json-server 테스트용
-  // axios.get(`http://localhost:3001/hubs/${id}`)
-  // .then((response) => {
-  //   setHub(response.data)  // 허브 정보
-  //   setRemotes(response.data.remotes) // 리모컨 리스트
-  // })
-
-  ////////////////////
-  //    // S O S    //
-  //    // S O S    //
-  //    // S O S    //
-  ////////////////////
-
-  // 나 좀 살 려 줘
-  // H E L P M E 
-
   const getRemote = (hubId) => {
     axiosInstance({
       method: 'Get',
@@ -197,17 +165,9 @@ function RemotePage() {
         setRemotes(response.data) // 리모컨 리스트
         setLoading(false);
       })
-
   }
 
-  // console.log(hub)
-  // useEffect(() => {
-  //   hubInfo(hubId)
-  //   getRemote(hubId)
-  // }, [hubId])
-
   const clickDelete = (remoteId) => {
-    console.log('click Delete')
     axiosInstance({
       method : 'Delete',
       url : `remote/delete/${remoteId}`,
@@ -216,12 +176,8 @@ function RemotePage() {
     .then((response) => {  
       console.log('response : ',response.data)
       window.location.reload()
-      // setHubs(response.data)
-      // setLoading(false);
     })
-
   }
-
 
   const renderRemoteList = () => {
     if (loading) {
@@ -241,13 +197,13 @@ function RemotePage() {
     return remotes.map(remote => {
       return (
         <div key={remote.remoteId} className='card mb-3' style={{ height: '80px', padding: '0', border: '0px', overflow: 'hidden' }}>
-          <SwipeCard>
+          <SwipeLeft>
             <div className='d-flex align-items-center row'
               style={{ width: "100%" }}>
               <div className='card-text col-11'
                 onClick={() => goRmtDetail([remote.remoteType, false, remote.controllerName, hubId, remote.remoteCode])}>{remote.controllerName}</div>
             </div>
-          </SwipeCard>
+          </SwipeLeft>
           <div className='card-body mb-3 d-flex justify-content-between' style={{ position: 'absolute', padding: '0', width: '100%' }}>
             {/* 리모컨 수정 */}
             <div className="card mb-3 bg-primary" style={{ height: '79px', width: '79px', marginLeft: '1px' }}>
@@ -268,12 +224,7 @@ function RemotePage() {
   }
 
   const goMember = () => {
-    // if(hub.userHubAuth === 'admin'){
     navigate(`/hubs/members/${hubId}`, { state: hub.userHubAuth })
-    // }
-    // else{
-    //   alert('권한이 없습니다')
-    // }
   }
 
   const addRmt = () => {
@@ -285,7 +236,6 @@ function RemotePage() {
       setHubStatusChange(false)
     }, 30000)
   }
-
 
   const hubDelete = () => {
     console.log('hub : ', hub)
@@ -321,29 +271,6 @@ function RemotePage() {
           
         });
     }
-    // else if (hub && hub.userHubAuth === 'admin' && hub.length > 1) {
-    //   swal({
-    //     title: "본인 이외에 사용자가 있어 삭제할 수 없습니다",
-    //     text: "삭제하시면 다시 되돌릴 수 없습니다",
-    //     icon: "warning",
-    //     buttons: true,
-    //     dangerMode: true,
-    //   })
-    //     .then((willDelete) => {
-    //       if (willDelete) {
-    //         axiosInstance({
-    //           method: 'Post',
-    //           url: `/userhub/deleteUserHub/${hubId}`,
-    //           headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}` }
-    //         })
-    //           .then((response) => {
-    //             console.log(response.data)
-    //             navigate('/hubs')
-    //           })
-    //       }
-    //     });
-
-    // }
     else {
       swal({
         title: "정말 나가시겠습니까?",
@@ -367,27 +294,6 @@ function RemotePage() {
     }
   }
 
-  // React.useEffect(() => {
-  //   hubInfo(hubId)
-  //   getRemote(hubId)
-
-  //   const interval = 30000 / 100; 
-  //   const timer = setInterval(() => {
-  //     setProgress((oldProgress) => {
-  //       if (oldProgress === 100) {
-  //         clearInterval(timer);
-  //         return 100;
-  //       }
-  //       return oldProgress + 1;
-  //     });
-  //   }, interval);
-
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, [hubId]);
-
- 
   return (
     <>
       {
@@ -417,38 +323,6 @@ function RemotePage() {
           </div>)
           :
         <div className="container page-container">
-          {/* <div className='d-flex justify-content-between mt-5'>
-            <div className='d-flex'>
-              <GoBack />
-              <h1 className="font-700">{hub.userHubName}</h1>
-              {hub.userHubAuth === 'admin' ?
-                (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
-                  style={{ backgroundColor: "#fdd969", borderRadius: "10px", padding: "5px 10px 5px" }}>
-                  <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
-                  <p style={{ fontWeight: 'bold', fontSize: '7px', color: "white", margin: "0px" }}>ADMIN</p>
-                </div>)
-                : (hub.userHubAuth === 'manager' ?
-                  (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
-                    style={{ backgroundColor: "#11c942", borderRadius: "10px", padding: "5px 10px 5px" }}>
-                    <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
-                    <p style={{ fontWeight: 'bold', fontSize: '6px', color: "white", margin: "0px" }}>MANAGER</p>
-                  </div>)
-                  :
-                  (<div className='d-flex flex-column justify-content-center align-items-center ms-2'
-                    style={{ backgroundColor: "#b6b6b6", borderRadius: "10px", padding: "5px 10px 5px" }}>
-                    <img src="/images/crown.png" alt="crown" style={{ width: "16px", height: "25px" }} />
-                    <p style={{ fontWeight: 'bold', fontSize: '8px', color: "white", margin: "0px" }}>USER</p>
-                  </div>))
-              }
-            </div>
-            {hub.userHubAuth === 'admin' &&
-                <div className='d-flex' onClick={goMember}>
-                  <div className="main-backgroud-color px-2 rounded centered">
-                    <i className="bi bi-people-fill fs-2 text-white"></i>
-                  </div>
-                </div>
-            }
-          </div> */}
           <div className='d-flex justify-content-between align-items-center mt-5'>
             <div className='d-flex align-items-center'>
               <GoBack />

@@ -23,16 +23,18 @@ function SettingPage() {
         <h1 className="font-700">My Setting</h1>
       </div>
 
-      <Card>
-        <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
-          <div style={{fontSize:"18px", fontWeight:"bold"}}>
-              회원 정보 수정
+      <div onClick={() => navigate('/setting/useredit')}>
+        <Card>
+          <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
+            <div style={{fontSize:"18px", fontWeight:"bold"}}>
+                회원 정보 수정
+            </div>
+            <div>
+              <i className="bi bi-chevron-right" ></i>
+            </div>
           </div>
-          <div>
-            <i className="bi bi-chevron-right" onClick={() => navigate('/setting/useredit')}></i>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
       <Card>
         <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
           <div style={{fontSize:"18px", fontWeight:"bold"}}>

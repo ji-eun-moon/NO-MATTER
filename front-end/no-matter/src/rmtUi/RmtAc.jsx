@@ -4,11 +4,7 @@ import './RmtAc.scss'
 import axiosInstance from '../config/axios'
 
 import GoBack from '../components/GoBack.jsx'
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-
+import { Modal, Button, Box, TextField } from '@mui/material';
 
 function RmtAc(props) {
   const navigate = useNavigate();
@@ -30,9 +26,6 @@ function RmtAc(props) {
   const [saveRmtCode, setSaveRmtCode] = useState('')
   const [isNameSet, setIsNameSet] = useState(false)
 
-  const [progress, setProgress] = React.useState(0);
-
-
   useEffect(() => {
     if (props.remoteName === '') {
       setIsNameSet(true)
@@ -42,48 +35,23 @@ function RmtAc(props) {
     }
   }, [])
 
-  // React.useEffect(() => {
-  //   const interval = 30000 / 100; 
-  //   const timer = setInterval(() => {
-  //     setProgress((oldProgress) => {
-  //       if (oldProgress === 100) {
-  //         clearInterval(timer);
-  //         return 100;
-  //       }
-  //       return oldProgress + 1;
-  //     });
-  //   }, interval);
-
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
-
   const hubId = props.hubId
 
   const remoteSave = () => {
-    console.log('Save');
     setNotSave(false);
-
-    // setTimeout(() => {
-      axiosInstance({
-        method : 'POST',
-        url : '/remote/register',
-        data: {
-            "hubId" : hubId,
-            "controllerName" : saveRmtName,
-            "remoteType" : "AC",
-            "remoteCode" : saveRmtCode
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        navigate(-1)
-      })
-      .catch((err) => {
-        console.log(err)
-      })      
-    // }, 30000);
+    axiosInstance({
+      method : 'POST',
+      url : '/remote/register',
+      data: {
+          "hubId" : hubId,
+          "controllerName" : saveRmtName,
+          "remoteType" : "AC",
+          "remoteCode" : saveRmtCode
+      }
+    })
+    .then((res) => {
+      navigate(-1)
+    })
   }
 
   const handleClose = () => {
@@ -104,12 +72,10 @@ function RmtAc(props) {
 
   const onNameChange = useCallback((event) => {
     setRmtName(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const onCodeChange = useCallback((event) => {
     setRmtCode(event.currentTarget.value)
-    // console.log(event.currentTarget.value)
   }, [])
 
   const settingRmtName = () => {
@@ -215,44 +181,15 @@ function RmtAc(props) {
   };
 
   const filledFanImages = Array.from({ length: windSpeed }, (_, index) => (
-    <img key={index} src='/images/fan-filled.png' style={{ width: '25px' }} className='fan-image me-1' />
+    <img key={index} alt='' src='/images/fan-filled.png' style={{ width: '25px' }} className='fan-image me-1' />
   ));
 
   const emptyFanImages = Array.from({ length: 4 - windSpeed }, (_, index) => (
-    <img key={index} src='/images/fan.png' style={{ width: '25px' }} className='fan-image me-1' />
+    <img key={index} alt='' src='/images/fan.png' style={{ width: '25px' }} className='fan-image me-1' />
   ));
 
   return (
-    // <div className='page-container container'>
-    <>
-    {/* {!notSave ? 
-      <div className="container page-container">
-        <div className='d-flex flex-column justify-content-center align-items-center'>
-          <div style={{
-            width: "500px",
-            height: "500px",
-            backgroundImage: `url("/images/logoGif.gif")`,
-            backgroundSize: "cover",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            color: "black", // 텍스트 색상 설정,
-            fontSize: "30px",
-            fontWeight: "bold"
-          }}>
-            30초 정도 소요됩니다...
-          </div>
-          <Box sx={{ width: '100%' }}>
-             <LinearProgress variant="determinate" value={progress} /> 
-            <div className="progress">
-              <div className="progress-bar" role="progressbar" style={{width: `${progress}%`}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </Box>
-        </div>
-      </div>    
-      
-      :       */}
-
+    <div className='page-container container'>
       <div className='d-flex flex-column mt-5'>
 
         <div className='d-flex justify-content-between'>
@@ -381,8 +318,6 @@ function RmtAc(props) {
             {isOn? (
               <div style={{backgroundColor:"#DCDBDB", borderRadius:"20px"}} className='py-3 flex-column centered'>
                 <p style={{ fontSize:"40px", color:"black", fontWeight:"700"}}>{temperature}°C</p>
-                {/* <p className='ac-wind-speed'>바람 세기: {windSpeed}</p>
-                <img src='/images/fan.png' style={{width:"30px"}} className='fan-image'/> */}
                 <div className='d-flex'>
                   {filledFanImages}
                   {emptyFanImages}
@@ -398,13 +333,11 @@ function RmtAc(props) {
           <div className='my-3'>
             {isOn ? (
               <div onClick={handleTurnOff} className='flex-column centered'>
-                <img src='/images/turnon.png' style={{width:"60px"}}/>
-                {/* <p style={{fontSize:"30px", fontWeight:"500"}}>OFF</p> */}
+                <img src='/images/turnon.png' alt='' style={{width:"60px"}}/>
               </div>
               ) : (
               <div onClick={handleTurnOn} className='flex-column centered'>
-                <img src='/images/turnoff.png' style={{width:"60px"}}/>
-                {/* <p style={{fontSize:"30px", fontWeight:"500"}}>ON</p> */}
+                <img src='/images/turnoff.png' alt='' style={{width:"60px"}}/>
               </div>
             )}
           </div>
@@ -439,13 +372,9 @@ function RmtAc(props) {
             <button className='btn mode-btn btn-sm btn-outline-secondary'
             onClick={() => {handleClick('mode3')}}>mode 3</button>
           </div>
-
-
         </div>
       </div>
-    {/* // </div> 
-    // */}
-    </>
+    </div>
   );
 }
 

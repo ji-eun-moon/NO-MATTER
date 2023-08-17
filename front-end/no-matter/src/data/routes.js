@@ -8,7 +8,6 @@ import AddRemote from '../pages/hub/AddRemote.jsx';
 import RemoteDetail from '../pages/hub/RemoteDetail.jsx';
 import RmtTvUi from '../rmtUi/RmtTvUi.jsx';
 import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
-import RmtCustom from '../rmtUi/RmtCustom.jsx';
 import RmtAc from '../rmtUi/RmtAc.jsx';
 
 //pages/board
@@ -69,14 +68,6 @@ const routes = [
   {
     path:'/hubs/rmtfan',
     element: <RmtFanUi />
-  },
-  {
-    path:'/hubs/rmtcustom/1',
-    element: <RmtCustom />
-  },
-  {
-    path:'/hubs/rmtcustom/0',
-    element: <RmtCustom />
   },
   {
     path:'/hubs/rmtac',

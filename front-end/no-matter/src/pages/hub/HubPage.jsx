@@ -1,14 +1,9 @@
-import React from 'react'
-import axiosInstance from '../../config/axios'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import axiosInstance from '../../config/axios.jsx'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Box, Paper, Modal, TextField, Button } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 
@@ -38,10 +33,8 @@ function HubPage() {
     setOpen(true);
   };
   const handleClose = (e) => {
-    console.log(open)
     e.stopPropagation();
     setOpen(false);
-     // 모달 닫힐때마다 등록 방법 선택 초기화
     setSelectCode(false);
     setCode('')
     setHubName('')
@@ -72,7 +65,6 @@ function HubPage() {
         }
       });
   
-      console.log(response);
       setOpen(false);
       await getHubs();  // 업데이트된 허브 목록을 가져옵니다.
       navigate('/hubs');
@@ -92,36 +84,7 @@ function HubPage() {
     }
   }
   
-  // const check = () => {
-  //   axiosInstance({
-  //     method : 'Post',
-  //     url : 'http://localhost:8080/api/v1/hub/readCode',
-  //     data : {
-  //       'code' : code,
-  //       'userHubName' : hubName
-  //     }
-  //   })
-  //   .then((response)=>{
-  //     console.log(response)
-  //     setOpen(false)
-  //     // window.location.reload();
-  //     navigate('/hubs')
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //     alert('초대 코드를 다시 입력해주세요')
-  //   })
-
-  // }
   const getHubs = () => {
-
-
-    // 테스트 - json-server
-    // axios.get('http://localhost:3001/hubs/')
-    // .then((response) => {
-    //   // console.log(response.data)
-    //   setHubs(response.data)
-    // })
 
     axiosInstance({
       method : 'Get',
@@ -129,7 +92,6 @@ function HubPage() {
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {  
-      // console.log(response.data)
       setHubs(response.data)
       setLoading(false);
     })
@@ -156,12 +118,10 @@ function HubPage() {
     return hubs.map(hub => {
       return (
         <Card key={hub.hubId}>
-        {/* <Card key={hub.id}> */}
             <div className='d-flex align-items-center justify-content-between' 
                   onClick={() => navigate(`/hubs/${hub.hubId}`, { state: hub })}
                   style={{width:"100%"}}>
               <div className='card-text'>
-                {/* {hub.title} */}
                 {hub.userHubName} 
               </div>
               <div>
@@ -173,24 +133,15 @@ function HubPage() {
     })
   }
 
-
-  // const choice = () => {
-
-  // }
   return (
     <div className="page-container container">
       <div className='d-flex justify-content-between mt-5 container'>
         <h1 className="font-700">My Hub</h1>
-        {/* <div className="main-backgroud-color px-2 rounded">
-          <i className="bi bi-people-fill fs-2 text-white"></i>
-        </div> */}
-
       </div>
       <hr />
       {renderHubList()}
       <Card>
         <div className="centered" style={{width:"100%"}}
-            // onClick={() => navigate('/hubs/addhub')}
             onClick={handleOpen}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
           <div className="text-secondary" >허브 추가하기</div>        
