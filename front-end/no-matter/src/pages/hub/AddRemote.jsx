@@ -8,13 +8,7 @@ import { Box } from "@mui/material";
 import { useLocation } from 'react-router-dom'; // 이 부분을 추가하세요.
 
 import io from 'socket.io-client'
-const protocol = window.location.protocol
-let BrokerAddress = ''
-if (protocol === 'https:') {
-  BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
-} else {
-  BrokerAddress = 'ws://i9c105.p.ssafy.io:3002'
-}
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 function AddRemotePage() {
   const navigate = useNavigate();
