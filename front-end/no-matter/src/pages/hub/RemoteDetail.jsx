@@ -9,7 +9,7 @@ import axiosInstance from '../../config/axios.jsx'
 
 import io from 'socket.io-client'
 const protocol = window.location.protocol
-let BrokerAddress = 'http://i9c105.p.ssafy.io:3002'
+let BrokerAddress = 'https://i9c105.p.ssafy.io:3002'
 // let BrokerAddress = ''
 // if (protocol === 'https:') {
 //   BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
