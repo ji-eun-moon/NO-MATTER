@@ -1,6 +1,6 @@
 ### 누구나 쉽게, 스마트 홈의 완성
 
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\logo.png" title="" alt="logo.png" width="233">   
+<img src="S09P12C105/front-end/no-matter/public/images/logo.png" title="" alt="logo.png" width="233">   
 
 
 
@@ -31,7 +31,7 @@ SSAFY 9기 공통 프로젝트
 ---
 
 (1) 설문
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\readme\survey.png" title="" alt="survey.png" width="233">
+<img src="S09P12C105\front-end\no-matter\public\images\readme\survey.png" title="" alt="survey.png" width="233">
 설문을 진행하여 서비스의 필요성과 이용 가능성에 대해 조사하여, NoMatter 서비스의 제작 배경을 확인했습니다.
 <br>
 (2) 웹앱
@@ -64,7 +64,7 @@ PWA(Progressive Web App)을 이용하여 모바일 환경에서도 서비스 사
 
 ## 아키텍처
 ---
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\readme\architecture.png" title="" alt="architecture.png" width="233">
+<img src="S09P12C105\front-end\no-matter\public\images\readme\architecture.png" title="" alt="architecture.png" width="233">
 
 
 
@@ -75,15 +75,15 @@ PWA(Progressive Web App)을 이용하여 모바일 환경에서도 서비스 사
 
 ## UseCase
 ---
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\readme\UseCase.png" title="" alt="UseCase.png" width="233">
+<img src="S09P12C105\front-end\no-matter\public\images\readme\UseCase.png" title="" alt="UseCase.png" width="233">
 
 
 
 ## 기능 명세서
 ---
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\readme\feature1.png" title="" alt="feature1.png" width="233">
+<img src="S09P12C105\front-end\no-matter\public\images\readme\feature1.png" title="" alt="feature1.png" width="233">
 
-<img src="C:\Users\SSAFY\Desktop\Project-tjgml\S09P12C105\front-end\no-matter\public\images\readme\feature2.png" title="" alt="feature2.png" width="233">
+<img src="S09P12C105\front-end\no-matter\public\images\readme\feature2.png" title="" alt="feature2.png" width="233">
 
 
 
