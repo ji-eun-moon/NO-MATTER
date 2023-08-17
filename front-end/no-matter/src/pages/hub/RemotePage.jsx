@@ -13,13 +13,7 @@ import Box from '@mui/material/Box';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 
 import io from 'socket.io-client'
-const protocol = window.location.protocol
-let BrokerAddress = ''
-if (protocol === 'https:') {
-  BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
-} else {
-  BrokerAddress = 'ws://i9c105.p.ssafy.io:3002'
-}
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 function useNonNullEffect(callback, deps) {
   const callbackRef = useRef();

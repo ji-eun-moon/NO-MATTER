@@ -7,13 +7,7 @@ import './Routine.scss'
 import Form from 'react-bootstrap/Form';
 
 import io from 'socket.io-client'
-const protocol = window.location.protocol
-let BrokerAddress = ''
-if (protocol === 'https:') {
-  BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
-} else {
-  BrokerAddress = 'ws://i9c105.p.ssafy.io:3002'
-}
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 const conditionStyle = {
   border: "2px solid #0097B2",

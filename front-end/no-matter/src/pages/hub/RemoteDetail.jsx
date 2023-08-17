@@ -8,18 +8,12 @@ import axiosInstance from '../../config/axios.jsx'
 
 
 import io from 'socket.io-client'
-const protocol = window.location.protocol
-let BrokerAddress = ''
-if (protocol === 'https:') {
-  BrokerAddress = 'wss://i9c105.p.ssafy.io:3002'
-} else {
-  BrokerAddress = 'ws://i9c105.p.ssafy.io:3002'
-}
-
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 function RemoteDetail() {
   const [topic, setTopic] = useState('')
   const [socket, setSocket] = useState(null)
+  const [receiveMessage, setReceiveMessage] = useState('')
 
   const remoteType = useLocation()
   const isCreate = remoteType.state[1]
@@ -66,6 +60,7 @@ function RemoteDetail() {
   useEffect(() => {
     newSocket.on('message', (receivedMessage) => {
       console.log(`Received message: ${receivedMessage}`);
+      setReceiveMessage(receivedMessage)
     });
   }, [newSocket])
 
@@ -80,7 +75,7 @@ function RemoteDetail() {
       <div className="container page-container">
         {
           remoteType.state[0] === 'TV' ? <RmtTvUi isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
-          publishMessage={publishMessage} remoteCode={remoteCode}/> :
+          publishMessage={publishMessage} remoteCode={remoteCode} receiveMessage={receiveMessage}/> :
           (
             remoteType.state[0] === 'AC' ? <RmtAc isCreate={isCreate} remoteName={remoteType.state[2]} hubId={hubId}
             publishMessage={publishMessage} remoteCode={remoteCode}/> :
