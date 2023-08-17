@@ -157,7 +157,7 @@ function AddRemotePage() {
           </div>
         </div>
       </Card>
-      <Card>
+      {/* <Card>
         <div className="d-flex align-items-center justify-content-between" 
         onClick={() => navigate('/hubs/rmtdetail', {state: ['Custom', true, '', hubId]})} style={{width:"100%"}}>
           <div className="text-secondary card-text">커스텀 리모컨</div>          
@@ -165,7 +165,7 @@ function AddRemotePage() {
             <i className="bi bi-chevron-right"></i>
           </div>
         </div>
-      </Card>
+      </Card> */}
       <Card>
         <div className="d-flex align-items-center justify-content-between" 
         onClick={() => navigate('/hubs/board', {state: hubId})} style={{width:"100%"}}>
