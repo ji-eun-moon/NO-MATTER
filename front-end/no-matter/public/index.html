@@ -12,6 +12,15 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script>
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // 사용자에게 설치 팝업 표시
+        e.prompt();
+      });
+    </script>
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon-152x152.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
