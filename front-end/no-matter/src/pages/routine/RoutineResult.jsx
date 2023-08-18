@@ -261,16 +261,9 @@ function RoutineResult() {
           method :'GET',
           url: `/routine/list`,
         }).then((response) => {
-          // const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          // publishMessage(`${result}`)
-          const result = [];
-          for (const item of response.data) {
-            if (item[0] === selectedHub.hubId) {
-              result.push(item[3]);
-            }
-          }
-          publishMessage(JSON.stringify(result));
-          console.log(result)
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          publishMessage(`${result}`)
+          // console.log(result)
           navigate('/routine')
         })
       })
@@ -290,16 +283,8 @@ function RoutineResult() {
           method :'GET',
           url: `/routine/list`,
         }).then((response) => {
-          // const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          // publishMessage(`${result}`)
-          const result = [];
-          for (const item of response.data) {
-            if (item[0] === selectedHub.hubId) {
-              result.push(item[3]);
-            }
-          }
-          publishMessage(JSON.stringify(result));
-          console.log(result)
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          publishMessage(`${result}`)
           navigate('/routine')
         })
       })
