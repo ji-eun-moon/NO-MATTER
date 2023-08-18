@@ -61,7 +61,7 @@ SSAFY 9기 공통 프로젝트
 
 
 ## ERD
-![ERD](./img/ERD_v1.0.png)
+![ERD](./img/erd.png)
 
 
 ## UseCase
