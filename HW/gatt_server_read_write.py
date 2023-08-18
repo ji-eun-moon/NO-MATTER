@@ -1,6 +1,8 @@
 import json
+import subprocess
 
-
+import sys
+import time
 import dbus
 
 from ble_gatt_server.advertisement import Advertisement
@@ -8,6 +10,14 @@ from ble_gatt_server.service import Application, Service, Characteristic, Descri
 
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 NOTIFY_TIMEOUT = 5000
+
+'''
+def string_to_dbus_array(input_str):
+    dbus_array = dbus.Array(list(dbus.Byte(byte) for byte in input_str.encode('utf-8')), signature='y')
+    print("translate complete!!!")
+    return dbus_array
+'''
+
 
 class MessageAdvertisement(Advertisement):
     def __init__(self, index):
@@ -19,6 +29,7 @@ class MessageService(Service):
     MESSAGE_SVC_UUID = "00000001-1d10-4282-b68c-e17c508b94f4"
 
     def __init__(self, index):
+        self.msg_detail = "noMatter"
         Service.__init__(self, index, self.MESSAGE_SVC_UUID, True)
         self.add_characteristic(MsgCharacteristic(self))
 
@@ -40,43 +51,51 @@ class MsgCharacteristic(Characteristic):
 
     def WriteValue(self, value, options):
         print("receive value: ", str(value), flush=True)
-        
+
         # wifi_info.json
         val = "".join(map(chr, value))
         print("write value: ", val, flush=True)
         vals = val.split('/')
-
         
-        data = {
-            "wifi": {
-                "ssid": vals[0],
-                "psk": vals[1]
-            },
-            "user": {
-                "id": 1234
-            }
-        }
+        if vals[0]=="end":
+            print("sleep 20s")
+            time.sleep(20)
+            sys.exit(0)
         
+        try:
+            subprocess.run("sudo service NetworkManager start", shell=True, check=True)
+            print("network manager start!")
+        except subprocess.CalledProcessError as e:
+            print("Error: ", e)
 
-        file_path = "./wifi_info.json"
+        try:
+            subprocess.check_output(f"sudo nmcli dev wifi connect {vals[1]} password {vals[2]}", shell=True)
+            print("WiFi connected")        
+            value = "00000001-1d10-4282-b68c-e17c508b94f4"
+            #sys.exit(0)
 
-        print("open file")
-        with open(file_path, "w", encoding='utf-8') as file:
-            json.dump(data, file)
+        except subprocess.CalledProcessError as e:
+            print("Error: ", e)
+            value = "fail"
 
-        print("write value end")
+        print("save value: ", value)
 
-        self.service.set_msg_detail(value) #value
+        #print("res: ", str(res), flush=True)
 
+        self.service.set_msg_detail(value)
         
     def ReadValue(self, options):
         print("read value")
         value = []
 
         val = self.service.get_msg_detail()
-        value.append(dbus.Byte(val.encode()))
-        print(value)
+        
+        for c in val:
+            value.append(dbus.Byte(c.encode()))
 
+        print("ReadValue: ", value)
+        
+        
         return value
 
 class MsgDescriptor(Descriptor):
