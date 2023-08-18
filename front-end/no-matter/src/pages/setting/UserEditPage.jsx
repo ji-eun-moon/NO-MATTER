@@ -1,10 +1,10 @@
-// import React, { useState } from 'react'
 import React, {useCallback, useState} from 'react'
 import { TextField, Button } from '@material-ui/core'
 import {useNavigate} from 'react-router-dom'
 import axiosInstance from '../../config/axios'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import Swal from 'sweetalert2'
+import GoBack from '../../components/GoBack.jsx'
 
 function UserEditPage() {
   const navigate = useNavigate()
@@ -62,19 +62,16 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
   const onCheck = (event) => {
     event.preventDefault()
-    console.log('check')
     axiosInstance({
       method : 'Get',
-      url : `http://localhost:8080/api/v1/user/passwordCheck/${curPwd}`,
+      url : `/user/passwordCheck/${curPwd}`,
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
-      console.log('response',response)
       window.confirm('확인되었습니다')
       setCur(false)
   })
   .catch((err) => {
-      console.log('err',err)
       alert('현재 비밀번호가 일치하지않습니다')
       setCur(true)
     })
@@ -83,22 +80,18 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
-
     axiosInstance({
       method : 'Post',
-      url : `http://localhost:8080/api/v1/user/modify`,
+      url : `/user/modify`,
       data : {password:newPwd},
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
   })
   .then((response) => {
-      console.log('response',response)
       window.confirm('비밀번호 수정이 완료되었습니다')
       setCur(false)
       navigate('/login')
   })
   .catch((err) => {
-      console.log('err',err)
       alert('비밀번호 수정이 완료되지 않았습니다')
       setCur(true)
     })
@@ -107,7 +100,6 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
 
 
   const deleteUser = (e) => {
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('authToken')}`
     Swal.fire({
       html: '<h2 style="font-size: 1.3em;">진짜 탈퇴하시겠습니까?</h2>',      
       showConfirmButton: false,
@@ -116,24 +108,16 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
       denyButtonText: `탈퇴`,
       cancelButtonText: `취소`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isDenied) {
         axiosInstance({
           method : 'Delete',
           url : `user/delete`,
-          // headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
         })
-        .then((res) => {
+        .then(() => {
           Swal.fire('회원탈퇴가 완료되었습니다.', '', 'info')
           sessionStorage.clear()
           localStorage.clear()
-          console.log(res)
           navigate('/')
-        })
-        .catch((err) => {
-          console.log(err)
-          console.log(err.response.status)
-          // if (err.response.status === 403) {}
         })
       }
     })
@@ -142,8 +126,12 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
   return (
     <div className="page-container container">
       <div className='d-flex justify-content-between mt-5'>
-        <h1 className="font-700">회원 정보 수정</h1>
+        <div className='d-flex'>
+          <GoBack />
+          <h1 className="font-700">회원 정보 수정</h1>
+        </div>
       </div>
+      <hr />
 
       <div style={{marginTop:"20px"}}>
         <div style={{marginBottom:"20px"}}>
@@ -167,7 +155,6 @@ const onNewConfirmPasswordHandler = useCallback((event) => {
           fullWidth
           variant="contained"
           onClick={onCheck}
-          // color="primary"
           className="button"
           style={{ backgroundColor: "#0097B2", color: "#FFFFFF", margin:"1px"}}
           >

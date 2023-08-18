@@ -18,7 +18,13 @@ public enum Errorcode {
     NOT_MODIFY_PASSWORD(HttpStatus.NOT_MODIFIED, ""),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, ""),
     USER_HUB_DUPLICATED(HttpStatus.CONFLICT, ""),
-    ROUTINE_NOT_FOUND(HttpStatus.NOT_FOUND, "")
+    ROUTINE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    REMOTE_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    ADMIN_CANNOT_DELETE(HttpStatus.BAD_REQUEST, " "),
+    DOWNLOAD_DUPLICATED(HttpStatus.CONFLICT, " "),
+    REMOTE_NAME_DUPLICATED(HttpStatus.CONFLICT, " "),
+    COMMAND_HUB_NOT_FOUNT(HttpStatus.NOT_FOUND, " "),
+    USER_HUB_NAME_DUPLICATED(HttpStatus.NOT_FOUND, " ")
     ;
 
     private HttpStatus httpStatus;

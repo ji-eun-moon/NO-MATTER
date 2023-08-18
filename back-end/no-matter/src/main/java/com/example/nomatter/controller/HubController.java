@@ -62,7 +62,9 @@ public class HubController {
             code = stringBuilder.toString();
 
             hub.setInviteCode(code);
-            hub.setCodeExpiredTime(LocalDateTime.now().plus(1, ChronoUnit.DAYS));
+
+            log.info("LocalDateTime.now() = " + LocalDateTime.now());
+            hub.setCodeExpiredTime(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(9,ChronoUnit.HOURS));
 
             hubService.save(hub);
         }
@@ -112,6 +114,24 @@ public class HubController {
         List<Object> list = hubService.findAllByHubId(hubId);
 
         return ResponseEntity.ok().body(list);
+
+    }
+
+    @GetMapping("/view/{hubId}")
+    public ResponseEntity<?> findByHubId(@PathVariable Long hubId, Authentication authentication){
+
+        Hub hub = hubService.findByHubId(hubId).get();
+
+        return ResponseEntity.ok().body(hub);
+
+    }
+
+    @GetMapping("/command/{command}")
+    public ResponseEntity<?> findUuiddByCommand(@PathVariable String command, Authentication authentication){
+
+        String uuid = hubService.findUuiddByCommand(command, userService.findByUserId(authentication.getName()).get().getMemberId());
+
+        return ResponseEntity.ok().body(uuid);
 
     }
 

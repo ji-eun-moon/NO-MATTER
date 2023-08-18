@@ -6,11 +6,8 @@ import Box from '@mui/material/Box';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import GoBack from '../../components/GoBack.jsx'
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function VerticalTabs() {
   const navigate = useNavigate()
@@ -36,33 +33,28 @@ export default function VerticalTabs() {
   }, []);
   
   const onDayChange = (event) => {
-    console.log(event.target.name)
+    // console.log(event.target.name)
     setDay({ ...day, [event.target.name]: event.target.checked });
   };
   const onHourChange = (event, hour) => {
-    console.log(hour)
+    // console.log(hour)
     setHour(hour);
   };
   const onMinuteChange = (event, minute) => {
-    console.log(minute)
+    // console.log(minute)
     setMinute(minute);
   };
   const onAmPmChange = (event, ampm) => {
-    console.log(ampm)
+    // console.log(ampm)
     setAmPm(ampm);
   };
 
   const onSubmit = () => {
-    // if (command.trim() !== '') {
-      navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm} } });
-    // } else {
-    //   window.alert('등록할 스케줄을 입력하세요.');
-    // }
+    navigate('/routine/result', { state: { kind: "schedule", condition: { day: selectedDays, hour: hour, minute: minute, ampm: ampm}, editing: false } });
   }
 
 
   return (
-    // <div className='d-flex flex-column justify-content-center ' style={{height:"100%"}}>    
       <div className='container page-container'>
         <div className='d-flex mt-5 mb-3'>
           <GoBack /> 
@@ -109,7 +101,6 @@ export default function VerticalTabs() {
                 display: 'flex', 
                 justifyContent: 'space-between',
                 width: "80%",
-                // height: "40vh",
                 border: '0.6px solid',
                 borderColor: 'grey.400', 
                 borderRadius: '6px' }}
@@ -141,18 +132,66 @@ export default function VerticalTabs() {
                     onChange={onMinuteChange}
                     sx={{ borderRight: 1, borderColor: 'divider', height: "40vh" }}
                 >
-                    <Tab label="00" value={0} />
-                    <Tab label="05" value={5} />
-                    <Tab label="10" value={10} />
-                    <Tab label="15" value={15} />
-                    <Tab label="20" value={20} />
-                    <Tab label="25" value={25} />
-                    <Tab label="30" value={30} />
-                    <Tab label="35" value={35} />
-                    <Tab label="40" value={40} />
-                    <Tab label="45" value={45} />
-                    <Tab label="50" value={50}  />
-                    <Tab label="55" value={55}  />
+                  <Tab label="00" value={0} />
+                  <Tab label="01" value={1} />
+                  <Tab label="02" value={2} />
+                  <Tab label="03" value={3} />
+                  <Tab label="04" value={4} />
+                  <Tab label="05" value={5} />
+                  <Tab label="06" value={6} />
+                  <Tab label="07" value={7} />
+                  <Tab label="08" value={8} />
+                  <Tab label="09" value={9} />
+                  <Tab label="10" value={10} />
+                  <Tab label="11" value={11} />
+                  <Tab label="12" value={12} />
+                  <Tab label="13" value={13} />
+                  <Tab label="14" value={14} />
+                  <Tab label="15" value={15} />
+                  <Tab label="16" value={16} />
+                  <Tab label="17" value={17} />
+                  <Tab label="18" value={18} />
+                  <Tab label="19" value={19} />
+                  <Tab label="20" value={20} />
+                  <Tab label="21" value={21} />
+                  <Tab label="22" value={22} />
+                  <Tab label="23" value={23} />
+                  <Tab label="24" value={24} />
+                  <Tab label="25" value={25} />
+                  <Tab label="26" value={26} />
+                  <Tab label="27" value={27} />
+                  <Tab label="28" value={28} />
+                  <Tab label="29" value={29} />
+                  <Tab label="30" value={30} />
+                  <Tab label="31" value={31} />
+                  <Tab label="32" value={32} />
+                  <Tab label="33" value={33} />
+                  <Tab label="34" value={34} />
+                  <Tab label="35" value={35} />
+                  <Tab label="36" value={36} />
+                  <Tab label="37" value={37} />
+                  <Tab label="38" value={38} />
+                  <Tab label="39" value={39} />
+                  <Tab label="40" value={40} />
+                  <Tab label="41" value={41} />
+                  <Tab label="42" value={42} />
+                  <Tab label="43" value={43} />
+                  <Tab label="44" value={44} />
+                  <Tab label="45" value={45} />
+                  <Tab label="46" value={46} />
+                  <Tab label="47" value={47} />
+                  <Tab label="48" value={48} />
+                  <Tab label="49" value={49} />
+                  <Tab label="50" value={50} />
+                  <Tab label="51" value={51} />
+                  <Tab label="52" value={52} />
+                  <Tab label="53" value={53} />
+                  <Tab label="54" value={54} />
+                  <Tab label="55" value={55} />
+                  <Tab label="56" value={56} />
+                  <Tab label="57" value={57} />
+                  <Tab label="58" value={58} />
+                  <Tab label="59" value={59} />
                 </Tabs>
                 <Tabs
                     orientation="vertical"

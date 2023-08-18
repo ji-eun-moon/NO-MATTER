@@ -1,10 +1,9 @@
 // axios.js
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom'
 
 // 인스턴스 생성
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
+  baseURL: 'https://i9c105.p.ssafy.io/api/v1', // 원하는 API 서버의 기본 URL을 설정합니다.
 });
 
 // 요청 인터셉터 추가
@@ -19,7 +18,6 @@ instance.interceptors.request.use(
   },
   (error) => {
     // 요청 전에 에러가 발생한 경우 처리하는 로직을 구현합니다.
-    console.log(error)
     return Promise.reject(error);
   }
 );
@@ -30,26 +28,30 @@ instance.interceptors.response.use(
     // 응답을 받은 후 처리해야 할 작업을 수행
     return response;
   }, (error) => {
+    
     const originalRequest = error.config;
     // 토큰이 만료되었거나 유효하지 않은 경우에만 토큰을 재발급 받을 수 있도록 조건을 설정
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
       // 여기서 토큰을 재발급 받는 작업을 수행
-      return axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
-        .then((response) => {
-          const newAuthToken = response.data[0];
-          sessionStorage.setItem('authToken', response.data[0]);
-          localStorage.setItem('refreshToken', response.data[1]);
-          // 기존 요청에 새로 발급된 토큰을 추가하여 다시 요청
-          originalRequest.headers.Authorization = `Bearer ${newAuthToken}`;
-          return axios(originalRequest);
-        })
-        .catch((error) => {
-          // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
-          // 여기에 오류 처리 코드를 작성
-          const navigate = useNavigate()
-          navigate('/login')
-          return Promise.reject(error);
+      return axios.post('https://i9c105.p.ssafy.io/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+      .then((response) => {
+        const newAuthToken = response.data[0];
+        sessionStorage.setItem('authToken', response.data[0]);
+        localStorage.setItem('refreshToken', response.data[1]);
+        // 기존 요청에 새로 발급된 토큰을 추가하여 다시 요청
+        originalRequest.headers.Authorization = `Bearer ${newAuthToken}`;
+        return axios(originalRequest);
+      })
+      .catch((error) => {
+        // 토큰 재발급에 실패한 경우 로그인 페이지로 이동하거나 다른 작업을 수행
+        // 여기에 오류 처리 코드를 작성
+        alert('세션이 만료되어 로그아웃 되었습니다')
+        localStorage.clear()
+        localStorage.clear()
+        sessionStorage.clear()
+        window.location.href = '/login';
+        return Promise.reject(error);
         });
     }
     return Promise.reject(error);

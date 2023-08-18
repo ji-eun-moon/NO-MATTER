@@ -1,14 +1,11 @@
-import React from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import axiosInstance from '../../config/axios'
-import { useState, useEffect } from 'react'
-import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
+import Card from '../../components/Card.jsx';
 import GoBack from '../../components/GoBack.jsx'
 
 function AddRoutinePage() {
   const navigate = useNavigate();
-  const [routines, setRoutines] = useState([]);
 
   const onSchedule = () => {
     navigate('/routine/schedule')
@@ -21,36 +18,7 @@ function AddRoutinePage() {
   const onVoice = () => {
     navigate('/routine/voice')
   }
-  // const token = se ssionStorage.getItem('authToken')
-
-//   const getRoutines = () => {
-
-//     
-
-    // axiosInstance({
-    //   method: 'get',
-    //   url: 'http://localhost:3001/routines/'
-    // })
-//     .then((response) => {
-//       // console.log(response.data)
-//       setRoutines(response.data)
-//     })
-
-    // axiosInstance({
-    //   method: 'get',
-    //   url: 'http://localhost:8080/api/v1/userhub/list'
-    // })
-
-//     // .then((response) => {  
-//     //   console.log(response.data)
-//     //   setHubs(response.data)
-//     // })
-//   }
-
-//   useEffect(() => {
-//     getRoutines()
-//   }, [])
-
+ 
   return (
     <div className="page-container container">
       <div className='d-flex mt-5 mb-3'>

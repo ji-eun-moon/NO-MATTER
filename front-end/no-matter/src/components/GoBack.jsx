@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 function GoBack() {
     const navigate = useNavigate();
     const goBack = () => {
-        // 이전 페이지로 이동
         navigate(-1);
         };
   return (

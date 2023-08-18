@@ -42,34 +42,27 @@ export const signup = (userId, userPassword, userName, userEmail, userNumber) =>
   {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/api/v1/user/join',
+      url: 'https://i9c105.p.ssafy.io/api/v1/user/join',
 
       //찬석
       data: {userId:userId, userPassword:userPassword, userName:userName, userEmail:userEmail, userNumber:userNumber}
 
     })
     .then((response) => {
-      console.log(response)
       const user = response.data
       dispatch(signupSuccess(user))
       Toast.fire({
         icon: 'success',
         title: '회원가입 완료',
         timer: 1500
-        // footer: '<a href="">Why do I have this issue?</a>'
       })
-
     })
     .catch((err) => {
-      console.log(userId, userPassword, userName, userEmail, userNumber)
-      console.log(err)
       dispatch(signupFailure())
       Toast.fire({
         icon: 'error',
         title: '회원가입 실패',
-        // footer: '<a href="">Why do I have this issue?</a>'
       })
-
     })
   }
 }

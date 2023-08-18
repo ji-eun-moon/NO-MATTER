@@ -21,51 +21,15 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserService userService;
-    private final RemoteService remoteService;
 
-
-    @PostMapping("/register/{remoteId}")
-    public ResponseEntity<?> register(@PathVariable Long remoteId, Authentication authentication){
-
-        Board board = Board.builder()
-                .userId(userService.findByUserId(authentication.getName()).get().getMemberId())
-                .remoteId(remoteId)
-                .download(0L)
-                .createDate(LocalDateTime.now())
-                .build();
-
-        boardService.save(board);
-
-        return ResponseEntity.ok().body("게시물 등록 성공");
-    }
 
     @GetMapping("/list")
     public ResponseEntity<?> list(Authentication authentication){
 
-        List<Object> list = boardService.findBoardsWithControllerNames();
-
-
-        return ResponseEntity.ok().body(list);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestBody Map<String, String> map, Authentication authentication){
-
-        List<Object> list = boardService.findBoardsWithControllerNames(map.get("controllerName"));
-
-        log.info(map.toString());
+        List<Board> list = boardService.findAll();
 
         return ResponseEntity.ok().body(list);
 
     }
-
-//    @GetMapping("/view")
-//    public ResponseEntity<?> view(@RequestBody Map<String, Long> map){
-//
-//
-//
-//    }
-
 
 }

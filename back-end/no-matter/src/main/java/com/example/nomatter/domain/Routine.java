@@ -1,7 +1,6 @@
 package com.example.nomatter.domain;
 
 import lombok.*;
-import net.minidev.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import javax.persistence.*;

@@ -19,7 +19,7 @@ function MoblieLanding() {
   const automaticLogin = () => {
     const isValidRefresh = !!localStorage.getItem('refreshToken')
     if (isValidRefresh === true) {
-      axios.post('http://localhost:8080/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
+      axios.post('https://i9c105.p.ssafy.io/api/v1/user/refreshToken', { refreshToken: localStorage.getItem('refreshToken') })
         .then((response) => {
           sessionStorage.setItem('authToken', response.data[0]);
           localStorage.setItem('refreshToken', response.data[1]);
@@ -48,7 +48,7 @@ function MoblieLanding() {
         </div>
       </div>
       <div className='intro-image'>
-        <img src="images/main.png" alt="main background" style={{width:"100%"}}/>
+        <img src="/images/main.png" alt="main background" style={{width:"100%"}}/>
         <div className='intro-text'>
           <Fade direction="up">
             <h2 className='font-700'>누구나 쉽게,</h2>
@@ -67,11 +67,13 @@ function MoblieLanding() {
       </div>
 
       <div className='container intro-1-mobile'>
-        <div style={{position:"relative", width:"100%"}}>
-          <Fade>
-            <img src='images/intro/1.png' style={{height:"250px"}}/>
-          </Fade>
-            <div style={{position:"absolute", top:"30px", right:"0"}}>
+        <div className='flex-column centered'>
+          <div className='mb-4'>
+            <Fade>
+              <img src='/images/intro/1.png' style={{height:"250px"}}/>
+            </Fade>
+          </div>
+            <div className='centered'>
               <Fade direction="right">
                 <div className='intro-text-mobile'>
                   <div className='mb-3'>
@@ -91,46 +93,52 @@ function MoblieLanding() {
 
 
       <div className='container intro-1-mobile' style={{position:"relative", width:"100%"}}>
-        <Fade direction='left'>
-          <div className='intro-text-mobile'>
-            <div className='mb-3'>
-                <p className='intro-text-mobile-summary'>IR 리모컨 학습 기능</p>
-            </div>
-            <h4 className='font-700'>오래된 가전을</h4>
-            <h4 className='font-700'>최신 가전으로</h4>
-            <br />
-            <p className='intro-text-mobile-detail'>구형 가전 제품도 앱으로 전원 ON/OFF</p>
-            <p className='intro-text-mobile-detail'>직접 학습시켜 사용할 수 있어요.</p>
+        <div className='centered flex-column'>  
+          <div className='mb-4'>
+            <Fade>
+              <img src='/images/intro/2.png' style={{height:"300px"}}/>
+            </Fade>
           </div>
-        </Fade>
-        <Fade>
-          <img src='images/intro/2.png' style={{height:"250px"}}/>
-        </Fade>
+          <Fade direction='left'>
+            <div className='intro-text-mobile'>
+              <div className='mb-3'>
+                  <p className='intro-text-mobile-summary'>IR 리모컨 학습 기능</p>
+              </div>
+              <h4 className='font-700'>오래된 가전을</h4>
+              <h4 className='font-700'>최신 가전으로</h4>
+              <br />
+              <p className='intro-text-mobile-detail'>구형 가전 제품도 앱으로 전원 ON/OFF</p>
+              <p className='intro-text-mobile-detail'>직접 학습시켜 사용할 수 있어요.</p>
+            </div>
+          </Fade>
+        </div>
       </div>
 
       <div className='container d-flex justify-content-around intro-1-mobile'>
-        <div>
-          <Fade>
-            <img src='images/intro/5.png' style={{width:"120px", height:"150px"}}/>
+        <div className='centered flex-column'>
+          <div className='centered'>
+            <Fade className='centered'>
+              <img src='/images/intro/3-3.png' style={{width:"90%", marginBottom:"30px"}}/>
+            </Fade>
+          </div>
+          <Fade direction='right'>
+          <div className='intro-text-mobile'>
+            <div className='mb-3'>
+              <p className='intro-text-mobile-summary'>음성 인식 기능</p>
+            </div>
+            <h4 className='font-700'>음성 제어로 더 편리하게</h4>
+            <br />
+            <p className='intro-text-mobile-detail' style={{marginBottom:"3px"}}>에어컨, 티비 등을</p>
+            <p className='intro-text-mobile-detail'>목소리로 제어할 수 있어요.</p>
+            <p className='intro-text-mobile-detail' style={{marginBottom:"3px"}}>분주한 일상에 두 손이</p>
+            <p className='intro-text-mobile-detail'>자유로워지도록 도와드릴게요.</p>
+          </div>
           </Fade>
         </div>
-        <Fade direction='right'>
-        <div className='intro-text-mobile'>
-          <div className='mb-3'>
-            <p className='intro-text-mobile-summary'>음성 인식 기능</p>
-          </div>
-          <h4 className='font-700'>음성 제어로 더 편리하게</h4>
-          <br />
-          <p className='intro-text-mobile-detail' style={{marginBottom:"3px"}}>에어컨, 티비 등을</p>
-          <p className='intro-text-mobile-detail'>목소리로 제어할 수 있어요.</p>
-          <p className='intro-text-mobile-detail' style={{marginBottom:"3px"}}>분주한 일상에 두 손이</p>
-          <p className='intro-text-mobile-detail'>자유로워지도록 도와드릴게요.</p>
-        </div>
-        </Fade>
       </div>
 
       <div className='intro-image'>
-        <img src="images/intro/4.png" alt="main background" style={{width:"100%"}}/>
+        <img src="/images/intro/4.png" alt="main background" style={{width:"100%", height:"300px"}}/>
           <div className='intro-text' style={{width:"100%"}}>
             <Fade direction='up'>
               <h4 className='font-700'>어디에나 자연스럽게</h4>
@@ -143,7 +151,7 @@ function MoblieLanding() {
 
       <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/intro/6.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>편리함을 공유하기</h2>
@@ -155,7 +163,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"250px"}}/>
+          <img src='/images/intro/8.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>DIY 맞춤 리모컨</h2>
@@ -167,7 +175,7 @@ function MoblieLanding() {
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-            <img src='images/phone.png' style={{width:"250px"}}/>
+            <img src='/images/intro/7.jpg' style={{width:"250px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>나만의 루틴</h2>

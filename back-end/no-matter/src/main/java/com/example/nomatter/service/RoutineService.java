@@ -7,6 +7,7 @@ import com.example.nomatter.repository.RoutineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -21,12 +22,26 @@ public class RoutineService {
 
     }
 
-    public Optional<Routine> findByHubId(Long hubId){
+    public List<Object> findAllByHubId(Long hubId){
 
-        routineRepository.findByHubId(hubId)
-                .orElseThrow(() -> new AppException(Errorcode.ROUTINE_NOT_FOUND, "등록된 루틴이 없습니다. "));
+//        routineRepository.findByHubId(hubId)
+//                .orElseThrow(() -> new AppException(Errorcode.ROUTINE_NOT_FOUND, "등록된 루틴이 없습니다. "));
 
-        return routineRepository.findByHubId(hubId);
+        return routineRepository.findAllByHubId(hubId);
+
+    }
+
+    public void delete(Long routineId){
+
+        Routine routine = routineRepository.findByRoutineId(routineId).get();
+
+        routineRepository.delete(routine);
+
+    }
+
+    public Routine findByRoutineId(Long routineId){
+
+        return routineRepository.findByRoutineId(routineId).get();
 
     }
 

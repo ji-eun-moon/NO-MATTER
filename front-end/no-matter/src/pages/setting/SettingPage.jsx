@@ -19,20 +19,23 @@ function SettingPage() {
   }
   return (
     <div className="page-container container">
-      <div className='d-flex justify-content-between mt-5 mb-3'>
+      <div className='d-flex justify-content-between mt-5 mb-3 container'>
         <h1 className="font-700">My Setting</h1>
       </div>
+      <hr />
 
-      <Card>
-        <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
-          <div style={{fontSize:"18px", fontWeight:"bold"}}>
-              회원 정보 수정
+      <div onClick={() => navigate('/setting/useredit')}>
+        <Card>
+          <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
+            <div style={{fontSize:"18px", fontWeight:"bold"}}>
+                회원 정보 수정
+            </div>
+            <div>
+              <i className="bi bi-chevron-right" ></i>
+            </div>
           </div>
-          <div>
-            <i className="bi bi-chevron-right" onClick={() => navigate('/setting/useredit')}></i>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
       <Card>
         <div className='d-flex align-items-center justify-content-between' style={{width:"100%"}}>
           <div style={{fontSize:"18px", fontWeight:"bold"}}>
@@ -58,7 +61,7 @@ function SettingPage() {
           <div style={{fontSize:"18px", fontWeight:"bold"}}>
             다크 모드
           </div>
-          <div class="form-check form-switch">
+          <div className="form-check form-switch">
             <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={dark} onChange={() => onDark(!dark)}/>
             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
               {dark ? 'ON' : 'OFF'}

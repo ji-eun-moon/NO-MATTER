@@ -5,9 +5,9 @@ import HubMemberPage from '../pages/hub/HubMemberPage.jsx';
 import AddHubPage from '../pages/hub/AddHubPage.jsx';
 import AddRemote from '../pages/hub/AddRemote.jsx';
 
+import RemoteDetail from '../pages/hub/RemoteDetail.jsx';
 import RmtTvUi from '../rmtUi/RmtTvUi.jsx';
 import RmtFanUi from '../rmtUi/RmtFanUi.jsx';
-import RmtCustom from '../rmtUi/RmtCustom.jsx';
 import RmtAc from '../rmtUi/RmtAc.jsx';
 
 //pages/board
@@ -38,11 +38,11 @@ const routes = [
     element: <HubPage />
   },
   {
-    path:'/hubs/:id',
+    path:'/hubs/:hubId',
     element: <RemotePage />
   },
   {
-    path:'/hubs/:id/member',
+    path:'/hubs/members/:hubId',
     element: <HubMemberPage />
   },
   {
@@ -58,24 +58,16 @@ const routes = [
     element: <BoardPage />
   },
   {
-    path:'/hubs/rmttv/1',
-    element: <RmtTvUi />
+    path:'/hubs/rmtdetail',
+    element: <RemoteDetail />
   },
   {
-    path:'/hubs/rmttv/0',
+    path:'/hubs/rmttv',
     element: <RmtTvUi />
   },
   {
     path:'/hubs/rmtfan',
     element: <RmtFanUi />
-  },
-  {
-    path:'/hubs/rmtcustom/1',
-    element: <RmtCustom />
-  },
-  {
-    path:'/hubs/rmtcustom/0',
-    element: <RmtCustom />
   },
   {
     path:'/hubs/rmtac',

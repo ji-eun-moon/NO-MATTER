@@ -1,54 +1,122 @@
 import React, {useState, useEffect} from 'react'
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from '../../components/GoBack.jsx'
 import SelectResult from './SelectResult.jsx';
-import axios from 'axios'
 import axiosInstance from '../../config/axios'
 import './Routine.scss'
-import { useNavigate } from 'react-router-dom'
+import Form from 'react-bootstrap/Form';
+
+import io from 'socket.io-client'
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
+
+const conditionStyle = {
+  border: "2px solid #0097B2",
+  borderRadius: "10px",
+  padding: "20px"
+}
+
+const resultStyle = {
+  border: "2px solid #CCD1D1",
+  borderRadius: "10px",
+  padding: "20px",
+  marginTop: "10px",
+  height: "250px"
+}
+
+const activeStyle = {
+  border: "2px solid #CCD1D1",
+  borderRadius: "10px",
+  padding: "20px",
+  marginTop: "10px",
+}
 
 function RoutineResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  // const kind = location.state.kind // 루틴 종류 - 스케줄/날씨/음성명령
-  // const condition = location.state.condition  // 루틴 조건
 
-  // console.log(location.state.kind)
-  // console.log(location.state.condition)
-
+  const editing = location.state.editing
   const [kind, setKind] = useState('')
   const [condition, setCondition] = useState('')
   const [showModal, setShowModal] = useState(false)
 
   const [selectedHub, setSelectedHub] = useState(null);
   const [selectedRemote, setSelectedRemote] = useState(null);
-  const [selectedRemoteAction, setSelectedRemoteAction] = useState(null);
+  const [selectedRemoteAction, setSelectedRemoteAction] = useState(null); // 통신용
+  const [selectedRemoteButton, setSelectedRemoteButton] = useState(null); // 출력용
+  const [active, setActive] = useState(false)
+  const [routineId, SetRoutineId] = useState(null);
 
-  const handleSelection = (hub, remote, action) => {
+  const [topic, setTopic] = useState('');
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(BrokerAddress, {
+      cors: {origin: '*'}
+    });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
+   
+    newSocket.on('message', (receivedMessage) => {
+      console.log(`Received message: ${receivedMessage}`);
+    });
+    
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  const subscribeToTopic = () => {
+    if (socket && topic) {
+      socket.emit('subscribe', topic);
+      console.log(`Subscribed to topic: ${topic}`);
+    }
+  };
+
+  const publishMessage = (message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+    }
+  };
+
+  const handleSelection = (hub, remote, action, button) => {
     setSelectedHub(hub);
     setSelectedRemote(remote);
     setSelectedRemoteAction(action);
+    setSelectedRemoteButton(button);
+    // 선택한 허브 정보 받아와서 topic 저장
+    axiosInstance({
+      method :'GET',
+      url: `/hub/view/${hub.hubId}`,
+    }).then((response) => {
+      const hubUuId = response.data.hubUuid
+      setTopic(hubUuId + '/ROUTINE/')
+    })
   };
-
-  const conditionStyle = {
-    border: "2px solid #0097B2",
-    borderRadius: "10px",
-    padding: "20px"
-  }
-
-  const resultStyle = {
-    border: "2px solid #CCD1D1",
-    borderRadius: "10px",
-    padding: "20px",
-    marginTop: "10px",
-    height: "250px"
-  }
   
   useEffect(() => {
     setKind(location.state.kind)
     setCondition(location.state.condition)
+    if (editing) {
+      setSelectedHub(location.state.selectedHub)
+      setSelectedRemote(location.state.selectedRemote)
+      setSelectedRemoteButton(location.state.selectedRemoteButton)
+      setActive(location.state.active)
+      SetRoutineId(location.state.routineId)
+      // 선택한 허브 정보 받아와서 topic 저장
+      axiosInstance({
+        method :'GET',
+        url: `/hub/view/${location.state.selectedHub.hubId}`,
+      }).then((response) => {
+        const hubUuId = response.data.hubUuid
+        setTopic(hubUuId + '/ROUTINE/')
+      })
+    }
   }, [])
-
 
   const openModal = () => {
     setShowModal(true);
@@ -133,23 +201,23 @@ function RoutineResult() {
   }
 
   const renderSelectedInfo = () => {
-    if (selectedHub && selectedRemote && selectedRemoteAction) {
+    if (selectedHub && selectedRemote && selectedRemoteButton) {
       return (
         <div className='mt-4'>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>허브</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedHub.userHubName}</p>
+            <h4 className='result-item text-secondary me-2'>허브</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedHub.userHubName}</p>
           </div>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>리모컨</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedRemote.controllerName}</p>
+            <h4 className='result-item text-secondary me-2'>리모컨</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedRemote.controllerName}</p>
           </div>
           <div className='d-flex align-items-center mb-2'>
-            <h5 className='result-item text-secondary'>동작</h5>
-            <i className="bi bi-caret-right-fill fs-4 text-secondary"></i>
-            <p className='select-item'>{selectedRemoteAction}</p>
+            <h4 className='result-item text-secondary me-2'>동작</h4>
+            <i className="bi bi-caret-right-fill fs-3 text-secondary"></i>
+            <p className='select-item fs-4'>{selectedRemoteButton}</p>
           </div>
           
         </div>
@@ -165,23 +233,70 @@ function RoutineResult() {
 
   // 루틴 등록
   const routineSubmit = () => {
-    // json-server test
-    axios.post('http://localhost:3001/routines', {
+    
+    const routineData = {
       kind: kind,
       condition: condition,
       selectedHub: selectedHub,
       selectedRemote: selectedRemote,
-      selectedRemoteAction: selectedRemoteAction
-    }).then (
-      navigate('/routine')
-    )
+      selectedRemoteAction: selectedRemoteAction,
+      selectedRemoteButton: selectedRemoteButton,
+      active: active
+    };
+
+    if (editing) {
+      // 루틴 수정
+      axiosInstance({
+        method: 'POST',
+        url: '/routine/update',
+        data: { 
+          routineId: routineId,
+          hubId : selectedHub.hubId, 
+          attributes : JSON.stringify(routineData)
+        }
+      })
+      .then (() => {
+        // 등록 이후 루틴 전체 리스트 불러오기
+        axiosInstance({
+          method :'GET',
+          url: `/routine/list/${selectedHub.hubId}`,
+        }).then((response) => {
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          publishMessage(`${result}`)
+          // console.log(result)
+          navigate('/routine')
+        })
+      })
+    } else {
+      // 루틴 등록
+      axiosInstance({
+        method: 'POST',
+        url: '/routine/register',
+        data: { 
+          hubId : selectedHub.hubId, 
+          attributes : JSON.stringify(routineData)
+        }
+      })
+      .then (() => {
+        // 등록 이후 루틴 전체 리스트 불러오기
+        axiosInstance({
+          method :'GET',
+          url: `/routine/list/${selectedHub.hubId}`,
+        }).then((response) => {
+          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          publishMessage(`${result}`)
+          navigate('/routine')
+        })
+      })
+    }
   }
 
   return (
-    <div className='container'>
+    <div className='container page-container'>
       <div className='d-flex mt-5 mb-3'>
         <GoBack />
-        <h1 className="font-700">루틴 등록</h1>
+        { editing ? <h1 className="font-700">루틴 수정</h1> :
+        <h1 className="font-700">루틴 등록</h1> }
       </div>
       <div>
         {renderCondition()}
@@ -194,8 +309,23 @@ function RoutineResult() {
         </div>
         {renderSelectedInfo()}
       </div>
+      <div className='d-flex justify-content-between align-items-center' style={activeStyle}>
+        <div>
+          <h3 className='font-700'>루틴 활성화</h3>
+        </div>
+        <Form>
+          <Form.Check
+              type="switch"
+              id="custom-switch"
+              label={active ? 'ON' : 'OFF'}
+              checked={active}
+              style={{ fontSize: '1.2rem' }}
+              onChange={() => setActive(!active)}
+            />
+        </Form>
+      </div>
       <div className='centered'>
-        <button className='btn mt-3'
+        <button className='btn mt-2'
                 onClick={routineSubmit} 
                 style={{backgroundColor:"#0097B2", color:"#FCFCFC", fontWeight:"700", width:"100%", height:"45px"}}>
           저장하기</button>

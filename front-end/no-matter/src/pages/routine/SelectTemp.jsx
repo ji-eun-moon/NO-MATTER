@@ -1,13 +1,10 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GoBack from '../../components/GoBack.jsx'
 
 import './Routine.scss'
 
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-
+import { Box, Slider } from '@mui/material';
 
 function SelectTemp() {
   const navigate = useNavigate();
@@ -21,11 +18,10 @@ function SelectTemp() {
 
   const handleConditionChange = (selectedCondition) => {
     setCondition(selectedCondition);
-    // console.log(selectedCondition); 
   };
 
   const onSubmit = () => {
-    navigate('/routine/result', { state: { kind: "temp", condition: { temperature : temperature, updown: condition } } });
+    navigate('/routine/result', { state: { kind: "temp", condition: { temperature : temperature, updown: condition }, editing: false } });
   }
 
   return (

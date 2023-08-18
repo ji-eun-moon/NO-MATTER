@@ -73,7 +73,7 @@ function PCLanding() {
       <div className='container d-flex justify-content-around intro-1 mb-3'>
         <div>
           <Fade>
-            <img src='images/intro/3.png' style={{width:"300px"}}/>
+            <img src='images/intro/3-3.png' style={{width:"500px"}}/>
           </Fade>
         </div>
         <Fade direction='right'>
@@ -105,7 +105,7 @@ function PCLanding() {
       
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"300px"}}/>
+          <img src='images/intro/6.jpg' style={{width:"300px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>편리함을 공유하기</h2>
@@ -123,13 +123,13 @@ function PCLanding() {
             <p>리모컨을 직접 학습시켜 사용할 수 있어요.</p>
           </Fade>
           <Fade damping={0.5}>
-          <img src='images/phone.png' style={{width:"300px"}}/>
+          <img src='images/intro/8.jpg' style={{width:"300px"}}/>
           </Fade>
         </div>
 
         <div className='flex-column centered intro-2-item'>
           <Fade damping={0.5}>
-            <img src='images/phone.png' style={{width:"300px"}}/>
+            <img src='images/intro/7.jpg' style={{width:"300px"}}/>
           </Fade>
           <Fade direction='up'>
             <h2>나만의 루틴</h2>
@@ -138,16 +138,10 @@ function PCLanding() {
             <p>연동된 제품을 제어할 수 있어요.</p>
           </Fade>
         </div>
-
       </div>
-
-
-
-
       <div className='container'>
         <InstallAccordion />
       </div>
-
     </div>
 
   );

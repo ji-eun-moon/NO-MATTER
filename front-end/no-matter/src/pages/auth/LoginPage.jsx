@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import axiosInstance from '../../config/axios'
 import {useNavigate} from 'react-router-dom'
 import './LoginPage.css';
-import { Container, CssBaseline, Typography, Grid, TextField, Button, Link } from '@material-ui/core'
+import { Container, CssBaseline, Grid, TextField, Button, Link } from '@material-ui/core'
 import Swal from 'sweetalert2'
-import GoBack from '../../components/GoBack.jsx'
 
 function LoginPage() {
-  const URL = "http://localhost:8080/api/v1/user/login"
+  const URL = "https://i9c105.p.ssafy.io/api/v1/user/login"
   
   let [userID, setUserID] = useState("")
   let [userPassword, setUserPassword] = useState("")
@@ -40,7 +39,6 @@ function LoginPage() {
       Toast.fire({
         icon: 'error',
         title: '아이디를 입력해 주세요',
-        // footer: '<a href="">Why do I have this issue?</a>'
       })
     } else {
       axiosInstance({
@@ -55,7 +53,6 @@ function LoginPage() {
           icon: 'success',
           title: '환영합니다',
           timer: 1500
-          // footer: '<a href="">Why do I have this issue?</a>'
         })
         navigate('/main')
       })
@@ -64,38 +61,16 @@ function LoginPage() {
           Toast.fire({
             icon: 'error',
             title: '비밀번호를 다시 입력해 주세요',
-            // footer: '<a href="">Why do I have this issue?</a>'
           })
         } else if (err.response.status === 404) {
           Toast.fire({
             icon: 'error',
             title: '가입되지 않은 아이디입니다',
-            // footer: '<a href="">Why do I have this issue?</a>'
           })
         }
       })
     }
   };
-
-  const goGoogle = (e) => {
-
-    const url = "http://localhost:8080/oauth2/authorization/google"
-
-    console.log(url);
-
-    window.location.href=url;
-
-  }
-
-  const goKakao = (e) => {
-
-    // const REST_API_KEY = "96b643173da8064d7b2774b812e747bb";
-    // const REDIRECT_URI = "http://localhost:8080/login/oauth2/callback/kakao"
-    const url = "https://kauth.kakao.com/oauth/authorize?client_id=96b643173da8064d7b2774b812e747bb&redirect_uri=http://localhost:8080/login/oauth2/callback/kakao&response_type=code";
-
-    window.location.href = url;
-
-  }
 
   return (
     <div className="LoginPage">
@@ -106,7 +81,9 @@ function LoginPage() {
         <CssBaseline/>
           <div className="paper">
             <div className='d-flex mb-3'>
-              <GoBack/>
+            <div onClick={() => navigate('/')}>
+              <i className="bi bi-chevron-left fs-2 me-3"></i>
+            </div>
               <h1 className='font-700'>
                 Login
               </h1>
@@ -159,43 +136,9 @@ function LoginPage() {
                 </Grid>
               </Grid>
             </form>
-            <hr />
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                variant="contained"
-                onClick = { goGoogle }
-                color="primary"
-                className="button"
-                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
-                Google
-              </Button>
+            <hr />           
               <p></p>
-              <a href="naver-login">
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                variant="contained"
-                color="primary"
-                className="button"
-                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
-                Naver
-              </Button>
-              </a>
-              <p></p>
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                variant="contained"
-                onClick = { goKakao }
-                color="primary"
-                className="button"
-                style={{ backgroundColor: "#0097B2", color: "#FFFFFF"}}>
-                Kakao
-              </Button>
+
           </div>
       </Container>
     </div>

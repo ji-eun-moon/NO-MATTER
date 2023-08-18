@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&display=swap');
+
+.welcome {
+    font-family: 'Nanum Gothic Coding', monospace;
+    font-weight: 700;
+    font-size: 35px;
+}
+
+.remote-card-list-container {
+    max-height: 75%; 
+    overflow-y: auto;
+  }
+
+  .pagination-dots-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .pagination-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 5px;
+  }
+  
+  .pagination-dot.active {
+    background-color: #333;
+  }
+  
+  .swipe-hint {
+    text-align: center;
+    margin-top: 10px;
+    color: #777;
+  }
+
+  .voice-container {
+    width: 93%;
+    position: absolute;
+    background-color: #000000;
+    border-radius: 10px;
+    bottom: 50px;
+    padding: 20px;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 998;
+  }

@@ -1,14 +1,11 @@
-import React from 'react'
-import axiosInstance from '../../config/axios'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import axiosInstance from '../../config/axios.jsx'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../../components/LoadingSpinner.jsx';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Box, Paper, Modal, TextField, Button } from '@mui/material';
+import KeyIcon from '@mui/icons-material/Key';
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 
 const style = {
   position: 'absolute',
@@ -27,7 +24,7 @@ function HubPage() {
   const navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [ open, setOpen ] = React.useState(false);
+  const [open, setOpen ] = React.useState(false);
   const [selectCode, setSelectCode ] = useState(false);
   const [code, setCode ] = useState('')
   const [hubName, setHubName ] = useState('')
@@ -36,9 +33,11 @@ function HubPage() {
     setOpen(true);
   };
   const handleClose = (e) => {
-    console.log(open)
     e.stopPropagation();
     setOpen(false);
+    setSelectCode(false);
+    setCode('')
+    setHubName('')
   };
 
   const clickCode = () => {
@@ -50,69 +49,49 @@ function HubPage() {
   }
 
   const onHubName = (event) => {
-    setHubName(event.currentTarget.value)
+    if(event.target.value.length <= 5){
+      setHubName(event.currentTarget.value)
+    }
   }
 
   const check = async () => {
     try {
       const response = await axiosInstance({
         method: 'Post',
-        url: 'http://localhost:8080/api/v1/hub/readCode',
+        url: '/hub/readCode',
         data: {
           'code': code,
           'userHubName': hubName
         }
       });
   
-      console.log(response);
       setOpen(false);
       await getHubs();  // 업데이트된 허브 목록을 가져옵니다.
       navigate('/hubs');
   
     } catch (error) {
-      console.log(error);
-      alert('초대 코드를 다시 입력해주세요');
+      if (error.response.status === 409) {
+        // 이미 등록된 허브인 경우
+        alert('이미 등록되어 있는 허브입니다.');
+      } else if (error.response.status === 404) {
+        // 유효하지 않은 초대 코드인 경우
+        alert('유효하지 않은 초대 코드입니다.');
+      } else {
+        // 기타 에러 처리
+        console.error(error);
+        alert('초대 코드 검증 중 오류가 발생했습니다.');
+      }
     }
   }
   
-  // const check = () => {
-  //   axiosInstance({
-  //     method : 'Post',
-  //     url : 'http://localhost:8080/api/v1/hub/readCode',
-  //     data : {
-  //       'code' : code,
-  //       'userHubName' : hubName
-  //     }
-  //   })
-  //   .then((response)=>{
-  //     console.log(response)
-  //     setOpen(false)
-  //     // window.location.reload();
-  //     navigate('/hubs')
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //     alert('초대 코드를 다시 입력해주세요')
-  //   })
-
-  // }
   const getHubs = () => {
-
-
-    // 테스트 - json-server
-    // axios.get('http://localhost:3001/hubs/')
-    // .then((response) => {
-    //   // console.log(response.data)
-    //   setHubs(response.data)
-    // })
 
     axiosInstance({
       method : 'Get',
-      url : 'http://localhost:8080/api/v1/userhub/list',
+      url : '/userhub/list',
       headers: {Authorization:`Bearer ${sessionStorage.getItem('authToken')}`}
     })
     .then((response) => {  
-      // console.log(response.data)
       setHubs(response.data)
       setLoading(false);
     })
@@ -139,12 +118,10 @@ function HubPage() {
     return hubs.map(hub => {
       return (
         <Card key={hub.hubId}>
-        {/* <Card key={hub.id}> */}
             <div className='d-flex align-items-center justify-content-between' 
                   onClick={() => navigate(`/hubs/${hub.hubId}`, { state: hub })}
                   style={{width:"100%"}}>
               <div className='card-text'>
-                {/* {hub.title} */}
                 {hub.userHubName} 
               </div>
               <div>
@@ -156,24 +133,15 @@ function HubPage() {
     })
   }
 
-
-  // const choice = () => {
-
-  // }
   return (
     <div className="page-container container">
-      <div className='d-flex justify-content-between mt-5'>
+      <div className='d-flex justify-content-between mt-5 container'>
         <h1 className="font-700">My Hub</h1>
-        {/* <div className="main-backgroud-color px-2 rounded">
-          <i className="bi bi-people-fill fs-2 text-white"></i>
-        </div> */}
-
       </div>
       <hr />
       {renderHubList()}
       <Card>
         <div className="centered" style={{width:"100%"}}
-            // onClick={() => navigate('/hubs/addhub')}
             onClick={handleOpen}>
           <div><i className="bi bi-plus-circle-fill fs-1 me-2 text-secondary"></i></div>
           <div className="text-secondary" >허브 추가하기</div>        
@@ -184,11 +152,11 @@ function HubPage() {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box sx={{ ...style, width: 300, position:"relative" }}>
+              <Box sx={{ ...style, width: 300, position:"relative" }}
+                  style={{ backgroundColor:"#FCFCFC", borderRadius:"10px", border:"1px solid #FCFCFC", padding:"20px"}}>
                 <div>
                   <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-                    <b>초대 코드를 입력하세요</b>
-                    <br />
+                    <p style={{fontSize:"18px", fontWeight:"700"}}>초대 코드를 입력하세요</p>
                     <Box
                       component="form"
                       sx={{
@@ -201,7 +169,10 @@ function HubPage() {
                       <TextField id="standard-basic" label="허브 이름" variant="standard" value={hubName} onChange={onHubName} />
                     </Box>
                 </div>
-                <Button onClick={check}>SEND</Button>
+                <br />
+                <div className='centered'>
+                  <Button variant="contained" size="large" onClick={check}>SAVE</Button>
+                </div>
               </Box>
             </Modal>
           :         
@@ -211,12 +182,13 @@ function HubPage() {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box sx={{ ...style, width: 300, position:"relative" }}>
+              <Box sx={{ ...style, width: 300, position:"relative" }} 
+                   style={{ backgroundColor:"#FCFCFC", borderRadius:"10px", border:"1px solid #FCFCFC", padding:"20px"}}>
                 <div>
                 <i className="bi bi-x-lg" onClick={handleClose} style={{ position: 'absolute', top: 20, right: 20 }}></i>
-                  <b>허브 등록 방법을 선택하세요</b>
+                  <p style={{fontSize:"18px", fontWeight:"700"}} className='ms-2'>허브 등록 방법을 선택하세요.</p>
                   <br />
-                    <div className='d-flex justify-content-center' style={{marginTop:"10px"}}>
+                    <div className='d-flex justify-content-center'>
                       <Box
                         onClick = {clickCode}
                         sx={{
@@ -230,9 +202,11 @@ function HubPage() {
                           }
                         }}                     
                       >
-                        <Paper elevation={3} className={'d-flex flex-column align-content-center justify-conetent-center text-center'} style={{position:'relative'}}>
-                          <p style={{fontSize:'30px', fontWeight:'bold'}}>초대 코드</p>
-                          <i class="bi bi-key" style={{fontSize:'70px', width:'70px', height:'70px', position:'absolute', top:'50%', left:'50%', transform:'translate(-50%, -50%)'}}></i>                      
+                        <Paper elevation={3} style={{padding:"5px"}} className='centered'>
+                          <div className='centered flex-column'>
+                            <p style={{fontSize:'18px', fontWeight:'bold', marginBottom:"0px"}}>초대 코드 입력</p>
+                            <KeyIcon fontSize='large'/>
+                          </div>
                         </Paper>
                       </Box>               
 
@@ -249,9 +223,12 @@ function HubPage() {
                           }
                         }}
                       >
-                        <Paper elevation={3} className={'d-flex flex-column align-content-center justify-conetent-center text-center'} style={{position:'relative'}}>
-                          <p style={{fontSize:'30px', fontWeight:'bold'}}>직접</p>
-                          <i class="bi bi-hand-index-thumb" style={{fontSize:'50px', width:'70px', height:'70px', position:'absolute', top:'60%', left:'50%', transform:'translate(-50%, -50%)'}}></i>
+                        <Paper elevation={3} style={{padding:"5px"}} className='centered'>
+                          <div className='centered flex-column'>
+                            <p style={{fontSize:'18px', fontWeight:'bold' , marginBottom:"0px"}}>직접 추가</p>
+                            <PanToolAltIcon fontSize='large'/>
+                          </div>
+                  
                         </Paper>
                       </Box>               
 

@@ -1,20 +1,14 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GoBack from '../../components/GoBack.jsx';
 import './Routine.scss';
 import Card from '../../components/Card.jsx';
 
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import { Radio, RadioGroup, FormControlLabel, FormControl } from '@mui/material';
 
 function SelectHumid() {
   const navigate = useNavigate();
   const [selectedHumidity, setSelectedHumidity] = useState('low');
-
 
   const humidity = [
     {
@@ -36,12 +30,11 @@ function SelectHumid() {
 
   const handleChange = (event) => {
     setSelectedHumidity(event.target.value);
-    // console.log(event.target.value)
   };
 
   const onSubmit = () => {
     const selectedCondition = humidity.find((item) => item.condition === selectedHumidity)
-    navigate('/routine/result', { state: { kind: 'humidity', condition: selectedCondition  } });
+    navigate('/routine/result', { state: { kind: 'humidity', condition: selectedCondition, editing: false  } });
   };
 
   return (

@@ -1,54 +1,112 @@
-import React from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import axiosInstance from '../../config/axios'
-import { useState, useEffect } from 'react'
 import Card from '../../components/Card.jsx';
 import { useNavigate } from 'react-router-dom'
+import SwipeCard from '../../components/SwipeCard.jsx';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+
+import io from 'socket.io-client'
+const BrokerAddress = 'https://i9c105.p.ssafy.io:8443'
 
 function RoutinePage() {
   const navigate = useNavigate();
-  const [routines, setRoutines] = useState([]);
-  // const token = sessionStorage.getItem('authToken')
-
+  const [routines, setRoutines] = useState([])
   const getRoutines = () => {
-
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
     axiosInstance({
-      method: 'get',
-      url: 'http://localhost:3001/routines/'
+      method: 'Get',
+      url: '/routine/list',
     })
-    .then((response) => {
-      // console.log(response.data)
-      setRoutines(response.data)
-    })
-
-    // axios.get('http://localhost:8080/api/v1/userhub/list')
-    // .then((response) => {  
-    //   console.log(response.data)
-    //   setHubs(response.data)
-    // })
-  }
+    .then((response) => {  
+      setRoutines(response.data);
+    });
+  };
 
   useEffect(() => {
-    getRoutines()
-  }, [])
+    getRoutines();
+  }, []);
 
-  const renderRoutine = (routine) => {
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(BrokerAddress, {
+      cors: {origin: '*'}
+    });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to the broker.');
+    });
+   
+    // 새로운 메시지를 수신할 때 실행될 이벤트 핸들러
+    newSocket.on('message', (receivedMessage) => {
+      console.log(`Received message: ${receivedMessage}`);
+    });
+    
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  const publishMessage = (topic, message) => {
+    if (socket && topic && message) {
+      socket.emit('publish', { topic, message });
+      console.log(`Published message "${message}" to topic: ${topic}`);
+    }
+  };
+
+
+  const deleteRoutine = async (routineId, hubId) => {
+    try {
+      const hubResponse = await axiosInstance({
+        method: 'GET',
+        url: `/hub/view/${hubId}`,
+      });
+  
+      const hubUuId = hubResponse.data.hubUuid;
+      const newTopic = hubUuId + '/ROUTINE/';
+  
+      const deleteResponse = await axiosInstance({
+        method: 'DELETE',
+        url: `routine/delete/${routineId}`,
+      });
+  
+      const routineListResponse = await axiosInstance({
+        method: 'GET',
+        url: `/routine/list/${hubId}`,
+      });
+  
+      const result = "[" + routineListResponse.data.map(item => item[3]).join(", ") + "]";
+      await publishMessage(newTopic, `${result}`);
+      window.location.reload()
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  
+  const renderRoutine = (routineInfo) => {
+    
+    const routine = JSON.parse(routineInfo[3])
+
     if (routine.kind === 'voice') {
       return (
         <div className='centered' style={{width :"100%"}}>
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
-              <h5 style={{marginBottom:"0px"}}>{routine.condition}</h5>
+              <p style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition}</p>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -62,28 +120,30 @@ function RoutinePage() {
               <div className='d-flex'>
                {
                 routine.condition.day.length === 7
-                  ? <h5 className="me-1" style={{ marginBottom: "0px" }}>매일</h5>
+                  ? <p className="me-1" style={{ marginBottom: "0px", fontSize:"18px" }}>매일</p>
                   : <div className='d-flex me-1'>{routine.condition.day.map((day, index) => (
                       <React.Fragment key={index}>
-                        <h5 style={{ marginBottom: "0px" }}>{day}</h5>
+                        <p style={{ marginBottom: "0px", fontSize:"18px", fontSize:"18px" }}>{day}</p>
                         {index !== routine.condition.day.length - 1 && <span>,&nbsp;</span>}
                       </React.Fragment>
                     ))}
-                    {/* <h5 style={{marginBottom:"0px"}} className='me-1'>요일</h5> */}
                     </div>
                }
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.ampm === 'am' ? '오전' : '오후'}</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.hour}시</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-1'>{routine.condition.minute}분</h5>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.ampm === 'am' ? '오전' : '오후'}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.hour}시</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-1'>{routine.condition.minute}분</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -95,17 +155,20 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 className="me-1" style={{marginBottom:"0px"}}>{routine.condition.temperature} °C</h5>
-                <h5 className="me-2" style={{marginBottom:"0px"}}>{routine.condition.updown === 'up' ? '초과' : '미만'}</h5>
+                <p className="me-1" style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.temperature} °C</p>
+                <p className="me-2" style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.updown === 'up' ? '초과' : '미만'}</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -118,17 +181,20 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 style={{marginBottom:"0px"}}>{routine.condition.label}</h5>
-                <h5 style={{marginBottom:"0px"}} className='me-2'>할 때</h5>
+                <p style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.label}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}} className='me-2'>할 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -141,17 +207,20 @@ function RoutinePage() {
           <div className='d-flex justify-content-between' style={{width :"100%"}}>
             <div className='d-flex flex-column'>
               <div className='d-flex'>
-                <h5 className='me-1' style={{marginBottom:"0px"}}>{routine.condition.label}</h5>
-                <h5 style={{marginBottom:"0px"}}>일 때</h5>
+                <p className='me-1' style={{marginBottom:"0px", fontSize:"18px"}}>{routine.condition.label}</p>
+                <p style={{marginBottom:"0px", fontSize:"18px"}}>일 때</p>
               </div>
               <div className='d-flex text-secondary'>
-                <p className='me-1'>{routine.selectedHub.userHubName}</p>
-                <p className='me-1'>{routine.selectedRemote.controllerName}</p>
-                <p>{routine.selectedRemoteAction}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routineInfo[2]}</p>
+                <p className='me-1' style={{marginBottom:"0px"}}>{routine.selectedRemote.controllerName}</p>
+                <p style={{marginBottom:"0px"}}>{routine.selectedRemoteButton}</p>
               </div>
             </div>
-            <div>
-              <i className="bi bi-chevron-right"></i>
+            <div className='centered'>
+              { routine.active ? 
+              <i className="bi bi-bell-fill fs-1 text-warning"></i>
+              : <i className="bi bi-bell-slash-fill fs-1 text-secondary"></i>
+              }
             </div>
           </div>
         </div>
@@ -165,29 +234,47 @@ function RoutinePage() {
         <h1 className="font-700">My Routine</h1>
       </div>
       <hr />
-      {/* {routines.map(routine => {
-        return (
-          // <Card key={routine.routineId}>
-          <Card key={routine.id}>
-              <div className='d-flex align-items-center justify-content-between' 
-                    onClick={() => navigate(`/routines/${routine.id}`)}
-                    style={{width:"100%"}}>
-                <div className='card-text'>
-                  {routine.kind === "voice"? routine.result : routine.condition+' / '+routine.result}
-                  {routine.userRoutineName} 
-                </div>
-                <div>
-                  <i className="bi bi-chevron-right"></i>
-                </div>
+      { routines.length === 0 ?
+      <div className='m-5 centered'>
+        등록된 루틴이 없습니다.
+      </div>
+      : 
+      routines.map((routineInfo, index) => (
+        <div key={index} className='card mb-3' style={{height:'80px', padding:'0', border:'0px', overflow: 'hidden'}}>
+          <SwipeCard>
+            {renderRoutine(routineInfo)}
+          </SwipeCard>
+         
+          <div className='card-body mb-3 d-flex justify-content-between' style={{position:'absolute', padding:'0', width:'100%'}}>
+            {/* 루틴 수정 */}
+            <div className="card mb-3 bg-primary" style={{height:'79px', width:'79px', marginLeft: '1px'}}
+                 onClick={() => navigate('/routine/result', 
+                 { state: { kind: JSON.parse(routineInfo[3]).kind, 
+                           condition: JSON.parse(routineInfo[3]).condition, 
+                           editing: true, 
+                           selectedHub:  JSON.parse(routineInfo[3]).selectedHub,
+                           selectedRemote:  JSON.parse(routineInfo[3]).selectedRemote,
+                           selectedRemoteAction:  JSON.parse(routineInfo[3]).selectedRemoteAction,
+                           selectedRemoteButton:  JSON.parse(routineInfo[3]).selectedRemoteButton,
+                           active: JSON.parse(routineInfo[3]).active,
+                           routineId: routineInfo[1]
+                           }})}>
+              <div className="card-body centered">
+                <SettingsOutlinedIcon fontSize='large' style={{color:'white'}} />
               </div>
-          </Card>
-        )
-      })} */}
-      {routines.map(routine => (
-        <Card key={routine.id}>
-          {renderRoutine(routine)}
-        </Card>
+            </div>
+
+             {/* 루틴 삭제 */}
+            <div className="card mb-3 bg-danger" style={{height:'79px', width:'79px', marginRight:'1px'}}
+                onClick={() => deleteRoutine(routineInfo[1], routineInfo[0])}>
+                <div className="card-body centered">
+                  <RemoveCircleOutlineOutlinedIcon fontSize='large' style={{color:'white'}} />
+                </div>
+            </div>
+          </div>
+        </div>
       ))}
+
       <Card>
         <div className="centered" style={{width:"100%"}}
             onClick={() => navigate('/routine/addroutine')}>
