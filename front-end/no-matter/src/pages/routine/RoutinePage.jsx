@@ -74,12 +74,17 @@ function RoutinePage() {
   
       const routineListResponse = await axiosInstance({
         method: 'GET',
-        url: `/routine/list/${hubId}`,
+        url: `/routine/list`,
       });
-  
-      const result = "[" + routineListResponse.data.map(item => item[3]).join(", ") + "]";
-      await publishMessage(newTopic, `${result}`);
-      window.location.reload()
+    
+      const resultArray = routineListResponse.data
+        .filter(item => item[0] === hubId) // hubId와 일치하는 item[0]만 필터링
+        .map(item => item[3]); // 필터링된 결과의 item[3] 값만 추출
+    
+      const result = "[" + resultArray.join(", ") + "]";
+      
+      await publishMessage(newTopic, result);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
