@@ -259,11 +259,18 @@ function RoutineResult() {
         // 등록 이후 루틴 전체 리스트 불러오기
         axiosInstance({
           method :'GET',
-          url: `/routine/list/${selectedHub.hubId}`,
+          url: `/routine/list`,
         }).then((response) => {
-          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          publishMessage(`${result}`)
-          // console.log(result)
+          // const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          // publishMessage(`${result}`)
+          const result = [];
+          for (const item of response.data) {
+            if (item[0] === selectedHub.hubId) {
+              result.push(item[3]);
+            }
+          }
+          publishMessage(JSON.stringify(result));
+          console.log(result)
           navigate('/routine')
         })
       })
@@ -281,10 +288,18 @@ function RoutineResult() {
         // 등록 이후 루틴 전체 리스트 불러오기
         axiosInstance({
           method :'GET',
-          url: `/routine/list/${selectedHub.hubId}`,
+          url: `/routine/list`,
         }).then((response) => {
-          const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
-          publishMessage(`${result}`)
+          // const result = "[" + response.data.map(item => item[3]).join(", ") + "]"
+          // publishMessage(`${result}`)
+          const result = [];
+          for (const item of response.data) {
+            if (item[0] === selectedHub.hubId) {
+              result.push(item[3]);
+            }
+          }
+          publishMessage(JSON.stringify(result));
+          console.log(result)
           navigate('/routine')
         })
       })
