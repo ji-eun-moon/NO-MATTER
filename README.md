@@ -57,7 +57,7 @@ SSAFY 9기 공통 프로젝트
 
 
 ## 아키텍처
-![architecture](./img/architecture.png)
+![SW 아키텍처 다이어그램.jpg](./SW 아키텍처 다이어그램.jpg)
 
 
 ## ERD
