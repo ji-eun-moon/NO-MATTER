@@ -1,4 +1,4 @@
-# All-in-one Remote Hub - No Matter
+# All-in-one Remote Hub : No Matter
 SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
 
 
@@ -6,11 +6,12 @@ SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
 
 ## 목차 
 1. [서비스 소개](#서비스-소개)
-2. [기술 스택](#기술-스택)
-3. [팀원 소개](#팀원-소개)
-4. [프로젝트 소개](#프로젝트-소개)
-5. [서비스 화면 및 기능 소개](#서비스-화면-및-기능-소개)
-6. [프로젝트 관련 문서](#프로젝트-관련-문서)
+2. [기획 배경](#기획-배경)
+3. [기술 스택](#기술-스택)
+4. [팀원 소개](#팀원-소개)
+5. [프로젝트 소개](#프로젝트-소개)
+6. [서비스 화면 및 기능 소개](#서비스-화면-및-기능-소개)
+7. [프로젝트 관련 문서](#프로젝트-관련-문서)
 
 ## 서비스 소개
 **누구나 쉽게, 스마트 홈의 완성**
@@ -21,9 +22,19 @@ SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
 >
 > 필요할 때 바로 핸드폰으로 간편하게 조작하세요.
 
-- IR 리모컨 학습 및 사용
-- 초대코드로 허브 공유
-- 사용자가 설정한 특정 조건(스케줄/날씨/음성명령어)에 따른 허브 특정 동작 실행
+1. IR 리모컨 학습 및 사용 기능을 통해 구형 가전 제품도 원격 제어가 가능합니다.
+2. 초대코드를 발급하여 가족/친구/동료들과 허브 공유가 가능합니다.
+3. 사용자가 설정한 특정 조건(스케줄/날씨/음성명령어)에 따른 허브 특정 동작을 실행시킬 수 있습니다.
+
+## 기획 배경
+- 스마트 홈 가전 보유율은 매년 증가하고 있지만 스마트 홈을 이용에 대한 장벽 여전히 존재
+  - 비싼 스마트홈 가전 제품 가격
+  - 비교적 긴 가전 교체 주기
+- 스마트홈 가전을 이용할 수 있는 거주 환경이 아닌 사람들에게도 스마트홈과 같은 편리함을 제공하기 위해 IR 리모컨을 등록하여 사용할 수 있는 앱을 제작
+- 싸피 교육생을 대상으로 설문조사를 실시하여 서비스 핵심 기능 기획
+
+![survey](./img/survey.png)
+
 ## 기술 스택
 ### Front-end 
 
@@ -57,14 +68,13 @@ SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
 RaspberryPi&logoColor=white">
 <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">
 
-### 
-Cooperation
+### Cooperation
 
 <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=notion&logoColor=white">
 
-
+## 핵심 기능
 <!-- ## 프로젝트 소개
 
 #### 1. 설문
