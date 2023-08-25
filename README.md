@@ -74,7 +74,6 @@ RaspberryPi&logoColor=white">
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=notion&logoColor=white">
 
-## 핵심 기능
 <!-- ## 프로젝트 소개
 
 #### 1. 설문
