@@ -1,60 +1,71 @@
-## 누구나 쉽게, 스마트 홈의 완성
+# All-in-one Remote Hub - No Matter
+SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
+
 
 ![logo](./img/logo.png)
 
+## 목차 
+1. [서비스 소개](#서비스-소개)
+2. [기술 스택](#기술-스택)
+3. [팀원 소개](#팀원-소개)
+4. [프로젝트 소개](#프로젝트-소개)
+5. [서비스 화면 및 기능 소개](#서비스-화면-및-기능-소개)
+6. [프로젝트 관련 문서](#프로젝트-관련-문서)
 
 ## 서비스 소개
-NoMatter는 오래된 가전제품을 최신형 기기와 같이 원격 및 음성 제어 기능을 가능하게 합니다. 또한, 스케줄링 기능을 제공하여 자신의 생활 패턴에 맞춰 편리한 가전 제어 서비스를 제공합니다.
+**누구나 쉽게, 스마트 홈의 완성**
 
+> 수많은 리모컨 대신 스마트폰 하나로!
+>
+> 아무리 찾아도 안보이는 리모컨 더 이상 찾지 말고
+>
+> 필요할 때 바로 핸드폰으로 간편하게 조작하세요.
 
-## 프로젝트 소개
-SSAFY 9기 공통 프로젝트
-23.07 ~ 23.08(6주)
-총 6명 (프론트 3 / 백 1 / 임베디드 2)
-
+- IR 리모컨 학습 및 사용
+- 초대코드로 허브 공유
+- 사용자가 설정한 특정 조건(스케줄/날씨/음성명령어)에 따른 허브 특정 동작 실행
 ## 기술 스택
-- Front-end 
+### Front-end 
 
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
+<img src="https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=PWA&logoColor=white">
+
 
 <img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
-<img src="https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=PWA&logoColor=white">
 <img src="https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=MUI&logoColor=white">
 <img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=Sass&logoColor=white">
 
+
 <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
 
-- Back-end
+### Back-end
 
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 
+
 <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">
+
 
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
 <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=AmazonEC2&logoColor=white">
 <img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX&logoColor=white">
 
-- HardWare
+### Hardware
 
-- 협업
+<img src="https://img.shields.io/badge/raspberripi-A22846?style=for-the-badge&logo=
+RaspberryPi&logoColor=white">
+<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">
+
+### 
+Cooperation
 
 <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=notion&logoColor=white">
 
-## 개발 환경
-***FE*** React 16.13.0 / PWA
 
-
-***BE*** Spring-Boot 2.7.14 / MariaDB
-
-
-***HW*** ubuntu 22.04 LTS / Raspberry Pi 4 Model B
-
-
-
-## 프로젝트 특징
+<!-- ## 프로젝트 소개
 
 #### 1. 설문
 ![survey](./img/survey.png)
@@ -70,11 +81,28 @@ SSAFY 9기 공통 프로젝트
 - 스케줄/날씨/명령어를 통해 자신이 원하는 시간/날씨/명령어에 따라 서비스가 동작하도록 하였습니다.
 
 #### 5. 음성 인식
-- 'NoMatter' 명령어 인식 시 명령어 루틴을 사용할 수 있도록 명령을 인식하여 서비스를 사용할 수 있도록 하였습니다.
+- 'NoMatter' 명령어 인식 시 명령어 루틴을 사용할 수 있도록 명령을 인식하여 서비스를 사용할 수 있도록 하였습니다. -->
 
 [//]: # (#### 6. Special Thanks)
 
 [//]: # (- Back End와 배포를 맡아준 "이도하"님에게 감사를 표합니다)
+
+## 팀원 소개
+### Hardware
+| 박현종 | 한석현 |
+|---|---|
+|   |   |
+|   |   |
+### Front-end
+| 문지은 | 박서희 | 최찬석 |
+|---|---|---|
+|   |   |   |
+|   |   |   |
+### Back-end
+| 이도하 |
+|---|
+|   |
+|   |
 
 ## 서비스 화면 및 기능 소개
 - [랜딩 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/LandingPage.md)
