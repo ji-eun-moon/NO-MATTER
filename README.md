@@ -77,12 +77,12 @@ SSAFY 9기 공통 프로젝트
 [//]: # (- Back End와 배포를 맡아준 "이도하"님에게 감사를 표합니다)
 
 ## 서비스 화면 및 기능 소개
-- [랜딩 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/LandingPage.md)
-- [회원가입 및 로그인](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/LoginSignUp.md)
-- [비밀번호 변경 및 회원 탈퇴](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/MemberModify.md)
-- [메인 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/MainPage.md)
-- [허브 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/HubPage.md)
-- [루틴 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introduction/RoutinePage.md)
+- [랜딩 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/LandingPage.md)
+- [회원가입 및 로그인](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/LoginSignUp.md)
+- [비밀번호 변경 및 회원 탈퇴](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/MemberModify.md)
+- [메인 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/MainPage.md)
+- [허브 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/HubPage.md)
+- [루틴 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/RoutinePage.md)
 
 ## 프로젝트 관련 문서
 #### <a href="https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/SW%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">아키텍처 보러가기</a>
