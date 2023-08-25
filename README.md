@@ -85,6 +85,8 @@ SSAFY 9기 공통 프로젝트
 - [루틴 페이지](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/introdcution/RoutinePage.md)
 
 ## 프로젝트 관련 문서
-#### <a href="https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/SW%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg">아키텍처 보러가기</a>
-#### <a href="https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.png">기능명세서 보러가기</a>
-#### <a href="https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/erd.png">ERD 보러가기</a>
+| 구분  | 링크  |
+|---|---|
+| 시스템 아키텍처 | [시스템 아키텍처](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/SW%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.jpg)  |
+| 기능 명세서 | [기능 명세서](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.png)  |
+| ERD | [ERD](https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/erd.png) |
