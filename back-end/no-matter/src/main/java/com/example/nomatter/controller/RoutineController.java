@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/routine")
 @RequiredArgsConstructor
@@ -22,8 +25,20 @@ public class RoutineController {
     @GetMapping("/list/{hubId}")
     public ResponseEntity<?> list(@PathVariable Long hubId, Authentication authentication){
 
+        List<Object> list = routineService.findAllByHubId(userService.findByUserId(authentication.getName()).get().getMemberId());
 
-        return ResponseEntity.ok().body(routineService.findAllByHubId(hubId));
+        List<Object> objectList = new ArrayList<>();
+
+        if(!list.isEmpty()){
+
+            for(int i = 0 ; i < list.size() ; i++){
+                if(list.get(i) == hubId){
+                    objectList.add(list.get(i));
+                }
+            }
+        }
+
+        return ResponseEntity.ok().body(objectList);
     }
 
     @GetMapping("/list")

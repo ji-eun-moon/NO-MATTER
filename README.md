@@ -1,4 +1,4 @@
-### 누구나 쉽게, 스마트 홈의 완성
+## 누구나 쉽게, 스마트 홈의 완성
 
 ![logo](./img/logo.png)
 
@@ -46,8 +46,9 @@ SSAFY 9기 공통 프로젝트
 #### 5. 음성 인식
 - 'NoMatter' 명령어 인식 시 명령어 루틴을 사용할 수 있도록 명령을 인식하여 서비스를 사용할 수 있도록 하였습니다.
 
-#### 6. Special Thanks
-- Back End와 배포를 맡아준 "이도하"님에게 감사를 표합니다
+[//]: # (#### 6. Special Thanks)
+
+[//]: # (- Back End와 배포를 맡아준 "이도하"님에게 감사를 표합니다)
 
 
 
@@ -55,24 +56,16 @@ SSAFY 9기 공통 프로젝트
 ## 주요 화면
 
 
-
 ## 아키텍처
-![SW 아키텍처 다이어그램.jpg](./SW 아키텍처 다이어그램.jpg)
-
-
-## ERD
-![ERD](./img/erd.png)
-
-
-## UseCase
-![UseCase](./img/UseCase.png)
-
+![SW 아키텍처 다이어그램.jpg](./img/SW 아키텍처 다이어그램.jpg)
 
 
 ## 기능 명세서
-![feature1](./img/feature1.png)
+![img.png](img/기능명세서.png)
 
-![feature2](./img/feature2.png)
+## 기타 자료들
+<a href="https://lab.ssafy.com/s09-webmobile3-sub2/S09P12C105/-/blob/develop/img/erd.png">ERD 보러가기</a>
+
 
 
 
