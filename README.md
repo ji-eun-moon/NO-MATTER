@@ -64,9 +64,11 @@ SSAFY 9기 2학기 공통 프로젝트 23.07.04 ~ 23.08.18 (6주)
 
 ### Hardware
 
-<img src="https://img.shields.io/badge/raspberripi-A22846?style=for-the-badge&logo=
-RaspberryPi&logoColor=white">
+<img src="https://img.shields.io/badge/raspberripi-A22846?style=for-the-badge&logo=RaspberryPi&logoColor=white">
 <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">
+
+<img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
+<img src="https://img.shields.io/badge/bluetooth-0052CC?style=for-the-badge&logo=bluetooth&logoColor=white">
 
 ### Cooperation
 
