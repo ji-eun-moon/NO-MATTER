@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <thread>
 #include <chrono>
+#include <fstream>
 #include <json/json.h>
 #include "commands.h"
 
@@ -87,8 +88,17 @@ void mode_variation(string topic, string msg)
 
 
     if(topic=="ROUTINE") {
-	std::istringstream jsonStream(msg);
-	Json::parseFromStream(reader, jsonStream, &routineInfo, &errs);
+	std::ofstream outputFile("myRoutines.txt");
+	if(outputFile.is_open()) {
+	    //msg = msg.substr(1, msg.size() - 2);
+
+	    outputFile << msg;
+	    outputFile.close();
+	    std::cout << "JSON data saved to myRoutines.txt" << std::endl;
+	}
+	else std::cerr << "Failed to open myRoutines.txt for writing" << std::endl;
+	//std::istringstream jsonStream(msg);
+	//Json::parseFromStream(reader, jsonStream, &routineInfo, &errs);
 	//cout << jsonData["kind"]["condition"]["selectedRemote.controllerName"]["selectedRemoteAction"]["active"].asString() 
     }
     else if(topic=="CONTROLL") {
@@ -125,19 +135,18 @@ void mode_variation(string topic, string msg)
 	if(msg=="STATUS") {
 	    bool HUB_status = IR_STATUS();
 
-	    sio::message::ptr data = sio::object_message::create();
-    	    data->get_map()["topic"] = sio::string_message::create("00000001-1d10-4282-b68c-e17c508b94f4/IR/");
+    	    pub_topic = "00000001-1d10-4282-b68c-e17c508b94f4/IR/";
 
 	    if(HUB_status==1) {
-	        data->get_map()["message"] = sio::string_message::create("RECEIVE");
+	        pub_msg = "RECEIVE";
 	    }
 	    else if(HUB_status==0) {
-	        data->get_map()["message"] = sio::string_message::create("TRANSMIT");
+	        pub_msg = "TRANSMIT";
 	    }
 	    else {	
-	        data->get_map()["message"] = sio::string_message::create("ERROR");
+	        pub_msg = "ERROR";
 	    }
-	    current_socket->emit("publish", data);
+	    feedback_cnt++;
 	}
 	else if(msg=="RECEIVE") {
 	    IR_RECEIVE();
@@ -148,6 +157,7 @@ void mode_variation(string topic, string msg)
     }
     else if(topic=="VOICE") {
 	for(const auto& routine : routineInfo) {
+	    cout << "VOICE: " << msg << endl;
 	    if(msg == routine["condition"].asString()) {
 	    	std::string remoteCode = routine["selectedRemote"]["remoteCode"].asString();
 		std::string remoteAction = routine["selectedRemoteAction"].asString();
@@ -176,6 +186,7 @@ void sub_message()
 	size_t lastIndex = clientTopic.rfind('/');
 	string lastPart = clientTopic.substr(lastIndex + 1);
 
+	cout << lastPart << " | " << clientMsg << endl;
 	mode_variation(lastPart, clientMsg);
         
         
@@ -200,7 +211,7 @@ int main() {
     wiringPiISR(BUTTON_PIN, INT_EDGE_FALLING, buttonInterrupt);
 
     //routine begining
-    std::thread routineThread(checkAndRunRoutines, std::ref(routineInfo));
+    std::thread routineThread(checkAndRunRoutines);
 
     while (true)
     {
@@ -243,54 +254,40 @@ int main() {
 	    data->get_map()["message"] = sio::string_message::create("RECEIVE");
 	    current_socket->emit("publish", data);
 	    */
-            while (true)
-            {	
-		cout << "whilewhile" << endl;
-		sleep(1);
-		if(feedback_cnt>0) {	
-    	    	    data->get_map()["topic"] = sio::string_message::create(pub_topic);
-	    	    data->get_map()["message"] = sio::string_message::create(pub_msg);
-	    	    current_socket->emit("publish", data);
-		    feedback_cnt--;
-		}
-		
-                if(isPushed){
-                  isPushed=false;
-                    auto startTime = chrono::steady_clock::now();
-                    if (digitalRead(BUTTON_PIN)==LOW) {
-                      auto currentTime = chrono::steady_clock::now();
-                      auto elapsedTime = chrono::duration_cast<chrono::seconds>(currentTime - startTime).count();
-
-                      if (elapsedTime >= 10) {
-                          ResetHub();
-                          break;
-                      }  
-                    }
-                
-                }/*
-                if (threadData.loop != 0) {
-                    //Broker down || No internet
-                    
-                    break;
-                }*/
+        while (true) {	
+            cout << "whilewhile" << endl;
+            sleep(1);
+            if(feedback_cnt>0) {	
+                        data->get_map()["topic"] = sio::string_message::create(pub_topic);
+                    data->get_map()["message"] = sio::string_message::create(pub_msg);
+                    current_socket->emit("publish", data);
+                feedback_cnt--;
             }
+		
+            if(isPushed){
+                isPushed=false;
+                auto startTime = chrono::steady_clock::now();
+                if (digitalRead(BUTTON_PIN)==LOW) {
+                    auto currentTime = chrono::steady_clock::now();
+                    auto elapsedTime = chrono::duration_cast<chrono::seconds>(currentTime - startTime).count();
+
+                    if (elapsedTime >= 10) {
+                        ResetHub();
+                        break;
+                    }  
+                }
             
-            
-            
-            
-            
+            }  
         }
-        else if (isPushed) {
+        else {
             //connect new internet with ble
 	    digitalWrite(LEDRED, 0);
 	    digitalWrite(LEDGREEN, 0);
 	    digitalWrite(LEDBLUE, 1);
+	    cout << "Bluetooth begin" << endl;
             system("python3 ./gatt_server_read_write.py");
+	    cout << "Bluetooth end" << endl;
 	    digitalWrite(LEDBLUE, 0);
-            isPushed = false;
-        }
-        else {
-            //internet disconnected
             sleep(10000); //10 Delay
         }
         
@@ -299,6 +296,5 @@ int main() {
     routineThread.join();
 
     return -1;
+    }
 }
-
-

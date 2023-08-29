@@ -3,8 +3,8 @@
 
 #include <json/json.h>
 
-//void readRoutineInfo(const std::string& filename, Json::Value& routineInfo);
-void checkAndRunRoutines(const Json::Value& routineInfo);
+void readRoutineInfo(const std::string& filename, Json::Value& routineInfo);
+void checkAndRunRoutines();
 
 #endif
 
